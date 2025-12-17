@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class AuthService
 {
-  private List<User> userList = new List<User>
-  {
+  private readonly List<User> userList = new List<User>                     // TODO: Replace with a JSON-based User store.
+  {                                                                         // Passwords should not be stored in plain english for real world applications. Use Hashing + Salting.
     new User
     {
       ID = 12345,
@@ -13,11 +13,11 @@ public class AuthService
     }
   };
   
-  public bool ValidateCredentials (string username, string password)
+  public bool ValidateCredentials(string username, string password)
   {
-    foreach (var user in userList)
+    foreach(var user in userList)
     {
-      if (user.Username == username && user.Password == password)
+      if(user.Username == username && user.Password == password)
       {
         return true;
       }
