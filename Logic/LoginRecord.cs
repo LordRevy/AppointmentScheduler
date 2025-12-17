@@ -3,7 +3,7 @@ using System.IO;
 
 public class LoginRecord
 {
-    private const string FileName = "LoginHistory.txt";
+    private const string FileName = "Records/LoginHistory.txt";
     private readonly string message;
 
     public Log(string username, bool result)
