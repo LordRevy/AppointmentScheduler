@@ -1,16 +1,19 @@
 using System;
 using System.IO;
 
-public class LoginRecord
+namespace AppointmentScheduler.Logic
 {
-    private const string FileName = "Records/LoginHistory.txt";
-    private readonly string message;
-
-    public void Log(string username, bool result)
+    public class LoginRecord
     {
-        DateTime loginTime = DateTime.Now;
-        message = $"Login Attempt | Username: {username} | Time: {loginTime:u} | Success? {result}";
-      
-        File.AppendAllText(FileName, message + Environment.NewLine);
+        private const string FileName = "Records/LoginHistory.txt";
+        private readonly string message;
+    
+        public void Log(string username, bool result)
+        {
+            DateTime loginTime = DateTime.Now;
+            message = $"Login Attempt | Username: {username} | Time: {loginTime:u} | Success? {result}";
+          
+            File.AppendAllText(FileName, message + Environment.NewLine);
+        }
     }
 }
