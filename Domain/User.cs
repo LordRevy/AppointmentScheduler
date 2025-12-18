@@ -1,4 +1,4 @@
-namespace AppointmentSchedler.Domain
+namespace AppointmentScheduler.Domain
 {
   public class User
   {
