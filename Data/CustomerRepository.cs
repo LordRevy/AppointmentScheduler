@@ -1,3 +1,9 @@
+using System;
+using System.Data.Odbc;
+using AppointmentScheduler.Domain;
+
+namespace AppointmentScheduler.Data;
+
 public class CustomerRepository : Repository
 {
     public Customer? GetCustomer(string name)
