@@ -1,3 +1,8 @@
+using System;
+using System.Data.Odbc;
+
+namespace AppointmentScheduler.Data;
+
 public abstract class Repository
 {
     protected readonly string connectionString =
