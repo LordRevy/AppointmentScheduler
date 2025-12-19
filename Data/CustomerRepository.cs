@@ -7,7 +7,7 @@ namespace AppointmentScheduler.Data
         private readonly string connectionString =
             "Driver={MySQL ODBC 8.0 Driver};Server=127.0.0.1;Port=3306;Database=client_schedule;User=sqlUser;Password=Passw0rd!;";
         
-        public Customer? GetUser(string customerName)
+        public Customer? GetCustomer(string customerName)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace AppointmentScheduler.Data
             }
             catch (OdbcException ex)
             {
-                throw new ApplicationException("Database error while retrieving user.", ex);
+                throw new ApplicationException("Database error while retrieving customer.", ex);
             }
         }
     }
