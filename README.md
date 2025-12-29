@@ -2,6 +2,7 @@
 Work in progress, using this to keep track of what I have done so far.
 
 # Project Structure
+
 Domain
 - [x] Appointment.cs
 - [x] Customer.cs
@@ -10,21 +11,26 @@ Domain
 
 Data
 - [x] Repository.cs
-- [ ] UserRepository.cs
+  * GetConnection
+    
+- [x] UserRepository.cs
   * GetUser
-  * ValidateCredentials
+    
 - [ ] CustomerRepository.cs
   * GetCustomer
   * AddCustomer
   * UpdateCustomer
   * DeleteCustomer
   * GetAllCustomers
+    
 - [ ] AppointmentRepository.cs
   * GetAppointmentsByUser
   * GetAppointmentsByDay
+  * AddAppointmnt
   * UpdateAppointment
   * DeleteAppointment
   * GetOverlappingAppointments
+    
 - [ ] AddressRepository.cs
   * GetAddress
 
