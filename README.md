@@ -9,10 +9,24 @@ Domain
 - [x] Address.cs
 
 Data
-- [ ] Repository.cs
+- [x] Repository.cs
 - [ ] UserRepository.cs
+  * GetUser
+  * ValidateCredentials
 - [ ] CustomerRepository.cs
+  * GetCustomer
+  * AddCustomer
+  * UpdateCustomer
+  * DeleteCustomer
+  * GetAllCustomers
 - [ ] AppointmentRepository.cs
+  * GetAppointmentsByUser
+  * GetAppointmentsByDay
+  * UpdateAppointment
+  * DeleteAppointment
+  * GetOverlappingAppointments
+- [ ] AddressRepository.cs
+  * GetAddress
 
 Logic
 - [ ] Authentication.cs
