@@ -3,18 +3,21 @@ Work in progress, using this to keep track of what I have done so far.
 
 # Project Structure
 
-Domain
+**Domain**
 - [x] Appointment.cs
 - [x] Customer.cs
 - [x] User.cs
 - [x] Address.cs
 
-Data
+
+**Data**
 - [x] Repository.cs
   * GetConnection
+
     
 - [x] UserRepository.cs
   * GetUser
+
     
 - [ ] CustomerRepository.cs
   * GetCustomer
@@ -22,6 +25,7 @@ Data
   * UpdateCustomer
   * DeleteCustomer
   * GetAllCustomers
+
     
 - [ ] AppointmentRepository.cs
   * GetAppointmentsByUser
@@ -30,11 +34,13 @@ Data
   * UpdateAppointment
   * DeleteAppointment
   * GetOverlappingAppointments
+
     
 - [ ] AddressRepository.cs
   * GetAddress
 
-Logic
+
+**Logic**
 - [ ] Authentication.cs
 - [ ] LoginRecord.cs
 - [ ] Messages.cs
