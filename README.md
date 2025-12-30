@@ -26,7 +26,7 @@ Work in progress, using this to keep track of what I have done so far.
   * AddAppointmnt
   * UpdateAppointment
   * DeleteAppointment
-- [ ] AddressRepository.cs
+- [x] AddressRepository.cs
   * GetAddress
 
 
