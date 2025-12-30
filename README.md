@@ -31,7 +31,7 @@ Work in progress, using this to keep track of what I have done so far.
 
 
 **Logic**
-- [ ] Authentication.cs
+- [x] Authentication.cs
 - [ ] LoginRecord.cs
 - [ ] Messages.cs
 - [ ] LocalizationService.cs
