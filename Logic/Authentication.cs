@@ -10,9 +10,11 @@ namespace AppointmentScheduler.Logic;
 public class Authentication
 {
     private readonly UserRepository _users;
-    public Authentication(UserRepository users)
+    private LoginRecord _loginAttempts;
+    public Authentication(UserRepository users, LoginRecord loginAttempts)
     {
         _users = users;
+        _loginAttempts = loginAttempts;
     }
     
     
@@ -21,8 +23,10 @@ public class Authentication
         var user = _users.GetUser(username);
         if (user != null && user.Active && user.Password == password)
         {
+            _loginAttempts.Log(username, true);
             return user;
         }
+        _loginAttempts.Log(username, false);
         return null;
     }
 }
