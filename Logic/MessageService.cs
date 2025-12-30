@@ -24,8 +24,10 @@ public class MessageService
     {
         if (!messages.ContainsKey(language))
             language = "en";
+        
         if (!messages[language].ContainsKey(message))
             return $"{language} is missing message: {message}";
+        
         return messages[language][message];
     }
 }
