@@ -32,13 +32,36 @@ Work in progress, using this to keep track of what I have done so far.
 
 **Logic**
 - [x] Authentication.cs
-- [ ] LoginRecord.cs
-- [ ] Messages.cs
-- [ ] LocalizationService.cs
-- [ ] LoggingService.cs
+  * ValidateCredentials
+- [ ] LoginService.cs
+  * LogAttempt
+  * CheckAlerts
+- [ ] MessageService.cs
+  * DisplayMessage
+- [ ] Location.cs
+  * LocateUser
+  * GetTimeZone
+- [ ] Calendar.cs
 - [ ] CustomerService.cs
 - [ ] AppointmentService.cs
-- [ ] TimeZoneService.cs
-- [ ] AlertService.cs
-- [ ] ReportService.cs
-- [ ] ValidationHelper.cs
+- [ ] Validator.cs
+  * CheckIfPhone
+  * CheckIfDateTime
+  * CheckIfNull
+- [ ] Reports.cs
+  * GetAppointmentTypes
+  * GetUserSchedule
+  * One Additional
+
+**Forms**
+- [ ] Login Page
+  * Username and Password in a try/catch with messages
+  * Call ValidateCredentials
+  * Call LocateUser
+- [ ] Main Page
+  * Calendar View
+  * Button for Customer CRUD
+  * Button for Appointment CRUD
+  * Button to generate Appointments Report
+  * Button to generate User Schedule Report
+  * Button for one additional Report
