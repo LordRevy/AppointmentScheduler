@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AppointmentScheduler.Logic;
 
-public class Messages
+public class MessageService
 {
     private readonly Dictionary<string, Dictionary<string, string>> messages =
         new Dictionary<string, Dictionary<string, string>>
@@ -20,12 +20,12 @@ public class Messages
         }
     };
     
-    public string LoginMessage(User user, bool result)
+    public string GetMessage(string language, string message)
     {
-        if (result)
-        {
-            return messages[user.Language]["LoginSuccess"];
-        }
-        return messages[user.Language]["InvalidCredentials"];
+        if (!messages.ContainsKey(language))
+            language = "en";
+        if (!messages[language].ContainsKey(message))
+            return $"{language} is missing message: {message}";
+        return messages[language][message];
     }
 }
