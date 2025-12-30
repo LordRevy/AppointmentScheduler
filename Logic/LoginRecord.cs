@@ -6,7 +6,7 @@ namespace AppointmentScheduler.Logic;
 public class LoginRecord
 {
     private const string FileName = "Records/LoginHistory.txt";
-    private readonly string message;
+    private string message;
 
     public void Log(string username, bool result)
     {
