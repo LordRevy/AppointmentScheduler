@@ -13,29 +13,19 @@ Work in progress, using this to keep track of what I have done so far.
 **Data**
 - [x] Repository.cs
   * GetConnection
-
-    
 - [x] UserRepository.cs
   * GetUser
-
-    
-- [ ] CustomerRepository.cs
+- [x] CustomerRepository.cs
   * GetCustomer
   * AddCustomer
   * UpdateCustomer
   * DeleteCustomer
-  * GetAllCustomers
-
-    
-- [ ] AppointmentRepository.cs
+- [x] AppointmentRepository.cs
   * GetAppointmentsByUser
   * GetAppointmentsByDay
   * AddAppointmnt
   * UpdateAppointment
   * DeleteAppointment
-  * GetOverlappingAppointments
-
-    
 - [ ] AddressRepository.cs
   * GetAddress
 
