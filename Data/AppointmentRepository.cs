@@ -14,19 +14,19 @@ public class AppointmentRepository : Repository
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private const string UpdateSql = @"UPDATE appointment SET 
-        appointmentId = ?, customerId = ?, userId = ?, title = ?, description = ?, location = ?,
+        customerId = ?, userId = ?, title = ?, description = ?, location = ?,
         contact = ?, type = ?, url = ?, start = ?, end = ?, lastUpdate = ?, lastUpdateBy = ?
-        WHERE appointmentId = ?";
+    WHERE appointmentId = ?";
         
     private const string DeleteSql = "DELETE FROM appointment WHERE appointmentId = ?";
 
-    public Appointment? GetAppointment(int ID)
+    public Appointment? GetAppointment(int appointmentId)
     {
         using var conn = GetConnection();
         conn.Open();
 
         using var cmd = new OdbcCommand(GetSql, conn);
-        cmd.Parameters.AddWithValue("?", ID);
+        cmd.Parameters.AddWithValue("?", appointmentId);
 
         using var reader = cmd.ExecuteReader();
 
@@ -36,8 +36,8 @@ public class AppointmentRepository : Repository
         return new Appointment
         {
             AppointmentId = reader.GetInt32(0),
-            CustomerId = reader.GetString(1),
-            userId = reader.GetInt32(2),
+            CustomerId = reader.GetInt32(1),
+            UserId = reader.GetInt32(2),
             Title = reader.GetString(3),
             Description = reader.GetString(4),
             Location = reader.GetString(5),
@@ -59,13 +59,21 @@ public class AppointmentRepository : Repository
         conn.Open();
 
         using var cmd = new OdbcCommand(InsertSql, conn);
-        cmd.Parameters.AddWithValue("?", customer.CustomerName);
-        cmd.Parameters.AddWithValue("?", customer.AddressId);
-        cmd.Parameters.AddWithValue("?", customer.Active ? 1 : 0);
-        cmd.Parameters.AddWithValue("?", customer.CreateDate);
-        cmd.Parameters.AddWithValue("?", customer.CreatedBy);
-        cmd.Parameters.AddWithValue("?", customer.LastUpdate);
-        cmd.Parameters.AddWithValue("?", customer.LastUpdateBy);
+        cmd.Parameters.AddWithValue("?", appointment.AppointmentId);
+        cmd.Parameters.AddWithValue("?", appointment.CustomerId);
+        cmd.Parameters.AddWithValue("?", appointment.UserId);
+        cmd.Parameters.AddWithValue("?", appointment.Title);
+        cmd.Parameters.AddWithValue("?", appointment.Description);
+        cmd.Parameters.AddWithValue("?", appointment.Location);
+        cmd.Parameters.AddWithValue("?", appointment.Contact);
+        cmd.Parameters.AddWithValue("?", appointment.Type);
+        cmd.Parameters.AddWithValue("?", appointment.Url);
+        cmd.Parameters.AddWithValue("?", appointment.Start);
+        cmd.Parameters.AddWithValue("?", appointment.End);
+        cmd.Parameters.AddWithValue("?", appointment.CreateDate);
+        cmd.Parameters.AddWithValue("?", appointment.CreatedBy);
+        cmd.Parameters.AddWithValue("?", appointment.LastUpdate);
+        cmd.Parameters.AddWithValue("?", appointment.LastUpdateBy);
 
         cmd.ExecuteNonQuery();
     }
@@ -76,13 +84,20 @@ public class AppointmentRepository : Repository
         conn.Open();
 
         using var cmd = new OdbcCommand(UpdateSql, conn);
-        cmd.Parameters.AddWithValue("?", customer.CustomerName);
-        cmd.Parameters.AddWithValue("?", customer.AddressId);
-        cmd.Parameters.AddWithValue("?", customer.Active ? 1 : 0);
-        cmd.Parameters.AddWithValue("?", customer.LastUpdate);
-        cmd.Parameters.AddWithValue("?", customer.LastUpdateBy);
-        cmd.Parameters.AddWithValue("?", customer.CustomerId);
-
+        cmd.Parameters.AddWithValue("?", appointment.CustomerId);
+        cmd.Parameters.AddWithValue("?", appointment.UserId);
+        cmd.Parameters.AddWithValue("?", appointment.Title);
+        cmd.Parameters.AddWithValue("?", appointment.Description);
+        cmd.Parameters.AddWithValue("?", appointment.Location);
+        cmd.Parameters.AddWithValue("?", appointment.Contact);
+        cmd.Parameters.AddWithValue("?", appointment.Type);
+        cmd.Parameters.AddWithValue("?", appointment.Url);
+        cmd.Parameters.AddWithValue("?", appointment.Start);
+        cmd.Parameters.AddWithValue("?", appointment.End);
+        cmd.Parameters.AddWithValue("?", appointment.LastUpdate);
+        cmd.Parameters.AddWithValue("?", appointment.LastUpdateBy);
+        cmd.Parameters.AddWithValue("?", appointment.AppointmentId);
+        
         cmd.ExecuteNonQuery();
     }
 
@@ -92,7 +107,7 @@ public class AppointmentRepository : Repository
         conn.Open();
 
         using var cmd = new OdbcCommand(DeleteSql, conn);
-        cmd.Parameters.AddWithValue("?", customer.CustomerId);
+        cmd.Parameters.AddWithValue("?", appointment.AppointmentId);
 
         cmd.ExecuteNonQuery();
     }
