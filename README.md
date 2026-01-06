@@ -11,7 +11,7 @@ Work in progress, using this to keep track of what I have done so far.
 
 
 **Data**
-- [x] Repository.cs
+- [x] Database.cs
   * GetConnection
 - [x] UserRepository.cs
   * GetUser
@@ -33,14 +33,13 @@ Work in progress, using this to keep track of what I have done so far.
 **Logic**
 - [x] Authentication.cs
   * ValidateCredentials
-- [ ] LoginService.cs
+- [x] LoginService.cs
   * LogAttempt
   * CheckAlerts
-- [ ] MessageService.cs
-  * DisplayMessage
-- [ ] Location.cs
-  * LocateUser
-  * GetTimeZone
+- [x] MessageService.cs
+  * GetMessage
+- [x] Location.cs
+  * FindUser
 - [ ] Calendar.cs
 - [ ] CustomerService.cs
 - [ ] AppointmentService.cs
