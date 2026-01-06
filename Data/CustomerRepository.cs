@@ -4,7 +4,7 @@ using AppointmentScheduler.Domain;
 
 namespace AppointmentScheduler.Data;
 
-public class CustomerRepository : Repository
+public class CustomerRepository : Database
 {
     private const string GetSql = "SELECT * FROM customer WHERE customerId = ?";
     private const string InsertSql = @"INSERT INTO customer (customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (?, ?, ?, ?, ?, ?, ?)";
