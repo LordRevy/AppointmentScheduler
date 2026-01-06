@@ -4,7 +4,7 @@ using AppointmentScheduler.Domain;
 
 namespace AppointmentScheduler.Data;
 
-public class UserRepository : Repository
+public class UserRepository : Database
 {
     public User? GetUser(string username)
     {
