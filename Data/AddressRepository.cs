@@ -4,7 +4,7 @@ using AppointmentScheduler.Domain;
 
 namespace AppointmentScheduler.Data;
 
-public class AddressRepository : Repository
+public class AddressRepository : Database
 {
     private string GetSql = "SELECT * FROM address WHERE addressId = ?";
 
