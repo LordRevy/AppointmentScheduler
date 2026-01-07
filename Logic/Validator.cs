@@ -6,14 +6,8 @@ public class Validator
     {
         if (string.IsNullOrWhiteSpace(phone))
             return false;
-
-        phone = phone.Trim()
-                     .Replace("-", "")
-                     .Replace(" ", "")
-                     .Replace("(", "")
-                     .Replace(")", "");
-
-        return phone.All(char.IsDigit) && phone.Length == 10;
+    
+        return phone.All(c => char.IsDigit(c) || c == '-');
     }
     
     public bool CheckIfDateTime(object date)
@@ -27,7 +21,7 @@ public class Validator
         return false;
     }
 
-    public bool CheckIfNull(object dataItem)
+    public bool IsNull(object dataItem)
     {
         return dataItem is null;
     }
