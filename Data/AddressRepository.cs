@@ -6,14 +6,15 @@ namespace AppointmentScheduler.Data;
 
 public class AddressRepository : Database
 {
-    private string GetSql = "SELECT * FROM address WHERE addressId = ?";
+    private string GetAddress = "SELECT * FROM address WHERE addressId = ?";
+    private string GetAddressId = "SELECT * FROM address WHERE address = ? AND phone = ?";
 
     public Address? GetAddress(int addressId)
     {
         using var conn = GetConnection();
         conn.Open();
 
-        using var cmd = new OdbcCommand(GetSql, conn);
+        using var cmd = new OdbcCommand(GetAddress, conn);
         cmd.Parameters.AddWithValue("?", addressId);
 
         using var reader = cmd.ExecuteReader();
@@ -34,5 +35,22 @@ public class AddressRepository : Database
             LastUpdate = reader.GetDateTime(8),
             LastUpdateBy = reader.GetString(9)
         };
+    }
+
+    public int GetAddressId(string address, string phone)
+    {
+        using var conn = GetConnection();
+        conn.Open();
+
+        using var cmd = new OdbcCommand(GetAddressId, conn);
+        cmd.Parameters.AddWithValue("?", address);
+        cmd.Parameters.AddWithValue("?", phone);
+
+        using var reader = cmd.ExecuteReader();
+
+        if (!reader.Read())
+            return 0; // 0 means AddressId not found.
+
+        return reader.GetInt32(0);
     }
 }
