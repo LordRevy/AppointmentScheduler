@@ -22,7 +22,7 @@ public class CustomerService
         if (_validator.CheckIfEmpty(customerName, address, phone))
             throw new ArgumentException("Please do not leave any field empty.");
 
-        addressWasSuccessful = _addressService.AddAddress(address, phone);
+        addressWasSuccessful = _addressService.Create(address, phone);
         if !(addressWasSuccessful)
             return false;
         
