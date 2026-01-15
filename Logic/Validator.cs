@@ -7,8 +7,8 @@ public class Validator
         foreach (var item in items)
         {
             if (string.IsNullOrWhiteSpace(item))
-                return false;
+                return true;
         }
-    return true;
+    return false;
     }
 }
