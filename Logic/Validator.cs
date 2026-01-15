@@ -2,7 +2,7 @@ namespace AppointmentScheduler.Logic;
 
 public class Validator
 {
-    public bool CheckIfEmpty(params string[] items)
+    public bool IsEmpty(params string[] items)
     {
         foreach (var item in items)
         {
