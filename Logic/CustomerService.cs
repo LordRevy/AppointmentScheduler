@@ -19,7 +19,7 @@ public class CustomerService
     public bool Create(User user, string customerName, string address, string phone)
     {
     
-        if (_validator.CheckIfEmpty(customerName, address, phone))
+        if (_validator.IsEmpty(customerName, address, phone))
             throw new ArgumentException("Please do not leave any field empty.");
 
         addressWasSuccessful = _addressService.Create(address, phone);
