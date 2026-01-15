@@ -2,27 +2,13 @@ namespace AppointmentScheduler.Logic;
 
 public class Validator
 {
-    public bool CheckIfPhone(string phone)
+    public bool CheckIfEmpty(params string[] items)
     {
-        if (string.IsNullOrWhiteSpace(phone))
-            return false;
-    
-        return phone.All(c => char.IsDigit(c) || c == '-');
-    }
-    
-    public bool CheckIfDateTime(object date)
-    {
-        if (date is DateTime)
-            return true;
-
-        if (date is string s && DateTime.TryParse(s, out _))
-            return true;
-
-        return false;
-    }
-
-    public bool IsNull(object dataItem)
-    {
-        return dataItem is null;
+        foreach (var item in items)
+        {
+            if (string.IsNullOrWhiteSpace(item))
+                return false;
+        }
+    return true;
     }
 }
