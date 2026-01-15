@@ -22,11 +22,12 @@ public class CustomerService
         if (_validator.CheckIfEmpty(customerName, address, phone))
             throw new ArgumentException("Please do not leave any field empty.");
 
-        _addressService.AddAddress(address, phone);
-        var addressId = _addressService.GetAddressId(address);
-
-        var createDate = DateTime.Now;
+        addressWasSuccessful = _addressService.AddAddress(address, phone);
+        if !(addressWasSuccessful)
+            return false;
         
+        var addressId = _addressService.GetAddressId(address);
+        var createDate = DateTime.Now;
         var customer = new Customer
         {
             CustomerName = customerName,
