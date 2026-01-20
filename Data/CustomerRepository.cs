@@ -5,7 +5,7 @@ using AppointmentScheduler.Domain;
 
 namespace AppointmentScheduler.Data
 {
-    public class CustomerRepository : Repository
+    public class CustomerRepository : Database
     {
     
 /// <summary>
