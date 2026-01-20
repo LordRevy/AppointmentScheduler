@@ -1,36 +1,58 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Odbc;
 using AppointmentScheduler.Domain;
 
-namespace AppointmentScheduler.Data;
-
-public class UserRepository : Database
+namespace AppointmentScheduler.Data
 {
-    public User? GetUser(string username)
+    public class UserRepository : Database
     {
-        const string sql = "SELECT * FROM user WHERE username = ?";
-
-        using var conn = GetConnection();
-        conn.Open();
-
-        using var cmd = new OdbcCommand(sql, conn);
-        cmd.Parameters.AddWithValue("?", username);
-
-        using var reader = cmd.ExecuteReader();
-
-        if (!reader.Read())
-            return null;
-
-        return new User
+/// <summary>
+/// Returns the user with the given username, or null if not found.
+/// Does NOT check password; login is enforced in AuthService as "test"/"test" per rubric.
+/// </summary>
+        public User? GetByUsername(string username)
         {
-            UserId = reader.GetInt32(0),
-            UserName = reader.GetString(1),
-            Password = reader.GetString(2),
-            Active = reader.GetByte(3) == 1,
-            CreateDate = reader.GetDateTime(4),
-            CreatedBy = reader.GetString(5),
-            LastUpdate = reader.GetDateTime(6),
-            LastUpdateBy = reader.GetString(7)
-        };
+            using var conn = GetConnection();
+            conn.Open();
+            const string sql = "SELECT userId, userName FROM `user` WHERE userName = ?;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            cmd.Parameters.AddWithValue("", username);
+            using var r = cmd.ExecuteReader();
+            
+            if (!r.Read())
+                return null;
+
+            return new User
+            {
+                UserId   = Convert.ToInt32(r["userId"]),
+                UserName = Convert.ToString(r["userName"])
+            };
+        }
+
+/// <summary>
+/// Returns a list of all users.
+/// </summary>
+        public List<User> GetAll()
+        {
+            var list = new List<User>();
+            using var conn = GetConnection();
+            conn.Open();
+            const string sql = "SELECT userId, userName FROM `user`;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            using var r = cmd.ExecuteReader();
+
+            while (r.Read())
+            {
+                list.Add(new User
+                {
+                    UserId   = Convert.ToInt32(r["userId"]),
+                    UserName = Convert.ToString(r["userName"])
+                });
+            }
+            return list;
+        }
     }
 }
