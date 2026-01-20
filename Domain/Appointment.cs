@@ -13,8 +13,4 @@ public class Appointment
     public string Url { get; set; }
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
-    public DateTime CreateDate { get; set; }
-    public string CreatedBy { get; set; }
-    public DateTime LastUpdate { get; set; }
-    public string LastUpdateBy { get; set; }
 }
