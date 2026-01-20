@@ -1,115 +1,182 @@
+
 using System;
+using System.Collections.Generic;
 using System.Data.Odbc;
 using AppointmentScheduler.Domain;
 
-namespace AppointmentScheduler.Data;
-
-public class AppointmentRepository : Database
+namespace AppointmentScheduler.Data
 {
-    private const string GetSql = "SELECT * FROM appointment WHERE appointmentId = ?";
-    private const string InsertSql = @"INSERT INTO appointment (
-        appointmentId, customerId, userId, title, description, location,
-        contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy
-    )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    private const string UpdateSql = @"UPDATE appointment SET 
-        customerId = ?, userId = ?, title = ?, description = ?, location = ?,
-        contact = ?, type = ?, url = ?, start = ?, end = ?, lastUpdate = ?, lastUpdateBy = ?
-    WHERE appointmentId = ?";
-        
-    private const string DeleteSql = "DELETE FROM appointment WHERE appointmentId = ?";
-
-    public Appointment? GetAppointment(int appointmentId)
+    public class AppointmentRepository : Repository
     {
-        using var conn = GetConnection();
-        conn.Open();
-
-        using var cmd = new OdbcCommand(GetSql, conn);
-        cmd.Parameters.AddWithValue("?", appointmentId);
-
-        using var reader = cmd.ExecuteReader();
-
-        if (!reader.Read())
-            return null;
-
-        return new Appointment
+/// <summary>
+/// Returns an appointment by ID, or null if not found.
+/// </summary>
+        public Appointment? GetById(int appointmentId)
         {
-            AppointmentId = reader.GetInt32(0),
-            CustomerId = reader.GetInt32(1),
-            UserId = reader.GetInt32(2),
-            Title = reader.GetString(3),
-            Description = reader.GetString(4),
-            Location = reader.GetString(5),
-            Contact = reader.GetString(6),
-            Type = reader.GetString(7),
-            Url = reader.GetString(8),
-            Start = reader.GetDateTime(9),
-            End = reader.GetDateTime(10),
-            CreateDate = reader.GetDateTime(11),
-            CreatedBy = reader.GetString(12),
-            LastUpdate = reader.GetDateTime(13),
-            LastUpdateBy = reader.GetString(14)
-        };
+            using var conn = GetConnection();
+            conn.Open();
+            const string sql = @"
+                SELECT appointmentId, customerId, userId, title, type, start, `end`
+                FROM appointment
+                WHERE appointmentId = ?;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            cmd.Parameters.AddWithValue("", appointmentId);
+
+            using var r = cmd.ExecuteReader();
+            if (!r.Read()) return null;
+
+            return new Appointment
+            {
+                AppointmentId = Convert.ToInt32(r["appointmentId"]),
+                CustomerId    = Convert.ToInt32(r["customerId"]),
+                UserId        = Convert.ToInt32(r["userId"]),
+                Title         = r["title"] is DBNull ? null : Convert.ToString(r["title"]),
+                Type          = Convert.ToString(r["type"])!,
+                StartUtc      = Convert.ToDateTime(r["start"]),
+                EndUtc        = Convert.ToDateTime(r["end"])
+            };
+        }
+
+/// <summary>
+/// Inserts an appointment. Returns the new appointmentId.
+/// </summary>
+        public int Add(Appointment a)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+            const string sql = @"
+                INSERT INTO appointment
+                    (customerId, userId, title, type, start, `end`, createDate, createdBy, lastUpdate, lastUpdateBy)
+                VALUES
+                    (?, ?, ?, ?, ?, ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
+
+            using (var cmd = new OdbcCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("", a.CustomerId);
+                cmd.Parameters.AddWithValue("", a.UserId);
+                cmd.Parameters.AddWithValue("", (object?)a.Title ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("", a.Type.Trim());
+                cmd.Parameters.AddWithValue("", a.StartUtc);
+                cmd.Parameters.AddWithValue("", a.EndUtc);
+                cmd.ExecuteNonQuery();
+            }
+
+            using var lastId = new OdbcCommand("SELECT LAST_INSERT_ID();", conn);
+            return Convert.ToInt32(lastId.ExecuteScalar());
+        }
+
+/// <summary>
+/// Updates an appointment by ID.
+/// </summary>
+        public void Update(Appointment a)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+            const string sql = @"
+                UPDATE appointment
+                SET customerId = ?,
+                    userId     = ?,
+                    title      = ?,
+                    type       = ?,
+                    start      = ?,
+                    `end`      = ?,
+                    lastUpdate = UTC_TIMESTAMP(),
+                    lastUpdateBy = 'app'
+                WHERE appointmentId = ?;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            cmd.Parameters.AddWithValue("", a.CustomerId);
+            cmd.Parameters.AddWithValue("", a.UserId);
+            cmd.Parameters.AddWithValue("", (object?)a.Title ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("", a.Type.Trim());
+            cmd.Parameters.AddWithValue("", a.StartUtc);
+            cmd.Parameters.AddWithValue("", a.EndUtc);
+            cmd.Parameters.AddWithValue("", a.AppointmentId);
+            cmd.ExecuteNonQuery();
+        }
+
+/// <summary>
+/// Deletes an appointment by ID.
+/// </summary>
+        public void Delete(int appointmentId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+            const string sql = "DELETE FROM appointment WHERE appointmentId = ?;";
+            using var cmd = new OdbcCommand(sql, conn);
+            cmd.Parameters.AddWithValue("", appointmentId);
+            cmd.ExecuteNonQuery();
+        }
+
+/// <summary>
+/// Returns appointments with start between [startUtc, endUtc) (UTC range), inclusive start, exclusive end.
+/// </summary>
+        public List<Appointment> GetForDayRangeUtc(DateTime startUtc, DateTime endUtc)
+        {
+            var list = new List<Appointment>();
+            using var conn = GetConnection();
+            conn.Open();
+            const string sql = @"
+                SELECT appointmentId, customerId, userId, title, type, start, `end`
+                FROM appointment
+                WHERE start >= ? AND start < ?
+                ORDER BY start;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            cmd.Parameters.AddWithValue("", startUtc);
+            cmd.Parameters.AddWithValue("", endUtc);
+
+            using var r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                list.Add(new Appointment
+                {
+                    AppointmentId = Convert.ToInt32(r["appointmentId"]),
+                    CustomerId    = Convert.ToInt32(r["customerId"]),
+                    UserId        = Convert.ToInt32(r["userId"]),
+                    Title         = r["title"] is DBNull ? null : Convert.ToString(r["title"]),
+                    Type          = Convert.ToString(r["type"])!,
+                    StartUtc      = Convert.ToDateTime(r["start"]),
+                    EndUtc        = Convert.ToDateTime(r["end"])
+                });
+            }
+            return list;
+        }
+
+/// <summary>
+/// Returns the first upcoming appointment for a user between [startUtc, endUtc] (UTC).
+/// Used for the 15-minute alert on login.
+/// </summary>
+        public Appointment? GetFirstForUserBetweenUtc(int userId, DateTime startUtc, DateTime endUtc)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+            const string sql = @"
+                SELECT appointmentId, customerId, userId, title, type, start, `end`
+                FROM appointment
+                WHERE userId = ? AND start BETWEEN ? AND ?
+                ORDER BY start
+                LIMIT 1;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            cmd.Parameters.AddWithValue("", userId);
+            cmd.Parameters.AddWithValue("", startUtc);
+            cmd.Parameters.AddWithValue("", endUtc);
+
+            using var r = cmd.ExecuteReader();
+            if (!r.Read()) return null;
+
+            return new Appointment
+            {
+                AppointmentId = Convert.ToInt32(r["appointmentId"]),
+                CustomerId    = Convert.ToInt32(r["customerId"]),
+                UserId        = Convert.ToInt32(r["userId"]),
+                Title         = r["title"] is DBNull ? null : Convert.ToString(r["title"]),
+                Type          = Convert.ToString(r["type"])!,
+                StartUtc      = Convert.ToDateTime(r["start"]),
+                EndUtc        = Convert.ToDateTime(r["end"])
+            };
+        }
     }
-
-        public void AddAppointment(Appointment appointment)
-    {
-        using var conn = GetConnection();
-        conn.Open();
-
-        using var cmd = new OdbcCommand(InsertSql, conn);
-        cmd.Parameters.AddWithValue("?", appointment.AppointmentId);
-        cmd.Parameters.AddWithValue("?", appointment.CustomerId);
-        cmd.Parameters.AddWithValue("?", appointment.UserId);
-        cmd.Parameters.AddWithValue("?", appointment.Title);
-        cmd.Parameters.AddWithValue("?", appointment.Description);
-        cmd.Parameters.AddWithValue("?", appointment.Location);
-        cmd.Parameters.AddWithValue("?", appointment.Contact);
-        cmd.Parameters.AddWithValue("?", appointment.Type);
-        cmd.Parameters.AddWithValue("?", appointment.Url);
-        cmd.Parameters.AddWithValue("?", appointment.Start);
-        cmd.Parameters.AddWithValue("?", appointment.End);
-        cmd.Parameters.AddWithValue("?", appointment.CreateDate);
-        cmd.Parameters.AddWithValue("?", appointment.CreatedBy);
-        cmd.Parameters.AddWithValue("?", appointment.LastUpdate);
-        cmd.Parameters.AddWithValue("?", appointment.LastUpdateBy);
-
-        cmd.ExecuteNonQuery();
-    }
-
-    public void UpdateAppointment(Appointment appointment)
-    {
-        using var conn = GetConnection();
-        conn.Open();
-
-        using var cmd = new OdbcCommand(UpdateSql, conn);
-        cmd.Parameters.AddWithValue("?", appointment.CustomerId);
-        cmd.Parameters.AddWithValue("?", appointment.UserId);
-        cmd.Parameters.AddWithValue("?", appointment.Title);
-        cmd.Parameters.AddWithValue("?", appointment.Description);
-        cmd.Parameters.AddWithValue("?", appointment.Location);
-        cmd.Parameters.AddWithValue("?", appointment.Contact);
-        cmd.Parameters.AddWithValue("?", appointment.Type);
-        cmd.Parameters.AddWithValue("?", appointment.Url);
-        cmd.Parameters.AddWithValue("?", appointment.Start);
-        cmd.Parameters.AddWithValue("?", appointment.End);
-        cmd.Parameters.AddWithValue("?", appointment.LastUpdate);
-        cmd.Parameters.AddWithValue("?", appointment.LastUpdateBy);
-        cmd.Parameters.AddWithValue("?", appointment.AppointmentId);
-        
-        cmd.ExecuteNonQuery();
-    }
-
-    public void DeleteAppointment(Appointment appointment)
-    {
-        using var conn = GetConnection();
-        conn.Open();
-
-        using var cmd = new OdbcCommand(DeleteSql, conn);
-        cmd.Parameters.AddWithValue("?", appointment.AppointmentId);
-
-        cmd.ExecuteNonQuery();
-    }
-}
 }
