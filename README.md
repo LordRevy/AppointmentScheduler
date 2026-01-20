@@ -4,63 +4,50 @@ Work in progress, using this to keep track of what I have done so far.
 # Project Structure
 
 **Domain**
-- [x] Appointment.cs
-- [x] Customer.cs
-- [x] User.cs
-- [x] Address.cs
 
+- [ ] User (UserId, Username)
+- [ ] Customer (CustomerId, Name, Address, Phone)
+- [ ] Appointment (AppointmentId, CustomerId, UserId, Type, Title, StartUtc, EndUtc)
 
 **Data**
-- [x] Database.cs
-  * GetConnection
-- [x] UserRepository.cs
-  * GetUser
-- [x] CustomerRepository.cs
-  * GetCustomer
-  * AddCustomer
-  * UpdateCustomer
-  * DeleteCustomer
-- [x] AppointmentRepository.cs
-  * GetAppointmentsByUser
-  * GetAppointmentsByDay
-  * AddAppointmnt
-  * UpdateAppointment
-  * DeleteAppointment
-- [x] AddressRepository.cs
-  * GetAddress
+
+- [ ] Db (GetConnection)
+- [ ] UserRepository (GetByUsername, GetAll)
+- [ ] CustomerRepository (Add, Update, Delete, GetAll, GetById)
+- [ ] AppointmentRepository (Add, Update, Delete, GetById, GetForDayRangeUtc, GetForUserBetweenUtc, GetAll)
+
+**Application**
+
+- [ ] AuthService
+- ValidateCredentials(u, p) (must be "test" / "test")
+- LogLogin(username) (append to Login_History.txt)
+- (Optionally) returns the User object
+
+- [ ] TimeService
+- ToUtc(local) and ToLocal(utc)
+- ValidateBusinessHoursEastern(startLocal, endLocal)
+
+- [ ] AppointmentService
+- Add/Update/Delete (enforce business hours, overlap)
+- GetAppointmentsForDay(localDate) (for calendar day view)
+- GetUpcomingForUserWithinMinutes(userId, minutes) (for 15-min alert)
+
+- [ ] CustomerService
+- Add/Update/Delete w/ validation rules
+
+- [ ] ReportService
+- GetAppointmentTypesByMonth() (lambda)
+- GetUserSchedule() (lambda)
+- GetAppointmentsPerDayOfWeek() (lambda)
 
 
-**Logic**
-- [x] Authentication.cs
-  * ValidateCredentials
-- [x] LoginService.cs
-  * LogAttempt
-  * CheckAlerts
-- [x] MessageService.cs
-  * GetMessage
-- [x] Location.cs
-  * FindUser
-- [ ] Calendar.cs
-- [ ] CustomerService.cs
-- [ ] AppointmentService.cs
-- [ ] Validator.cs
-  * CheckIfPhone
-  * CheckIfDateTime
-  * CheckIfNull
-- [ ] Reports.cs
-  * GetAppointmentTypes
-  * GetUserSchedule
-  * One Additional
+- [ ] Validation (static helpers for fields, phone rule)
+- Localization via Strings.resx + Strings.es.resx
+- (Drop MessageService; use resource strings directly.)
 
-**Forms**
-- [ ] Login Page
-  * Username and Password in a try/catch with messages
-  * Call ValidateCredentials
-  * Call LocateUser
-- [ ] Main Page
-  * Calendar View
-  * Button for Customer CRUD
-  * Button for Appointment CRUD
-  * Button to generate Appointments Report
-  * Button to generate User Schedule Report
-  * Button for one additional Report
+**UI**
+
+- [ ] LoginForm (depends on AuthService, AppointmentService, Localization)
+- [ ] MainForm (depends on services; hosts tabs/buttons)
+- [ ] CustomerForm (create/update, depends on CustomerService)
+- [ ] AppointmentForm (create/update, depends on AppointmentService, CustomerService)
