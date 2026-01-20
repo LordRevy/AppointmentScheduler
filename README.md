@@ -12,9 +12,9 @@ Work in progress, using this to keep track of what I have done so far.
 **Data**
 
 - [x] Database (GetConnection)
-- [ ] UserRepository (GetByUsername, GetAll)
+- [x] UserRepository (GetByUsername, GetAll)
 - [x] CustomerRepository (Add, Update, Delete, GetAll, GetById)
-- [ ] AppointmentRepository (Add, Update, Delete, GetById, GetForDayRangeUtc, GetForUserBetweenUtc, GetAll)
+- [ ] AppointmentRepository (Add, Update, Delete, GetById, GetForDayRangeUtc, GetForUserBetweenUtc, **GetAll**)
 
 **Application**
 
