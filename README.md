@@ -5,15 +5,15 @@ Work in progress, using this to keep track of what I have done so far.
 
 **Domain**
 
-- [ ] User (UserId, Username)
-- [ ] Customer (CustomerId, Name, Address, Phone)
-- [ ] Appointment (AppointmentId, CustomerId, UserId, Type, Title, StartUtc, EndUtc)
+- [x] User (UserId, Username)
+- [x] Customer (CustomerId, Name, Address, Phone)
+- [x] Appointment (AppointmentId, CustomerId, UserId, Title, Description, Location, Contact, Type, Url, Start, End)
 
 **Data**
 
-- [ ] Db (GetConnection)
+- [x] Database (GetConnection)
 - [ ] UserRepository (GetByUsername, GetAll)
-- [ ] CustomerRepository (Add, Update, Delete, GetAll, GetById)
+- [x] CustomerRepository (Add, Update, Delete, GetAll, GetById)
 - [ ] AppointmentRepository (Add, Update, Delete, GetById, GetForDayRangeUtc, GetForUserBetweenUtc, GetAll)
 
 **Application**
