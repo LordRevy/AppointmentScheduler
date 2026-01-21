@@ -8,115 +8,127 @@ namespace AppointmentScheduler.Data
 {
     public class AppointmentRepository : Repository
     {
-/// <summary>
-/// Returns an appointment by ID, or null if not found.
-/// </summary>
-        public Appointment? GetById(int appointmentId)
+        /// <summary>
+        /// Creates an Appointment object from a single data reader row.
+        /// </summary>
+        private static Appointment MapAppointment(OdbcDataReader r)
         {
-            using var conn = GetConnection();
-            conn.Open();
-            const string sql = @"
-                SELECT appointmentId, customerId, userId, title, type, start, `end`
-                FROM appointment
-                WHERE appointmentId = ?;";
-
-            using var cmd = new OdbcCommand(sql, conn);
-            cmd.Parameters.AddWithValue("", appointmentId);
-
-            using var r = cmd.ExecuteReader();
-            if (!r.Read()) return null;
-
             return new Appointment
             {
                 AppointmentId = Convert.ToInt32(r["appointmentId"]),
                 CustomerId    = Convert.ToInt32(r["customerId"]),
                 UserId        = Convert.ToInt32(r["userId"]),
-                Title         = r["title"] is DBNull ? null : Convert.ToString(r["title"]),
+                Title         = Convert.ToString(r["title"])!,
                 Type          = Convert.ToString(r["type"])!,
                 StartUtc      = Convert.ToDateTime(r["start"]),
                 EndUtc        = Convert.ToDateTime(r["end"])
             };
         }
 
-/// <summary>
-/// Inserts an appointment. Returns the new appointmentId.
-/// </summary>
+        /// <summary>
+        /// Returns an appointment by ID, or null if not found.
+        /// </summary>
+        public Appointment? GetById(int appointmentId)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            const string sql = @"
+                SELECT appointmentId, customerId, userId, title, type, start, `end`
+                FROM appointment
+                WHERE appointmentId = ?;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            cmd.Parameters.AddWithValue(string.Empty, appointmentId);
+
+            using var r = cmd.ExecuteReader();
+            return r.Read() ? MapAppointment(r) : null;
+        }
+
+        /// <summary>
+        /// Creates a new Appointment and returns the appointmentId that is created from it.
+        /// </summary>
         public int Add(Appointment a)
         {
             using var conn = GetConnection();
             conn.Open();
+
             const string sql = @"
                 INSERT INTO appointment
-                    (customerId, userId, title, type, start, `end`, createDate, createdBy, lastUpdate, lastUpdateBy)
+                    (customerId, userId, title, type, start, `end`,
+                     createDate, createdBy, lastUpdate, lastUpdateBy)
                 VALUES
                     (?, ?, ?, ?, ?, ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
 
-            using (var cmd = new OdbcCommand(sql, conn))
-            {
-                cmd.Parameters.AddWithValue("", a.CustomerId);
-                cmd.Parameters.AddWithValue("", a.UserId);
-                cmd.Parameters.AddWithValue("", (object?)a.Title ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("", a.Type.Trim());
-                cmd.Parameters.AddWithValue("", a.StartUtc);
-                cmd.Parameters.AddWithValue("", a.EndUtc);
-                cmd.ExecuteNonQuery();
-            }
+            ExecuteNonQuery(
+                sql,
+                conn,
+                a.CustomerId,
+                a.UserId,
+                a.Title.Trim(),
+                a.Type.Trim(),
+                a.StartUtc,
+                a.EndUtc
+            );
 
             using var lastId = new OdbcCommand("SELECT LAST_INSERT_ID();", conn);
             return Convert.ToInt32(lastId.ExecuteScalar());
         }
 
-/// <summary>
-/// Updates an appointment by ID.
-/// </summary>
+        /// <summary>
+        /// Updates an appointment from the ID.
+        /// </summary>
         public void Update(Appointment a)
         {
             using var conn = GetConnection();
             conn.Open();
+
             const string sql = @"
                 UPDATE appointment
-                SET customerId = ?,
-                    userId     = ?,
-                    title      = ?,
-                    type       = ?,
-                    start      = ?,
-                    `end`      = ?,
-                    lastUpdate = UTC_TIMESTAMP(),
+                SET customerId   = ?,
+                    userId       = ?,
+                    title        = ?,
+                    type         = ?,
+                    start        = ?,
+                    `end`        = ?,
+                    lastUpdate   = UTC_TIMESTAMP(),
                     lastUpdateBy = 'app'
                 WHERE appointmentId = ?;";
 
-            using var cmd = new OdbcCommand(sql, conn);
-            cmd.Parameters.AddWithValue("", a.CustomerId);
-            cmd.Parameters.AddWithValue("", a.UserId);
-            cmd.Parameters.AddWithValue("", (object?)a.Title ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("", a.Type.Trim());
-            cmd.Parameters.AddWithValue("", a.StartUtc);
-            cmd.Parameters.AddWithValue("", a.EndUtc);
-            cmd.Parameters.AddWithValue("", a.AppointmentId);
-            cmd.ExecuteNonQuery();
+            ExecuteNonQuery(
+                sql,
+                conn,
+                a.CustomerId,
+                a.UserId,
+                a.Title.Trim(),
+                a.Type.Trim(),
+                a.StartUtc,
+                a.EndUtc,
+                a.AppointmentId
+            );
         }
 
-/// <summary>
-/// Deletes an appointment by ID.
-/// </summary>
-        public void Delete(int appointmentId)
+        /// <summary>
+        /// Deletes an appointment, again by using its ID.
+        /// </summary>
+        public void Delete(Appointment a)
         {
             using var conn = GetConnection();
             conn.Open();
+
             const string sql = "DELETE FROM appointment WHERE appointmentId = ?;";
-            using var cmd = new OdbcCommand(sql, conn);
-            cmd.Parameters.AddWithValue("", appointmentId);
-            cmd.ExecuteNonQuery();
+            ExecuteNonQuery(sql, conn, a.AppointmentId);
         }
 
-/// <summary>
-/// Returns appointments with start between [startUtc, endUtc) (UTC range), inclusive start, exclusive end.
-/// </summary>
-        public List<Appointment> GetForDayRangeUtc(DateTime startUtc, DateTime endUtc)
+        /// <summary>
+        /// Returns appointments with the start value within the DateTime range [startUtc, endUtc).
+        /// </summary>
+        public List<Appointment> GetDateRange(Appointment a)
         {
-            var list = new List<Appointment>();
+            var appointmentsInRange = new List<Appointment>();
             using var conn = GetConnection();
             conn.Open();
+
             const string sql = @"
                 SELECT appointmentId, customerId, userId, title, type, start, `end`
                 FROM appointment
@@ -124,59 +136,40 @@ namespace AppointmentScheduler.Data
                 ORDER BY start;";
 
             using var cmd = new OdbcCommand(sql, conn);
-            cmd.Parameters.AddWithValue("", startUtc);
-            cmd.Parameters.AddWithValue("", endUtc);
+            cmd.Parameters.AddWithValue(string.Empty, a.Start);
+            cmd.Parameters.AddWithValue(string.Empty, a.End);
 
             using var r = cmd.ExecuteReader();
             while (r.Read())
             {
-                list.Add(new Appointment
-                {
-                    AppointmentId = Convert.ToInt32(r["appointmentId"]),
-                    CustomerId    = Convert.ToInt32(r["customerId"]),
-                    UserId        = Convert.ToInt32(r["userId"]),
-                    Title         = r["title"] is DBNull ? null : Convert.ToString(r["title"]),
-                    Type          = Convert.ToString(r["type"])!,
-                    StartUtc      = Convert.ToDateTime(r["start"]),
-                    EndUtc        = Convert.ToDateTime(r["end"])
-                });
+                appointmentsInRange.Add(MapAppointment(r));
             }
-            return list;
+
+            return appointmentsInRange;
         }
 
-/// <summary>
-/// Returns the first upcoming appointment for a user between [startUtc, endUtc] (UTC).
-/// Used for the 15-minute alert on login.
-/// </summary>
-        public Appointment? GetFirstForUserBetweenUtc(int userId, DateTime startUtc, DateTime endUtc)
+        /// <summary>
+        /// Returns the first upcoming appointment for a user within the given UTC window.
+        /// Used for the 15-minute alert on login.
+        /// </summary>
+        public Appointment? GetEarliest(User user)
         {
             using var conn = GetConnection();
             conn.Open();
+
             const string sql = @"
                 SELECT appointmentId, customerId, userId, title, type, start, `end`
                 FROM appointment
-                WHERE userId = ? AND start BETWEEN ? AND ?
-                ORDER BY start
-                LIMIT 1;";
+                WHERE userId = ?
+                ORDER BY start";
 
             using var cmd = new OdbcCommand(sql, conn);
-            cmd.Parameters.AddWithValue("", userId);
-            cmd.Parameters.AddWithValue("", startUtc);
-            cmd.Parameters.AddWithValue("", endUtc);
+            cmd.Parameters.AddWithValue(string.Empty, userId);
+            cmd.Parameters.AddWithValue(string.Empty, startUtc);
+            cmd.Parameters.AddWithValue(string.Empty, endUtc);
 
             using var r = cmd.ExecuteReader();
-            if (!r.Read()) return null;
-
-            return new Appointment
-            {
-                AppointmentId = Convert.ToInt32(r["appointmentId"]),
-                CustomerId    = Convert.ToInt32(r["customerId"]),
-                UserId        = Convert.ToInt32(r["userId"]),
-                Title         = r["title"] is DBNull ? null : Convert.ToString(r["title"]),
-                Type          = Convert.ToString(r["type"])!,
-                StartUtc      = Convert.ToDateTime(r["start"]),
-                EndUtc        = Convert.ToDateTime(r["end"])
-            };
+            return r.Read() ? MapAppointment(r) : null; // this may return more than one appointment. need to fix.
         }
     }
 }
