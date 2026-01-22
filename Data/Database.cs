@@ -1,5 +1,6 @@
 using System;
 using System.Data.Odbc;
+using System.Configuration;
 
 namespace AppointmentScheduler.Data;
 
