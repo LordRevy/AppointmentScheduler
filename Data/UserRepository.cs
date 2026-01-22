@@ -3,56 +3,54 @@ using System.Collections.Generic;
 using System.Data.Odbc;
 using AppointmentScheduler.Domain;
 
-namespace AppointmentScheduler.Data
+namespace AppointmentScheduler.Data;
+
+public class UserRepository : Database
 {
-    public class UserRepository : Database
+    /// <summary>
+    /// Creates a User object from a single data reader row.
+    /// </summary>
+    private static User MapUser(OdbcDataReader r)
     {
-/// <summary>
-/// Returns the user with the given username, or null if not found.
-/// Does NOT check password; login is enforced in AuthService as "test"/"test" per rubric.
-/// </summary>
-        public User? GetByUsername(string username)
+        return new User
         {
-            using var conn = GetConnection();
-            conn.Open();
-            const string sql = "SELECT userId, userName FROM `user` WHERE userName = ?;";
+            UserId   = Convert.ToInt32(r["userId"]),
+            UserName = Convert.ToString(r["userName"])
+        };
+    }
+    /// <summary>
+    /// Returns the user with the given username, or null if not found.
+    /// </summary>
+    public User? GetByUsername(string username)
+    {
+        using var conn = GetConnection();
+        conn.Open();
+        const string getUserSql = "SELECT userId, userName FROM `user` WHERE userName = ?;";
 
-            using var cmd = new OdbcCommand(sql, conn);
-            cmd.Parameters.AddWithValue("", username);
-            using var r = cmd.ExecuteReader();
-            
-            if (!r.Read())
-                return null;
+        using var cmd = new OdbcCommand(getUserSql, conn);
+        cmd.Parameters.AddWithValue("", username);
+        using var r = cmd.ExecuteReader();
+        
+        return r.Read() ? MapUser(r) : null;
+    }
 
-            return new User
-            {
-                UserId   = Convert.ToInt32(r["userId"]),
-                UserName = Convert.ToString(r["userName"])
-            };
-        }
+    /// <summary>
+    /// Returns a list of all users.
+    /// </summary>
+    public List<User> GetAll()
+    {
+        var userList = new List<User>();
+        using var conn = GetConnection();
+        conn.Open();
+        const string userListSql = "SELECT userId, userName FROM `user`;";
 
-/// <summary>
-/// Returns a list of all users.
-/// </summary>
-        public List<User> GetAll()
+        using var cmd = new OdbcCommand(userListSql, conn);
+        using var r = cmd.ExecuteReader();
+
+        while (r.Read())
         {
-            var list = new List<User>();
-            using var conn = GetConnection();
-            conn.Open();
-            const string sql = "SELECT userId, userName FROM `user`;";
-
-            using var cmd = new OdbcCommand(sql, conn);
-            using var r = cmd.ExecuteReader();
-
-            while (r.Read())
-            {
-                list.Add(new User
-                {
-                    UserId   = Convert.ToInt32(r["userId"]),
-                    UserName = Convert.ToString(r["userName"])
-                });
-            }
-            return list;
+            userList.Add(MapUser(r));
         }
+        return list;
     }
 }
