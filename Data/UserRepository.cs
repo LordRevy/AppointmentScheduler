@@ -18,10 +18,12 @@ public class UserRepository : Database
             UserName = Convert.ToString(r["userName"])
         };
     }
+
     /// <summary>
-    /// Returns the user with the given username, or null if not found.
+    /// Returns the user with the given username so long as the password matches.
+    /// Returns null if  username not found or if password is incorrect.
     /// </summary>
-    public User? GetByUsername(string username)
+    public User? GetByUsername(string username string password)
     {
         using var conn = GetConnection();
         conn.Open();
@@ -30,8 +32,10 @@ public class UserRepository : Database
         using var cmd = new OdbcCommand(getUserSql, conn);
         cmd.Parameters.AddWithValue("", username);
         using var r = cmd.ExecuteReader();
-        
-        return r.Read() ? MapUser(r) : null;
+
+        user = MapUser(r);
+        //add password validation here
+        return user ?  : null;
     }
 
     /// <summary>
