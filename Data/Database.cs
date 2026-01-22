@@ -3,7 +3,7 @@ using System.Data.Odbc;
 
 namespace AppointmentScheduler.Data;
 
-public abstract class Repository
+public abstract class Database
 {
     private readonly string _connectionString =
         ConfigurationManager.ConnectionStrings["ClientScheduleDb"].ConnectionString;
@@ -29,5 +29,15 @@ public abstract class Repository
             cmd.Parameters.AddWithValue("", p);
         }
         cmd.ExecuteNonQuery();
+    }
+
+    /// <summary>
+    /// Returns the last ID generated during row creation.
+    /// </summary>
+    protected static int GetLastId(OdbcConnection conn)
+    {
+        using var cmd = new OdbcCommand("SELECT LAST_INSERT_ID();", conn);
+        var obj = cmd.ExecuteScalar();
+        return Convert.ToInt32(obj);
     }
 }
