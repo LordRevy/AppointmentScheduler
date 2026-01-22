@@ -6,7 +6,7 @@ using AppointmentScheduler.Domain;
 
 namespace AppointmentScheduler.Data
 {
-    public class AppointmentRepository : Repository
+    public class AppointmentRepository : Database
     {
         /// <summary>
         /// Creates an Appointment object from a single data reader row.
