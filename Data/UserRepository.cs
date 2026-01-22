@@ -51,6 +51,6 @@ public class UserRepository : Database
         {
             userList.Add(MapUser(r));
         }
-        return list;
+        return userList;
     }
 }
