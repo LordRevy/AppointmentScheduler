@@ -34,8 +34,9 @@ public class UserRepository : Database
         using var r = cmd.ExecuteReader();
 
         user = MapUser(r);
-        //add password validation here
-        return user ?  : null;
+        private readonly string _password = Convert.ToString(r["password"]);
+
+        return user ? password == _password  : null; // Fix this
     }
 
     /// <summary>
