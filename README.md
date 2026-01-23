@@ -11,14 +11,14 @@ Work in progress, using this to keep track of what I have done so far.
 
 **Data**
 
-- [x] Database (GetConnection)
-- [x] UserRepository (GetByUsername, GetAll)
-- [x] CustomerRepository (Add, Update, Delete, GetAll, GetById)
-- [ ] AppointmentRepository (Add, Update, Delete, GetById, GetForDayRangeUtc, GetForUserBetweenUtc, **GetAll**)
+- [x] Database (GetConnection, ExecuteNonQuery, GetLastId)
+- [x] UserRepository (MapUser, GetUser, GetAll)
+- [x] CustomerRepository (MapCustomer, GetById, GetAll, Add, Update, Delete)
+- [x] AppointmentRepository (MapAppointment, GetById, Add, Update, Delete, GetDateRange, GetEarliest)
 
 **Application**
 
-- [ ] AuthService
+- [ ] Authentication
 - ValidateCredentials(u, p) (must be "test" / "test")
 - LogLogin(username) (append to Login_History.txt)
 - (Optionally) returns the User object
