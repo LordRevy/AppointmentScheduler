@@ -6,7 +6,6 @@ namespace AppointmentScheduler.Logic;
 public class Authentication
 {
     private readonly UserRepository _userRepo;
-    private LoginRecord _loginRecord = new LoginRecord();
     
     public Authentication(UserRepository userRepo)
     {
@@ -23,10 +22,27 @@ public class Authentication
         
         if (user != null)
         {
-            _loginRecord.Log(username, true);
+            LogAttempt(username, true);
             return user;
         }
-        _loginRecord.Log(username, false);
+        LogAttempt(username, false);
         return null;
+    }
+
+/// <summary>
+/// Takes a login attempt and records it to a txt file called Login_History.
+/// </summary>
+    public void LogAttempt(string username, bool result)
+    {
+        private const string loginPath = "Login_History.txt";
+
+        var loginTime = DateTime.UtcNow;
+        var message = $@"
+            Login Attempt 
+            | Username: {username} 
+            | Time: {loginTime:u} 
+            | Result: {result}";
+
+        File.AppendAllText(loginPath, message + Environment.NewLine);
     }
 }
