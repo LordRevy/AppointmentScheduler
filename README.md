@@ -5,7 +5,7 @@ Work in progress, using this to keep track of what I have done so far.
 
 **Domain**
 
-- [x] User (UserId, Username)
+- [x] User (UserId, Username, Culture, Region, Timezone)
 - [x] Customer (CustomerId, Name, Address, Phone)
 - [x] Appointment (AppointmentId, CustomerId, UserId, Title, Description, Location, Contact, Type, Url, Start, End)
 
@@ -29,10 +29,6 @@ Work in progress, using this to keep track of what I have done so far.
 - [ ] Validator
 - Format(params [])
 - Check(params [])
-  
-- [ ] TimeService
-- ToUtc(local) and ToLocal(utc)
-- ValidateBusinessHoursEastern(startLocal, endLocal)
 
 **UI**
 
