@@ -23,20 +23,22 @@ public class UserRepository : Database
     /// Returns the user with the given username so long as the password matches.
     /// Returns null if  username not found or if password is incorrect.
     /// </summary>
-    public User? GetByUsername(string username string password)
+    public User? GetUser(string username, string password)
     {
         using var conn = GetConnection();
         conn.Open();
-        const string getUserSql = "SELECT userId, userName FROM `user` WHERE userName = ?;";
+        const string getUserSql = "SELECT userId, userName FROM `user` WHERE userName = ? AND password = ?;";
 
         using var cmd = new OdbcCommand(getUserSql, conn);
         cmd.Parameters.AddWithValue("", username);
+        cmd.Parameters.AddWithValue("", password);
         using var r = cmd.ExecuteReader();
 
-        user = MapUser(r);
-        private readonly string _password = Convert.ToString(r["password"]);
+        if (!r.Read())
+            return null;
+    
+        return MapUser(r);
 
-        return user ? password == _password  : null; // Fix this
     }
 
     /// <summary>
