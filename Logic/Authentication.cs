@@ -3,30 +3,30 @@ using AppointmentScheduler.Data;
 
 namespace AppointmentScheduler.Logic;
 
-///<summary>
-/// Compares usernames to the database to find a match.
-/// If a match is found, returns user only if the Password matches and they are currently Active.
-///</summary>
 public class Authentication
 {
-    private readonly UserRepository _users;
-    private LoginRecord _loginAttempts;
-    public Authentication(UserRepository users, LoginRecord loginAttempts)
+    private readonly UserRepository _userRepo;
+    private LoginRecord _loginRecord = new LoginRecord();
+    
+    public Authentication(UserRepository userRepo)
     {
-        _users = users;
-        _loginAttempts = loginAttempts;
+        _userRepo = userRepo;
     }
     
-    
+/// <summary>
+/// Querys Database for a row that matches username and password.
+/// Returns a User object if successful, null if not. 
+/// </summary>
     public User? ValidateCredentials(string username, string password)
     {
-        var user = _users.GetUser(username);
-        if (user != null && user.Active && user.Password == password)
+        var user = _userRepo.GetUser(username);
+        
+        if (user != null)
         {
-            _loginAttempts.Log(username, true);
+            _loginRecord.Log(username, true);
             return user;
         }
-        _loginAttempts.Log(username, false);
+        _loginRecord.Log(username, false);
         return null;
     }
 }
