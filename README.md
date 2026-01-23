@@ -16,34 +16,23 @@ Work in progress, using this to keep track of what I have done so far.
 - [x] CustomerRepository (MapCustomer, GetById, GetAll, Add, Update, Delete)
 - [x] AppointmentRepository (MapAppointment, GetById, Add, Update, Delete, GetDateRange, GetEarliest)
 
-**Application**
+**Logic**
 
-- [ ] Authentication
+- [x] Authentication
 - ValidateCredentials(u, p) (must be "test" / "test")
 - LogLogin(username) (append to Login_History.txt)
-- (Optionally) returns the User object
 
+- [ ] MessageService
+- List of message dictionaries based on language.
+- GetMessage(language, message)
+
+- [ ] Validator
+- Format(params [])
+- Check(params [])
+  
 - [ ] TimeService
 - ToUtc(local) and ToLocal(utc)
 - ValidateBusinessHoursEastern(startLocal, endLocal)
-
-- [ ] AppointmentService
-- Add/Update/Delete (enforce business hours, overlap)
-- GetAppointmentsForDay(localDate) (for calendar day view)
-- GetUpcomingForUserWithinMinutes(userId, minutes) (for 15-min alert)
-
-- [ ] CustomerService
-- Add/Update/Delete w/ validation rules
-
-- [ ] ReportService
-- GetAppointmentTypesByMonth() (lambda)
-- GetUserSchedule() (lambda)
-- GetAppointmentsPerDayOfWeek() (lambda)
-
-
-- [ ] Validation (static helpers for fields, phone rule)
-- Localization via Strings.resx + Strings.es.resx
-- (Drop MessageService; use resource strings directly.)
 
 **UI**
 
