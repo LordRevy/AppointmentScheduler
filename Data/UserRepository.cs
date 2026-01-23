@@ -12,10 +12,17 @@ public class UserRepository : Database
     /// </summary>
     private static User MapUser(OdbcDataReader r)
     {
+        var culture  = CultureInfo.CurrentUICulture;
+        var region   = new RegionInfo(culture.Name);
+        var timezone = TimeZoneInfo.Local;
+    
         return new User
         {
-            UserId   = Convert.ToInt32(r["userId"]),
-            UserName = Convert.ToString(r["userName"])
+            Id       = Convert.ToInt32(r["userId"]),
+            UserName = Convert.ToString(r["userName"]) ?? string.Empty,
+            Culture  = culture.Name,
+            Region   = region.TwoLetterISORegionName,
+            Timezone = timezone.Id
         };
     }
 
