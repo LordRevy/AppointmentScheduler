@@ -48,7 +48,7 @@ namespace AppointmentScheduler.Data
         /// <summary>
         /// Creates a new Appointment and returns the appointmentId that is created from it.
         /// </summary>
-        public int Add(Appointment a)
+        public int Add(int customerId, int userId, string title, string type, DateTime start, DateTime end)
         {
             using var conn = GetConnection();
             conn.Open();
@@ -63,16 +63,15 @@ namespace AppointmentScheduler.Data
             ExecuteNonQuery(
                 sql,
                 conn,
-                a.CustomerId,
-                a.UserId,
-                a.Title.Trim(),
-                a.Type.Trim(),
-                a.StartUtc,
-                a.EndUtc
+                customerId,
+                userId,
+                title.Trim(),
+                type.Trim(),
+                start,
+                end
             );
 
-            using var lastId = new OdbcCommand("SELECT LAST_INSERT_ID();", conn);
-            return Convert.ToInt32(lastId.ExecuteScalar());
+            return GetCreatedId();
         }
 
         /// <summary>
