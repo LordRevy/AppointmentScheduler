@@ -122,7 +122,7 @@ namespace AppointmentScheduler.Data
         /// <summary>
         /// Returns appointments with the start value within the DateTime range [startUtc, endUtc).
         /// </summary>
-        public List<Appointment> GetDateRange(Appointment a)
+        public List<Appointment> GetDateRange(DateTime start, DateTime end)
         {
             var appointmentsInRange = new List<Appointment>();
             using var conn = GetConnection();
@@ -135,8 +135,8 @@ namespace AppointmentScheduler.Data
                 ORDER BY start;";
 
             using var cmd = new OdbcCommand(sql, conn);
-            cmd.Parameters.AddWithValue(string.Empty, a.Start);
-            cmd.Parameters.AddWithValue(string.Empty, a.End);
+            cmd.Parameters.AddWithValue(string.Empty, start);
+            cmd.Parameters.AddWithValue(string.Empty, end);
 
             using var r = cmd.ExecuteReader();
             while (r.Read())
