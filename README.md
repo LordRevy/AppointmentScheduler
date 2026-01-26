@@ -22,13 +22,13 @@ Work in progress, using this to keep track of what I have done so far.
 - ValidateCredentials(u, p) (must be "test" / "test")
 - LogLogin(username) (append to Login_History.txt)
 
-- [ ] MessageService
+- [x] MessageService
 - List of message dictionaries based on language.
 - GetMessage(language, message)
 
-- [ ] Validator
-- Format(params [])
-- Check(params [])
+- [x] Validator
+- ValidateCustomer(string name, string address, string phone)
+- ValidateAppointment(DateTime start, DateTime end)
 
 **UI**
 
