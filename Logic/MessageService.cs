@@ -12,11 +12,11 @@ public class MessageService
         {
             ["LoginSuccess"] = "Login successful!",
             ["InvalidCredentials"] = "Invalid username or password."
-        },
-        ["ru"] = new Dictionary<string, string>
+        },       
+        ["la"] = new Dictionary<string, string>
         {
-            ["LoginSuccess"] = "вход выполнен успешно!",
-            ["InvalidCredentials"] = "Неверное имя пользователя или пароль."
+            ["LoginSuccess"] = "Login completus!",
+            ["InvalidCredentials"] = "Nomen usoris aut tessera invalida."
         }
     };
     
