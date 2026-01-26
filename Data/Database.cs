@@ -35,7 +35,7 @@ public abstract class Database
     /// <summary>
     /// Returns the last ID generated during row creation.
     /// </summary>
-    protected static int GetLastId(OdbcConnection conn)
+    protected static int GetCreatedId(OdbcConnection conn)
     {
         using var cmd = new OdbcCommand("SELECT LAST_INSERT_ID();", conn);
         var obj = cmd.ExecuteScalar();
