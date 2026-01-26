@@ -74,21 +74,35 @@ namespace AppointmentScheduler.Data;
     /// <summary>
     /// Adding a new Customer to the Database and attaching an address to it. Creates a new Address if it does not currently exist.
     /// </summary>
-    public int Add(string name, phone, address)
+    public int Add(string name, string phone, string address)
     {
         using var conn = GetConnection();
         conn.Open();
-    
-        const string insertIntoAddressSql = @"
-            INSERT INTO address (address, phone, createDate, createdBy, lastUpdate, lastUpdateBy)
-            VALUES (?, ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
 
+        const string checkIfAddressExistsSql = "SELECT addressId FROM address WHERE address = ? AND phone = ?;";
+        using var cmd = new OdbcCommand(checkIfAddressExistsSql, conn);
+        cmd.Parameters.AddWithValue("", address);
+        cmd.Parameters.AddWithValue("", phone);
+    
+        int addressId;
+        using (var r = cmd.ExecuteReader())
+        {
+            if (r.Read())
+                addressId = r.GetInt32(0);
+            else
+            {
+                const string insertIntoAddressSql = @"
+                    INSERT INTO address (address, phone, createDate, createdBy, lastUpdate, lastUpdateBy)
+                    VALUES (?, ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
+        
+                ExecuteNonQuery(insertIntoAddressSql, conn, address, phone);
+                addressId = GetCreatedId();
+            }
+        }
+        
         const string insertIntoCustomerSql = @"
             INSERT INTO customer (customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy)
             VALUES (?, ?, 1, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
-
-        ExecuteNonQuery(insertIntoAddressSql, conn, address, phone);
-        var addressId = GetCreatedId();
         
         ExecuteNonQuery(insertIntoCustomerSql, conn, name, addressId);
         return GetCreatedId();
