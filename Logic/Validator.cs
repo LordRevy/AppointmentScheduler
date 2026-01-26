@@ -2,9 +2,9 @@ namespace AppointmentScheduler.Logic;
 
 public class Validator
 {
-/// <summary>
-/// Formats Customer inputs and checks entries to ensure they are valid.
-/// </summary>
+    /// <summary>
+    /// Formats Customer inputs and checks entries to ensure they are valid.
+    /// </summary>
     public bool ValidateCustomer(string name, string address, string phone)
     {
         name = name.Trim();
@@ -22,11 +22,11 @@ public class Validator
         return true;
     }
 
-/// <summary>
-/// Ensures the start time and end time of an appointment are within business hours.
-/// Checks to see if the appointment day is between mon-fri.
-/// Verifies that there are no overlapping appointments in the Database.
-/// </summary>
+    /// <summary>
+    /// Ensures the start time and end time of an appointment are within business hours.
+    /// Checks to see if the appointment day is between mon-fri.
+    /// Verifies that there are no overlapping appointments in the Database.
+    /// </summary>
     public bool ValidateAppointment(DateTime start, DateTime end)
     {
         date = start.DayOfWeek();
