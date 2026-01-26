@@ -24,7 +24,8 @@ public class Validator
 
 /// <summary>
 /// Ensures the start time and end time of an appointment are within business hours.
-/// Also checks to see if the appointment day is between mon-fri.
+/// Checks to see if the appointment day is between mon-fri.
+/// Verifies that there are no overlapping appointments in the Database.
 /// </summary>
     public bool ValidateAppointment(DateTime start, DateTime end)
     {
@@ -40,6 +41,6 @@ public class Validator
         if (startTime < officeOpen || endTime > officeClose)
             return false;
 
-        return true;
+        return appointmentRepo.CheckAppointmentOverlap(start, end);
     }
 }
