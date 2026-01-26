@@ -120,7 +120,7 @@ namespace AppointmentScheduler.Data
         }
 
         /// <summary>
-        /// Returns appointments with the start value within the DateTime range [startUtc, endUtc).
+        /// Returns appointments with start and end times that overlap in the database.
         /// </summary>
         public List<Appointment> GetDateRange(DateTime start, DateTime end)
         {
@@ -145,6 +145,29 @@ namespace AppointmentScheduler.Data
             }
 
             return appointmentsInRange;
+        }
+
+        /// <summary>
+        /// Similar to GetDateRange but simply returns a bool if the input appointment overlaps with database entries.
+        /// </summary>
+        public bool CheckAppointmentOverlap(DateTime start, DateTime end)
+        {
+            var appointmentsInRange = new List<Appointment>();
+            using var conn = GetConnection();
+            conn.Open();
+
+            const string sql = @"
+                SELECT appointmentId, customerId, userId, title, type, start, `end`
+                FROM appointment
+                WHERE start >= ? AND start < ?
+                ORDER BY start;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            cmd.Parameters.AddWithValue(string.Empty, start);
+            cmd.Parameters.AddWithValue(string.Empty, end);
+
+            using var r = cmd.ExecuteReader();
+            return r.Read();
         }
 
         /// <summary>
