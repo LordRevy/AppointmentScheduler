@@ -20,8 +20,8 @@ namespace AppointmentScheduler.Data
                 UserId        = Convert.ToInt32(r["userId"]),
                 Title         = Convert.ToString(r["title"])!,
                 Type          = Convert.ToString(r["type"])!,
-                StartUtc      = Convert.ToDateTime(r["start"]),
-                EndUtc        = Convert.ToDateTime(r["end"])
+                Start         = Convert.ToDateTime(r["start"]),
+                End           = Convert.ToDateTime(r["end"])
             };
         }
 
