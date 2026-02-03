@@ -15,9 +15,9 @@ namespace AppointmentScheduler.Data;
         return new Customer
         {
             CustomerId = Convert.ToInt32(r["customerId"]),
-            Name       = Convert.ToString(r["customerName"]),
-            Address    = Convert.ToString(r["address"]),
-            Phone      = Convert.ToString(r["phone"])
+            Name = Convert.ToString(r["customerName"]),
+            Address = Convert.ToString(r["address"]),
+            Phone = Convert.ToString(r["phone"])
         };
     }
         
