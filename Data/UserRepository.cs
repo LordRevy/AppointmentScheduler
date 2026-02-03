@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
+using System.Globalization;
 using AppointmentScheduler.Domain;
 
 namespace AppointmentScheduler.Data;
@@ -12,16 +13,16 @@ public class UserRepository : Database
     /// </summary>
     private static User MapUser(OdbcDataReader r)
     {
-        var culture  = CultureInfo.CurrentUICulture;
-        var region   = new RegionInfo(culture.Name);
-        var timezone = TimeZoneInfo.Local;
-    
+        var c = CultureInfo.CurrentUICulture;        
+        var parts = c.Name.Split('-');
+        var timezone = TimeZoneInfo.Local;        
+        
         return new User
         {
             Id       = Convert.ToInt32(r["userId"]),
             UserName = Convert.ToString(r["userName"]) ?? string.Empty,
-            Culture  = culture.Name,
-            Region   = region.TwoLetterISORegionName,
+            Language = parts[0],
+            Country  = parts[1],
             Timezone = timezone.Id
         };
     }
