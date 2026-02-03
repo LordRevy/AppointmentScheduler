@@ -16,12 +16,12 @@ namespace AppointmentScheduler.Data
             return new Appointment
             {
                 AppointmentId = Convert.ToInt32(r["appointmentId"]),
-                CustomerId    = Convert.ToInt32(r["customerId"]),
-                UserId        = Convert.ToInt32(r["userId"]),
-                Title         = Convert.ToString(r["title"])!,
-                Type          = Convert.ToString(r["type"])!,
-                Start         = Convert.ToDateTime(r["start"]),
-                End           = Convert.ToDateTime(r["end"])
+                CustomerId = Convert.ToInt32(r["customerId"]),
+                UserId = Convert.ToInt32(r["userId"]),
+                Title = Convert.ToString(r["title"])!,
+                Type = Convert.ToString(r["type"])!,
+                Start = Convert.ToDateTime(r["start"]),
+                End = Convert.ToDateTime(r["end"])
             };
         }
 
