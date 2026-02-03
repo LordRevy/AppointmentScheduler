@@ -19,10 +19,10 @@ public class UserRepository : Database
         
         return new User
         {
-            Id       = Convert.ToInt32(r["userId"]),
+            Id = Convert.ToInt32(r["userId"]),
             UserName = Convert.ToString(r["userName"]) ?? string.Empty,
             Language = parts[0],
-            Country  = parts[1],
+            Country = parts[1],
             Timezone = timezone.Id
         };
     }
