@@ -1,33 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using AppointmentScheduler.Logic;
+﻿using AppointmentScheduler.Logic;
 using AppointmentScheduler.Domain;
+using AppointmentScheduler.Data;
 
 namespace AppointmentScheduler.Forms
 {
     public partial class Reports : Form
     {
-        private readonly Domain.User _user;
-        private readonly Data.AppointmentRepository _appointmentRepository;
+        private readonly User _user;
+        private readonly AppointmentRepository _appointmentRepo;
         private readonly ReportHandler _reportHandler;
 
-        public Reports(Domain.User user, Data.AppointmentRepository appointmentRepository)
+        public Reports(User user, AppointmentRepository appointmentRepo)
         {
             InitializeComponent();
             AptByMonthTxt.Visible = false;
             CustIdTxt.Visible = false;
 
             _user = user;
-            _appointmentRepository = appointmentRepository;
-            _reportHandler = new ReportHandler(_appointmentRepository);
+            _appointmentRepo = appointmentRepo;
+            _reportHandler = new ReportHandler(_appointmentRepo);
         }
 
         private void AptByMonth_CheckedChanged(object sender, EventArgs e)
@@ -42,23 +33,28 @@ namespace AppointmentScheduler.Forms
 
         private void GetRpts_Click(object sender, EventArgs e)
         {
-            List<AppointTypeByMonthReport> appointmentReport = [];
-            List<ScheduleReport> userScheduleReport = [];
-            List<ScheduleReport> customerScheduleReport = [];
-
             if (AptByMonth.Checked)
-                appointmentReport = _reportHandler.GenerateAppointmentsByMonthReport();
+            {
+                var appointmentReport = _reportHandler.GenerateAppointmentsByMonthReport();
+                MessageService.WriteReport("AppointmentsByMonthReport", appointmentReport);
+            }
 
             if (UsrSchedules.Checked)
-                userScheduleReport = _reportHandler.GenerateUserScheduleReport();
+            {
+                var userScheduleReport = _reportHandler.GenerateUserScheduleReport();
+                MessageService.WriteReport("UserScheduleReport", userScheduleReport);
+            }
 
             if (CustSchedule.Checked)
             {
-                var custIdText = CustIdTxt.Text.Trim();
-                if (int.TryParse(custIdText , out int custId))
-                    customerScheduleReport = _reportHandler.GenerateCustomerScheduleReport(custId);
-                else
+                if (!int.TryParse(CustIdTxt.Text.Trim(), out int custId))
+                {
                     MessageService.DisplayMessage(_user.Language, "InvalidId", MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var customerScheduleReport = _reportHandler.GenerateCustomerScheduleReport(custId);
+                MessageService.WriteReport("CustomerScheduleReport", customerScheduleReport);
             }
         }
     }

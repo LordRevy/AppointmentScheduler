@@ -1,17 +1,18 @@
+using AppointmentScheduler.Data;
+
 namespace AppointmentScheduler
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
+            var userRepo = new UserRepository();
+            var appointmentRepo = new AppointmentRepository();
+
+            userRepo.Add("test", "test");
+
             ApplicationConfiguration.Initialize();
-            Application.Run(new LoginForm());
+            Application.Run(new LoginForm(userRepo, appointmentRepo));
         }
     }
 }

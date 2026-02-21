@@ -17,13 +17,16 @@ namespace AppointmentScheduler.Forms
     public partial class MainForm : Form
     {
         private readonly Domain.User _currentUser;
-        private readonly AppointmentRepository _appointmentRepository;
-        public MainForm(Domain.User user, AppointmentRepository appointmentRepository)
+        private readonly UserRepository _userRepo;
+        private readonly AppointmentRepository _appointmentRepo;
+        public MainForm(Domain.User user, UserRepository userRepo, AppointmentRepository appointmentRepository)
         {
             InitializeComponent();
 
             _currentUser = user;
-            _appointmentRepository = appointmentRepository;
+            _userRepo = userRepo;
+            _appointmentRepo = appointmentRepository;
+            var _customerRepo = new CustomerRepository();
         }
 
         private void AddAptBtn_Click(object sender, EventArgs e)
@@ -37,7 +40,7 @@ namespace AppointmentScheduler.Forms
                 var start = DateTime.Parse(StartText.Text);
                 var end = DateTime.Parse(EndText.Text);
 
-                var appointmentId = _appointmentRepository.Add(customerId, userId, title, type, start, end);
+                var appointmentId = _appointmentRepo.Add(customerId, userId, title, type, start, end);
 
                 MessageBox.Show($"Appointment added with ID: {appointmentId}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -49,7 +52,7 @@ namespace AppointmentScheduler.Forms
 
         private void GenRptBtn_Click(object sender, EventArgs e)
         {
-            new Reports(_currentUser, _appointmentRepository).Show();
+            new Reports(_currentUser, _appointmentRepo).Show();
         }
 
         private void AddCustBtn_Click(object sender, EventArgs e)

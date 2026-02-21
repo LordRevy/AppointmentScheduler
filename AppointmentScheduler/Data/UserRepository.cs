@@ -68,5 +68,20 @@ namespace AppointmentScheduler.Data
             }
             return userList;
         }
+
+        /// <summary>
+        /// Adding a new User to the Database. Currently only used to populate the Database with initial test user.
+        /// </summary>
+        public void Add(string username, string password)
+        {
+            using var conn = GetConnection();
+            conn.Open();
+
+            const string insertIntoUserSql = @"
+            INSERT INTO user (userName, password, active, createDate, createdBy, lastUpdate, lastUpdateBy)
+            VALUES (?, ?, true, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
+
+            ExecuteNonQuery(insertIntoUserSql, conn, username, password);
+        }
     }
 }

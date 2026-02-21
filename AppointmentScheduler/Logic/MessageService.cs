@@ -48,5 +48,25 @@ namespace AppointmentScheduler.Logic
                 MessageBox.Show("Please update your profile information.", "Profile Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        public static void WriteReport<T>(string reportName, List<T> reportData)
+        {
+            var reportPath = "Reports.txt";
+            var timeStamp = DateTime.UtcNow;
+            var formattedReport = string.Join(Environment.NewLine, reportData.Select(r => r.ToString()));
+
+            var message = $@"
+                ====================================================
+                Report: {reportName}
+                Generated (UTC): {timeStamp:u}
+                ====================================================
+
+                {formattedReport}
+                
+                *End of Report*
+                ";
+
+            File.AppendAllText(reportPath, message);
+        }
     }
 }

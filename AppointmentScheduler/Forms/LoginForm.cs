@@ -8,15 +8,16 @@ namespace AppointmentScheduler
 {
     public partial class LoginForm : Form
     {
-        private readonly LoginHandler _loginHandler;
+        private readonly UserRepository _userRepo;
         private readonly AppointmentRepository _appointmentRepo;
+        private readonly LoginHandler _loginHandler;
 
-        public LoginForm()
+        public LoginForm(UserRepository userRepo, AppointmentRepository appointmentRepo)
         {
             InitializeComponent();
 
-            var userRepo = new UserRepository();
-            _appointmentRepo = new AppointmentRepository();
+            _userRepo = userRepo;
+            _appointmentRepo = appointmentRepo;
             _loginHandler = new LoginHandler(userRepo, _appointmentRepo);
         }
 
@@ -65,7 +66,7 @@ namespace AppointmentScheduler
             Logic.MessageService.DisplayLoginSuccessMessage(user);
             Hide();
 
-            new MainForm(user, _appointmentRepo).Show();
+            new MainForm(user, _userRepo, _appointmentRepo).Show();
         }
     }
 }

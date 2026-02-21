@@ -315,7 +315,6 @@
             Controls.Add(AddAptBtn);
             Controls.Add(CustomerTable);
             Controls.Add(Appointments);
-            Name = "MainForm";
             Text = "Appointment Scheduler";
             ((System.ComponentModel.ISupportInitialize)Appointments).EndInit();
             ((System.ComponentModel.ISupportInitialize)CustomerTable).EndInit();
