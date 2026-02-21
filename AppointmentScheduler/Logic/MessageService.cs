@@ -2,7 +2,7 @@
 {
     public class MessageService
     {
-        private readonly Dictionary<string, Dictionary<string, string>> messages =
+        private static readonly Dictionary<string, Dictionary<string, string>> messages =
             new Dictionary<string, Dictionary<string, string>>
             {
                 ["en"] = new Dictionary<string, string>
@@ -17,7 +17,7 @@
                 }
             };
 
-        public string GetMessage(string language, string message)
+        public static string GetMessage(string language, string message)
         {
             if (!messages.ContainsKey(language))
                 language = "en";
