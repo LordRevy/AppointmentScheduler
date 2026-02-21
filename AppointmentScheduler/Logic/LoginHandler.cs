@@ -18,12 +18,12 @@ namespace AppointmentScheduler.Logic
         /// Querys Database for a row that matches username and password.
         /// Returns a User object if successful, null if not. 
         /// </summary>    
-        public User? AttemptLogin(string username, string password)
+        public User? AttemptLogin(string username, string password, string language)
         {
             username = username.Trim();
             password = password.Trim();
 
-            var user = _userRepo.GetUser(username, password);
+            var user = _userRepo.GetUser(username, password, language);
 
             if (user is null)
             {

@@ -34,7 +34,7 @@
             UsrSchedules = new CheckBox();
             CustSchedule = new CheckBox();
             AptByMonthTxt = new TextBox();
-            CustScheduleTxt = new TextBox();
+            CustIdTxt = new TextBox();
             SuspendLayout();
             // 
             // GetRpts
@@ -96,20 +96,20 @@
             AptByMonthTxt.Size = new Size(90, 23);
             AptByMonthTxt.TabIndex = 8;
             // 
-            // CustScheduleTxt
+            // CustIdTxt
             // 
-            CustScheduleTxt.Location = new Point(213, 115);
-            CustScheduleTxt.Name = "CustScheduleTxt";
-            CustScheduleTxt.PlaceholderText = "Customer";
-            CustScheduleTxt.Size = new Size(90, 23);
-            CustScheduleTxt.TabIndex = 9;
+            CustIdTxt.Location = new Point(213, 115);
+            CustIdTxt.Name = "CustIdTxt";
+            CustIdTxt.PlaceholderText = "Customer ID";
+            CustIdTxt.Size = new Size(90, 23);
+            CustIdTxt.TabIndex = 9;
             // 
             // Reports
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(315, 243);
-            Controls.Add(CustScheduleTxt);
+            Controls.Add(CustIdTxt);
             Controls.Add(AptByMonthTxt);
             Controls.Add(CustSchedule);
             Controls.Add(UsrSchedules);
@@ -130,6 +130,6 @@
         private CheckBox UsrSchedules;
         private CheckBox CustSchedule;
         private TextBox AptByMonthTxt;
-        private TextBox CustScheduleTxt;
+        private TextBox CustIdTxt;
     }
 }

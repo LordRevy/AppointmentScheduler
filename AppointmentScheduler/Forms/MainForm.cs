@@ -51,5 +51,10 @@ namespace AppointmentScheduler.Forms
         {
             new Reports(_currentUser, _appointmentRepository).Show();
         }
+
+        private void AddCustBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

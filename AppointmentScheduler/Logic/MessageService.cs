@@ -1,31 +1,52 @@
-﻿namespace AppointmentScheduler.Logic
+﻿using AppointmentScheduler.Domain;
+
+namespace AppointmentScheduler.Logic
 {
     public class MessageService
     {
         private static readonly Dictionary<string, Dictionary<string, string>> messages =
-            new Dictionary<string, Dictionary<string, string>>
+            new()
             {
                 ["en"] = new Dictionary<string, string>
                 {
-                    ["LoginSuccess"] = "Login successful!",
-                    ["InvalidCredentials"] = "Invalid username or password."
+                    ["LoginSuccess"] = "Login successful.\nWelcome -username-! Your Language is -language-, your Country is -country-, your Timezone is -timezone-.\nDoes this sound correct?",
+                    ["LoginFailed"] = "Invalid username or password.",
+                    ["InvalidId"] = "Invalid ID format. Please enter a valid integer."
                 },
                 ["la"] = new Dictionary<string, string>
                 {
                     ["LoginSuccess"] = "Login completus!",
-                    ["InvalidCredentials"] = "Nomen usoris aut tessera invalida."
+                    ["LoginFailed"] = "Nomen usoris aut tessera invalida."
                 }
             };
 
-        public static string GetMessage(string language, string message)
+        public static void DisplayMessage(string language, string message, MessageBoxIcon icon)
         {
             if (!messages.ContainsKey(language))
                 language = "en";
 
             if (!messages[language].ContainsKey(message))
-                return $"{language} is missing message: {message}";
+                MessageBox.Show($"Message {message} not found in message list.", "Internal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            return messages[language][message];
+            MessageBox.Show(messages[language][message], message, MessageBoxButtons.OK, icon);
+        }
+
+        public static void DisplayLoginSuccessMessage(User user)
+        {
+            if (!messages.ContainsKey(user.Language))
+                user.Language = "en";
+            var message = messages[user.Language]["LoginSuccess"]
+                .Replace("-username-", user.UserName)
+                .Replace("-language-", user.Language)
+                .Replace("-country-", user.Country ?? "N/A")
+                .Replace("-timezone-", user.Timezone ?? "N/A");
+
+            var result = MessageBox.Show(message, "Login Success", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+            if (result == DialogResult.No)
+            {
+                MessageBox.Show("Please update your profile information.", "Profile Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

@@ -260,6 +260,7 @@
             AddCustBtn.TabIndex = 16;
             AddCustBtn.Text = "Add";
             AddCustBtn.UseVisualStyleBackColor = true;
+            AddCustBtn.Click += AddCustBtn_Click;
             // 
             // UpdateCustBtn
             // 

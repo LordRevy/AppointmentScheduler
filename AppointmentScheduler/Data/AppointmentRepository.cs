@@ -72,6 +72,37 @@ namespace AppointmentScheduler.Data
         }
 
         /// <summary>
+        /// Returns a list of all appointments in the database.
+        /// </summary>
+        public List<Appointment> GetAll()
+        {
+            var appointments = new List<Appointment>();
+            using var conn = GetConnection();
+            conn.Open();
+
+            const string sql = @"
+                SELECT 
+                    appointmentId, 
+                    customerId, 
+                    userId, 
+                    title, 
+                    type, 
+                    start, 
+                    `end`
+                FROM appointment;";
+
+            using var cmd = new OdbcCommand(sql, conn);
+            using var r = cmd.ExecuteReader();
+
+            while (r.Read())
+            {
+                appointments.Add(MapAppointment(r));
+            }
+
+            return appointments;
+        }
+
+        /// <summary>
         /// Updates an appointment from the ID.
         /// </summary>
         public void Update(Appointment a)

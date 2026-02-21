@@ -10,17 +10,16 @@ namespace AppointmentScheduler.Data
         /// </summary>
         private static Domain.User MapUser(OdbcDataReader r)
         {
-            var c = CultureInfo.CurrentUICulture;
-            var parts = c.Name.Split('-');
-            var timezone = TimeZoneInfo.Local;
+            var _username = Convert.ToString(r["userName"]);
+
+            if (_username == null)
+                throw new InvalidOperationException("Username cannot be null.");
 
             return new Domain.User
             {
                 Id = Convert.ToInt32(r["userId"]),
-                UserName = Convert.ToString(r["userName"]) ?? string.Empty,
-                Language = parts[0],
-                Country = parts[1],
-                Timezone = timezone.Id
+                UserName = _username,
+                Language = "en"
             };
         }
 
@@ -28,7 +27,7 @@ namespace AppointmentScheduler.Data
         /// Returns the user with the given username so long as the password matches.
         /// Returns null if  username not found or if password is incorrect.
         /// </summary>
-        public Domain.User? GetUser(string username, string password)
+        public Domain.User? GetUser(string username, string password, string language)
         {
             using var conn = GetConnection();
             conn.Open();
@@ -42,8 +41,12 @@ namespace AppointmentScheduler.Data
             if (!r.Read())
                 return null;
 
-            return MapUser(r);
+            var user = MapUser(r);
+            user.Language = language;
+            user.Country = CultureInfo.CurrentUICulture.Name;
+            user.Timezone = TimeZoneInfo.Local.Id;
 
+            return user;
         }
 
         /// <summary>

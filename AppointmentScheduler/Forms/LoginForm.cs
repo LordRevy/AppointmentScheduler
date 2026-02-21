@@ -22,38 +22,49 @@ namespace AppointmentScheduler
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
+            EnglishBtn.Checked = true;
+        }
+        private void EnglishBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            LatinBtn.Checked = false;
+        }
 
+        private void LatinBtn_CheckedChanged(object sender, EventArgs e)
+        {
+            EnglishBtn.Checked = false;
         }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
             var user = null as User;
+            var language = "en";
+
+            if (LatinBtn.Checked)
+                language = "la";
 
             try
-            {
-                user = _loginHandler.AttemptLogin(Username.Text, Password.Text);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Login Error");
-            }
+                {
+                    user = _loginHandler.AttemptLogin(Username.Text, Password.Text, language);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Login Error");
+                }
 
             if (user == null)
             {
-                var message = Logic.MessageService.GetMessage("la", "InvalidCredentials"); //make language dynamic
-                MessageBox.Show(message, "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logic.MessageService.DisplayMessage(language, "LoginFailed", MessageBoxIcon.Error);
                 return;
             }
 
             var upcoming = _loginHandler.CheckUpcomingAppointments(user);
+
             if (upcoming != null)
-            {
-                var appointmentMessage = Logic.MessageService.GetMessage(user.Language, "UpcomingAppointment");
+                Logic.MessageService.DisplayMessage(user.Language, "UpcomingAppointment", MessageBoxIcon.Information);
 
-                MessageBox.Show(appointmentMessage, "Upcoming Appointment", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
+            Logic.MessageService.DisplayLoginSuccessMessage(user);
             Hide();
+
             new MainForm(user, _appointmentRepo).Show();
         }
     }
