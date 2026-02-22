@@ -95,7 +95,9 @@ namespace AppointmentScheduler.Logic
         {
             var reportPath = "Reports.txt";
             var timeStamp = DateTime.UtcNow;
-            var formattedReport = string.Join(Environment.NewLine, reportData.Select(r => r.ToString()));
+            var formattedReport = string.Join(
+                Environment.NewLine, 
+                reportData.Select(r => r?.ToString() ?? "MISSING DATA"));
 
             var message = $@"
                 ====================================================
