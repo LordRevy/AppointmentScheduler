@@ -1,4 +1,4 @@
-﻿using System.Data.Odbc;
+﻿using MySql.Data.MySqlClient;
 using System.Globalization;
 
 namespace AppointmentScheduler.Data
@@ -8,7 +8,7 @@ namespace AppointmentScheduler.Data
         /// <summary>
         /// Creates a User object from a single data reader row.
         /// </summary>
-        private static Domain.User MapUser(OdbcDataReader r)
+        private static Domain.User MapUser(MySqlDataReader r)
         {
             var _username = Convert.ToString(r["userName"]);
 
@@ -33,7 +33,7 @@ namespace AppointmentScheduler.Data
             conn.Open();
             const string getUserSql = "SELECT userId, userName FROM `user` WHERE userName = ? AND password = ?;";
 
-            using var cmd = new OdbcCommand(getUserSql, conn);
+            using var cmd = new MySqlCommand(getUserSql, conn);
             cmd.Parameters.AddWithValue("", username);
             cmd.Parameters.AddWithValue("", password);
             using var r = cmd.ExecuteReader();
@@ -59,7 +59,7 @@ namespace AppointmentScheduler.Data
             conn.Open();
             const string userListSql = "SELECT userId, userName FROM `user`;";
 
-            using var cmd = new OdbcCommand(userListSql, conn);
+            using var cmd = new MySqlCommand(userListSql, conn);
             using var r = cmd.ExecuteReader();
 
             while (r.Read())

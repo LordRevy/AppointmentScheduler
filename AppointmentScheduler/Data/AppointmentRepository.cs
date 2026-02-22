@@ -1,5 +1,5 @@
 ﻿using AppointmentScheduler.Domain;
-using System.Data.Odbc;
+using MySql.Data.MySqlClient;
 
 namespace AppointmentScheduler.Data
 {
@@ -8,7 +8,7 @@ namespace AppointmentScheduler.Data
         /// <summary>
         /// Creates an Appointment object from a single data reader row.
         /// </summary>
-        private static Appointment MapAppointment(OdbcDataReader r)
+        private static Appointment MapAppointment(MySqlDataReader r)
         {
             return new Appointment
             {
@@ -35,7 +35,7 @@ namespace AppointmentScheduler.Data
                 FROM appointment
                 WHERE appointmentId = ?;";
 
-            using var cmd = new OdbcCommand(sql, conn);
+            using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue(string.Empty, appointmentId);
 
             using var r = cmd.ExecuteReader();
@@ -91,7 +91,7 @@ namespace AppointmentScheduler.Data
                     `end`
                 FROM appointment;";
 
-            using var cmd = new OdbcCommand(sql, conn);
+            using var cmd = new MySqlCommand(sql, conn);
             using var r = cmd.ExecuteReader();
 
             while (r.Read())
@@ -162,7 +162,7 @@ namespace AppointmentScheduler.Data
                 WHERE start >= ? AND start < ?
                 ORDER BY start;";
 
-            using var cmd = new OdbcCommand(sql, conn);
+            using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue(string.Empty, start);
             cmd.Parameters.AddWithValue(string.Empty, end);
 
@@ -190,7 +190,7 @@ namespace AppointmentScheduler.Data
                 WHERE start >= ? AND start < ?
                 ORDER BY start;";
 
-            using var cmd = new OdbcCommand(sql, conn);
+            using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue(string.Empty, start);
             cmd.Parameters.AddWithValue(string.Empty, end);
 
@@ -213,7 +213,7 @@ namespace AppointmentScheduler.Data
                 WHERE userId = ?
                 ORDER BY start";
 
-            using var cmd = new OdbcCommand(sql, conn);
+            using var cmd = new MySqlCommand(sql, conn);
             cmd.Parameters.AddWithValue(string.Empty, user.Id);
 
             using var r = cmd.ExecuteReader();

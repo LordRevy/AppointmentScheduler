@@ -1,5 +1,5 @@
 ﻿using AppointmentScheduler.Domain;
-using System.Data.Odbc;
+using MySql.Data.MySqlClient;
 
 namespace AppointmentScheduler.Data
 {
@@ -8,7 +8,7 @@ namespace AppointmentScheduler.Data
         /// <summary>
         /// Creates an Appointment object from a single data reader row.
         /// </summary>
-        private static Customer MapCustomer(OdbcDataReader r)
+        private static Customer MapCustomer(MySqlDataReader r)
         {
             return new()
             {
@@ -35,7 +35,7 @@ namespace AppointmentScheduler.Data
             JOIN address a ON a.addressId = c.addressId
             WHERE c.customerId = ?;";
 
-            using var cmd = new OdbcCommand(getByIdSql, conn);
+            using var cmd = new MySqlCommand(getByIdSql, conn);
             cmd.Parameters.AddWithValue("", customerId);
 
             using var r = cmd.ExecuteReader();
@@ -59,7 +59,7 @@ namespace AppointmentScheduler.Data
             JOIN address a ON a.addressId = c.addressId
             ORDER BY c.customerName;";
 
-            using var cmd = new OdbcCommand(getAllSql, conn);
+            using var cmd = new MySqlCommand(getAllSql, conn);
             using var r = cmd.ExecuteReader();
 
             while (r.Read())
@@ -78,7 +78,7 @@ namespace AppointmentScheduler.Data
             conn.Open();
 
             const string checkIfAddressExistsSql = "SELECT addressId FROM address WHERE address = ? AND phone = ?;";
-            using var cmd = new OdbcCommand(checkIfAddressExistsSql, conn);
+            using var cmd = new MySqlCommand(checkIfAddressExistsSql, conn);
             cmd.Parameters.AddWithValue("", address);
             cmd.Parameters.AddWithValue("", phone);
 
@@ -132,7 +132,7 @@ namespace AppointmentScheduler.Data
             WHERE customerId = ?;";
 
             // Get Address ID and Update Address Table
-            using var cmd = new OdbcCommand(getAddressIdSql, conn);
+            using var cmd = new MySqlCommand(getAddressIdSql, conn);
             cmd.Parameters.AddWithValue("", c.Id);
             using var addressId = cmd.ExecuteReader();
             ExecuteNonQuery(updateAddressSql, conn, c.Address, c.Phone, addressId);
