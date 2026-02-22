@@ -14,12 +14,8 @@ namespace AppointmentScheduler.Logic
         /// <summary>
         /// Formats Customer inputs and checks entries to ensure they are valid.
         /// </summary>
-        public static bool ValidateCustomer(string name, string address, string phone)
+        public bool ValidateCustomer(string name, string address, string phone)
         {
-            name = name.Trim();
-            address = address.Trim();
-            phone = phone.Trim();
-
             if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(address) || string.IsNullOrWhiteSpace(phone))
                 return false;
 

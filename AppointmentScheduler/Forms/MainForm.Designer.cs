@@ -2,6 +2,8 @@
 {
     partial class MainForm
     {
+        private const string V = "MainForm";
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -38,7 +40,7 @@
             End = new DataGridViewTextBoxColumn();
             CustomerTable = new DataGridView();
             ID = new DataGridViewTextBoxColumn();
-            Name = new DataGridViewTextBoxColumn();
+            NameColumn = new DataGridViewTextBoxColumn();
             Address = new DataGridViewTextBoxColumn();
             Phone = new DataGridViewTextBoxColumn();
             AddAptBtn = new Button();
@@ -110,7 +112,7 @@
             // CustomerTable
             // 
             CustomerTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            CustomerTable.Columns.AddRange(new DataGridViewColumn[] { ID, Name, Address, Phone });
+            CustomerTable.Columns.AddRange(new DataGridViewColumn[] { ID, NameColumn, Address, Phone });
             CustomerTable.Location = new Point(12, 247);
             CustomerTable.Name = "CustomerTable";
             CustomerTable.Size = new Size(444, 150);
@@ -123,8 +125,8 @@
             // 
             // Name
             // 
-            Name.HeaderText = "Name";
-            Name.Name = "Name";
+            NameColumn.HeaderText = "Name";
+            NameColumn.Name = "Name";
             // 
             // Address
             // 
@@ -210,6 +212,7 @@
             UpdateBtn.TabIndex = 10;
             UpdateBtn.Text = "Update";
             UpdateBtn.UseVisualStyleBackColor = true;
+            UpdateBtn.Click += UpdateBtn_Click;
             // 
             // DeleteBtn
             // 
@@ -219,6 +222,7 @@
             DeleteBtn.TabIndex = 11;
             DeleteBtn.Text = "Delete";
             DeleteBtn.UseVisualStyleBackColor = true;
+            DeleteBtn.Click += DeleteBtn_Click;
             // 
             // CustTableId
             // 
@@ -270,6 +274,7 @@
             UpdateCustBtn.TabIndex = 17;
             UpdateCustBtn.Text = "Update";
             UpdateCustBtn.UseVisualStyleBackColor = true;
+            UpdateCustBtn.Click += UpdateCustBtn_Click;
             // 
             // DeleteCustBtn
             // 
@@ -279,6 +284,7 @@
             DeleteCustBtn.TabIndex = 18;
             DeleteCustBtn.Text = "Delete";
             DeleteCustBtn.UseVisualStyleBackColor = true;
+            DeleteCustBtn.Click += DeleteCustBtn_Click;
             // 
             // GenRptBtn
             // 
@@ -315,6 +321,7 @@
             Controls.Add(AddAptBtn);
             Controls.Add(CustomerTable);
             Controls.Add(Appointments);
+            Name = "MainForm";
             Text = "Appointment Scheduler";
             ((System.ComponentModel.ISupportInitialize)Appointments).EndInit();
             ((System.ComponentModel.ISupportInitialize)CustomerTable).EndInit();
@@ -334,7 +341,7 @@
         private DataGridViewTextBoxColumn End;
         private DataGridView CustomerTable;
         private DataGridViewTextBoxColumn ID;
-        private DataGridViewTextBoxColumn Name;
+        private DataGridViewTextBoxColumn NameColumn;
         private DataGridViewTextBoxColumn Address;
         private DataGridViewTextBoxColumn Phone;
         private Button AddAptBtn;
