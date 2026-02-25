@@ -129,28 +129,27 @@ namespace AppointmentScheduler.Forms
 
         private void UpdateCustBtn_Click(object sender, EventArgs e)
         {
-            int customerId;
-            Customer customer;
-
-            try
+            if (!int.TryParse(CustIdText.Text, out int customerId))
             {
-                customerId = Convert.ToInt32(CustIdText.Text);
-                customer = _customerRepo.GetById(customerId) ?? throw new Exception("Customer not found");
-
-                if (!string.IsNullOrWhiteSpace(NameText.Text))
-                    customer.Name = NameText.Text.Trim();
-
-                if (!string.IsNullOrWhiteSpace(AddressText.Text))
-                    customer.Address = AddressText.Text.Trim();
-
-                if (!string.IsNullOrWhiteSpace(PhoneText.Text))
-                    customer.Phone = PhoneText.Text.Trim();
-            }
-            catch (Exception ex)
-            {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "CustomerIDMissing", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "CustomerMissing", MessageBoxIcon.Error);
                 return;
             }
+
+            var customer = _customerRepo.GetById(customerId);
+            if (customer == null)
+            {
+                MessageService.DisplayMessage(_currentUser.Language, "CustomerMissing", MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(NameText.Text))
+                customer.Name = NameText.Text.Trim();
+
+            if (!string.IsNullOrWhiteSpace(AddressText.Text))
+                customer.Address = AddressText.Text.Trim();
+
+            if (!string.IsNullOrWhiteSpace(PhoneText.Text))
+                customer.Phone = PhoneText.Text.Trim();
 
             if (!_validator.ValidateCustomer(customer.Name, customer.Address, customer.Phone))
             {

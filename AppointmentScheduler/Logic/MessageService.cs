@@ -20,7 +20,7 @@ namespace AppointmentScheduler.Logic
                     ["UpdatedAppointment"] = "Appointment updated successfully!",
                     ["AppointmentIDMissing"] = "The Appointment ID is missing or does not exist within the database.\n\n-exception-",
                     ["UpdatedCustomer"] = "Customer updated successfully!",
-                    ["CustomerIDMissing"] = "The Customer ID is missing or does not exist within the database.\n\n-exception-",
+                    ["CustomerMissing"] = "The Customer ID is missing or does not exist within the database.\n\n-exception-",
                     ["FailedToUpdateAppointment"] = "Failed to update appointment. Please check your input and try again.\n\n-exception-",
                     ["FailedToUpdateCustomer"] = "Failed to update customer. Please check your input and try again.\n\n-exception-",
                     ["DeletedAppointment"] = "Appointment deleted successfully!",
