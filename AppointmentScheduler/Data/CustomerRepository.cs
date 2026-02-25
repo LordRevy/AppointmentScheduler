@@ -112,31 +112,27 @@ namespace AppointmentScheduler.Data
             using var conn = GetConnection();
             conn.Open();
 
-            const string getAddressIdSql = "SELECT addressId FROM customer WHERE customerId = ?;";
+            const string sql = @"
+                UPDATE address a
+                INNER JOIN customer c ON c.addressId = a.addressId
+                SET 
+                    a.address = ?,
+                    a.phone = ?,
+                    a.lastUpdate = UTC_TIMESTAMP(),
+                    a.lastUpdateBy = 'app',
+                    c.customerName = ?,
+                    c.lastUpdate = UTC_TIMESTAMP(),
+                    c.lastUpdateBy = 'app'
+                WHERE c.customerId = ?;
+            ";
 
-            const string updateAddressSql = @"
-            UPDATE address 
-            SET address = ?,
-                phone = ?,
-                lastUpdate = UTC_TIMESTAMP(),
-                lastUpdateBy = 'app'
-            WHERE addressId = ?;";
-
-            const string updateCustomerSql = @"
-            UPDATE customer
-            SET customerName = ?,
-                lastUpdate = UTC_TIMESTAMP(),
-                lastUpdateBy = 'app'
-            WHERE customerId = ?;";
-
-            // Get Address ID and Update Address Table
-            using var cmd = new MySqlCommand(getAddressIdSql, conn);
+            using var cmd = new MySqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("", c.Address);
+            cmd.Parameters.AddWithValue("", c.Phone);
+            cmd.Parameters.AddWithValue("", c.Name);
             cmd.Parameters.AddWithValue("", c.Id);
-            using var addressId = cmd.ExecuteReader();
-            ExecuteNonQuery(updateAddressSql, conn, c.Address, c.Phone, addressId);
 
-            // Update Customer Table
-            ExecuteNonQuery(updateCustomerSql, conn, c.Name);
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>
