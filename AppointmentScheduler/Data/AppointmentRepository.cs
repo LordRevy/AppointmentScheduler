@@ -52,10 +52,10 @@ namespace AppointmentScheduler.Data
 
             const string sql = @"
                 INSERT INTO appointment
-                    (customerId, userId, title, type, start, `end`,
+                    (customerId, userId, title, description, location, contact, type, url,  start, `end`,
                      createDate, createdBy, lastUpdate, lastUpdateBy)
                 VALUES
-                    (?, ?, ?, ?, ?, ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
+                    (?, ?, ?, '', '', '', ?, '', ?, ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
 
             ExecuteNonQuery(
                 sql,
