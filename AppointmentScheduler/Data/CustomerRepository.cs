@@ -86,17 +86,15 @@ namespace AppointmentScheduler.Data
             using (var r = cmd.ExecuteReader())
             {
                 if (r.Read())
-                    addressId = r.GetInt32(0);
-                else
-                {
-                    const string insertIntoAddressSql = @"
-                    INSERT INTO address (address, phone, createDate, createdBy, lastUpdate, lastUpdateBy)
-                    VALUES (?, ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
-
-                    ExecuteNonQuery(insertIntoAddressSql, conn, address, phone);
-                    addressId = GetCreatedId(conn);
-                }
+                    return addressId = r.GetInt32(0);
             }
+
+                const string insertIntoAddressSql = @"
+                INSERT INTO address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy)
+                VALUES (?, '', 1, '', ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
+
+                ExecuteNonQuery(insertIntoAddressSql, conn, address, phone);
+                addressId = GetCreatedId(conn);
 
             const string insertIntoCustomerSql = @"
             INSERT INTO customer (customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy)

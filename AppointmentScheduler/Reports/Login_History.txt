@@ -1,0 +1,15 @@
+
+                Login Attempt 
+                | Username: tess 
+                | Time: 2026-02-24 05:04:12Z 
+                | Result: False
+
+            Login Attempt 
+                | Username: test 
+                | Time: 2026-02-24 05:06:49Z 
+                | Result: True
+
+    Login Attempt 
+                | Username: test 
+                | Time: 2026-02-24 05:09:33Z 
+                | Result: True

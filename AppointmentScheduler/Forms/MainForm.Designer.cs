@@ -30,19 +30,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Appointments = new DataGridView();
-            AppointmentID = new DataGridViewTextBoxColumn();
-            CustomerID = new DataGridViewTextBoxColumn();
-            UserID = new DataGridViewTextBoxColumn();
-            Title = new DataGridViewTextBoxColumn();
-            Type = new DataGridViewTextBoxColumn();
-            Start = new DataGridViewTextBoxColumn();
-            End = new DataGridViewTextBoxColumn();
+            AppointmentTable = new DataGridView();
             CustomerTable = new DataGridView();
-            ID = new DataGridViewTextBoxColumn();
-            NameColumn = new DataGridViewTextBoxColumn();
-            Address = new DataGridViewTextBoxColumn();
-            Phone = new DataGridViewTextBoxColumn();
             AddAptBtn = new Button();
             AptIdText = new TextBox();
             CustIdText = new TextBox();
@@ -61,82 +50,25 @@
             UpdateCustBtn = new Button();
             DeleteCustBtn = new Button();
             GenRptBtn = new Button();
-            ((System.ComponentModel.ISupportInitialize)Appointments).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)AppointmentTable).BeginInit();
             ((System.ComponentModel.ISupportInitialize)CustomerTable).BeginInit();
             SuspendLayout();
             // 
-            // Appointments
+            // AppointmentTable
             // 
-            Appointments.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            Appointments.Columns.AddRange(new DataGridViewColumn[] { AppointmentID, CustomerID, UserID, Title, Type, Start, End });
-            Appointments.Location = new Point(12, 12);
-            Appointments.Name = "Appointments";
-            Appointments.Size = new Size(776, 150);
-            Appointments.TabIndex = 0;
-            // 
-            // AppointmentID
-            // 
-            AppointmentID.HeaderText = "AppointmentID";
-            AppointmentID.Name = "AppointmentID";
-            // 
-            // CustomerID
-            // 
-            CustomerID.HeaderText = "CustomerID";
-            CustomerID.Name = "CustomerID";
-            // 
-            // UserID
-            // 
-            UserID.HeaderText = "UserID";
-            UserID.Name = "UserID";
-            // 
-            // Title
-            // 
-            Title.HeaderText = "Title";
-            Title.Name = "Title";
-            // 
-            // Type
-            // 
-            Type.HeaderText = "Type";
-            Type.Name = "Type";
-            // 
-            // Start
-            // 
-            Start.HeaderText = "Start";
-            Start.Name = "Start";
-            // 
-            // End
-            // 
-            End.HeaderText = "End";
-            End.Name = "End";
+            AppointmentTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            AppointmentTable.Location = new Point(12, 12);
+            AppointmentTable.Name = "AppointmentTable";
+            AppointmentTable.Size = new Size(776, 150);
+            AppointmentTable.TabIndex = 0;
             // 
             // CustomerTable
             // 
             CustomerTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            CustomerTable.Columns.AddRange(new DataGridViewColumn[] { ID, NameColumn, Address, Phone });
             CustomerTable.Location = new Point(12, 247);
             CustomerTable.Name = "CustomerTable";
             CustomerTable.Size = new Size(444, 150);
             CustomerTable.TabIndex = 1;
-            // 
-            // ID
-            // 
-            ID.HeaderText = "CustomerID";
-            ID.Name = "ID";
-            // 
-            // Name
-            // 
-            NameColumn.HeaderText = "Name";
-            NameColumn.Name = "Name";
-            // 
-            // Address
-            // 
-            Address.HeaderText = "Address";
-            Address.Name = "Address";
-            // 
-            // Phone
-            // 
-            Phone.HeaderText = "Phone";
-            Phone.Name = "Phone";
             // 
             // AddAptBtn
             // 
@@ -320,10 +252,10 @@
             Controls.Add(AptIdText);
             Controls.Add(AddAptBtn);
             Controls.Add(CustomerTable);
-            Controls.Add(Appointments);
+            Controls.Add(AppointmentTable);
             Name = "MainForm";
             Text = "Appointment Scheduler";
-            ((System.ComponentModel.ISupportInitialize)Appointments).EndInit();
+            ((System.ComponentModel.ISupportInitialize)AppointmentTable).EndInit();
             ((System.ComponentModel.ISupportInitialize)CustomerTable).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -331,19 +263,8 @@
 
         #endregion
 
-        private DataGridView Appointments;
-        private DataGridViewTextBoxColumn AppointmentID;
-        private DataGridViewTextBoxColumn CustomerID;
-        private DataGridViewTextBoxColumn UserID;
-        private DataGridViewTextBoxColumn Title;
-        private DataGridViewTextBoxColumn Type;
-        private DataGridViewTextBoxColumn Start;
-        private DataGridViewTextBoxColumn End;
+        private DataGridView AppointmentTable;
         private DataGridView CustomerTable;
-        private DataGridViewTextBoxColumn ID;
-        private DataGridViewTextBoxColumn NameColumn;
-        private DataGridViewTextBoxColumn Address;
-        private DataGridViewTextBoxColumn Phone;
         private Button AddAptBtn;
         private TextBox AptIdText;
         private TextBox CustIdText;

@@ -93,19 +93,19 @@ namespace AppointmentScheduler.Logic
 
         public static void WriteReport<T>(string reportName, List<T> reportData)
         {
-            var reportPath = "Reports.txt";
+            var reportPath = "C:\\Users\\LabUser\\source\\repos\\AppointmentScheduler\\AppointmentScheduler\\Reports\\Reports.txt";
             var timeStamp = DateTime.UtcNow;
             var formattedReport = string.Join(
                 Environment.NewLine, 
                 reportData.Select(r => r?.ToString() ?? "MISSING DATA"));
 
             var message = $@"
-                ====================================================
-                Report: {reportName}
-                Generated (UTC): {timeStamp:u}
-                ====================================================
+====================================================
+Report: {reportName}
+Generated (UTC): {timeStamp:u}
+====================================================
 
-                {formattedReport}
+{formattedReport}
                 
                 *End of Report*
                 ";

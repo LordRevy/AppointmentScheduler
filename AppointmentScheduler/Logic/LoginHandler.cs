@@ -32,7 +32,6 @@ namespace AppointmentScheduler.Logic
             }
 
             LogAttempt(username, true);
-            CheckUpcomingAppointments(user);
             return user;
         }
 
@@ -57,10 +56,10 @@ namespace AppointmentScheduler.Logic
         /// </summary>
         public static void LogAttempt(string username, bool result)
         {
-            var loginPath = "Login_History.txt";
+            var loginPath = "C:\\Users\\LabUser\\source\\repos\\AppointmentScheduler\\AppointmentScheduler\\Reports\\Login_History.txt";
             var loginTime = DateTime.UtcNow;
             var message = $@"
-                Login Attempt 
+    Login Attempt 
                 | Username: {username} 
                 | Time: {loginTime:u} 
                 | Result: {result}";

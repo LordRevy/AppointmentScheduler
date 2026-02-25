@@ -32,6 +32,14 @@ namespace AppointmentScheduler.Forms
             _appointmentRepo = appointmentRepository;
             _customerRepo = new CustomerRepository();
             _validator = new Validator(_appointmentRepo);
+
+            UpdateTables();
+        }
+
+        private void UpdateTables()
+        {
+            CustomerTable.DataSource = _customerRepo.GetAll();
+            AppointmentTable.DataSource = _appointmentRepo.GetAll();
         }
 
         private void AddAptBtn_Click(object sender, EventArgs e)
@@ -75,11 +83,11 @@ namespace AppointmentScheduler.Forms
             try
             {
                 var customerId = _customerRepo.Add(name, address, phone);
-                MessageService.DisplayMessage(_currentUser.Language, "AddedAppointment", MessageBoxIcon.Information);
+                MessageService.DisplayMessage(_currentUser.Language, "AddedCustomer", MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToAddAppointment", ex);
+                MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToAddCustomer", ex);
             }
         }
 
