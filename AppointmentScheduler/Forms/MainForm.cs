@@ -51,6 +51,8 @@ namespace AppointmentScheduler.Forms
             {
                 MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToAddAppointment", ex);
             }
+
+            UpdateTables();
         }
 
         private void AddCustBtn_Click(object sender, EventArgs e)
@@ -74,6 +76,8 @@ namespace AppointmentScheduler.Forms
             {
                 MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToAddCustomer", ex);
             }
+
+            UpdateTables();
         }
 
         private void UpdateBtn_Click(object sender, EventArgs e)
@@ -125,6 +129,8 @@ namespace AppointmentScheduler.Forms
             {
                 MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToAddAppointment", ex);
             }
+
+            UpdateTables();
         }
 
         private void UpdateCustBtn_Click(object sender, EventArgs e)
@@ -166,6 +172,8 @@ namespace AppointmentScheduler.Forms
             {
                 MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToUpdateCustomer", ex);
             }
+
+            UpdateTables();
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)
@@ -192,6 +200,8 @@ namespace AppointmentScheduler.Forms
             {
                 MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToDeleteAppointment", ex);
             }
+
+            UpdateTables();
         }
 
         private void DeleteCustBtn_Click(object sender, EventArgs e)
@@ -218,6 +228,8 @@ namespace AppointmentScheduler.Forms
             {
                 MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToDeleteCustomer", ex);
             }
+
+            UpdateTables();
         }
 
         private void GenRptBtn_Click(object sender, EventArgs e)
@@ -233,7 +245,7 @@ namespace AppointmentScheduler.Forms
             CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Customer ID",
-                DataPropertyName = "CustomerId"
+                DataPropertyName = "Id"
             });
             CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
             {
