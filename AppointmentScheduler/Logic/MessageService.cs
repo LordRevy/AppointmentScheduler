@@ -9,7 +9,7 @@ namespace AppointmentScheduler.Logic
             {
                 ["en"] = new Dictionary<string, string>
                 {
-                    ["LoginSuccess"] = "Login successful.\nWelcome -username-! Your Language is -language-, your Country is -country-, your Timezone is -timezone-.\nDoes this sound correct?",
+                    ["LoginSuccess"] = "Login successful.\nWelcome -username-!\nLanguage selection: -language-\nCountry: -country-\nTimezone: -timezone-.\nDoes this sound correct?",
                     ["LoginFailed"] = "Invalid username or password.",
                     ["InvalidId"] = "Invalid ID format. Please enter a valid integer.",
                     ["AddedAppointment"] = "Appointment added successfully!",

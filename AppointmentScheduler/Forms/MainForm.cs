@@ -1,17 +1,6 @@
 ﻿using AppointmentScheduler.Data;
 using AppointmentScheduler.Domain;
 using AppointmentScheduler.Logic;
-using Microsoft.VisualBasic.ApplicationServices;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace AppointmentScheduler.Forms
 {
@@ -33,13 +22,9 @@ namespace AppointmentScheduler.Forms
             _customerRepo = new CustomerRepository();
             _validator = new Validator(_appointmentRepo);
 
+            CustomerTable.AutoGenerateColumns = false;
+            AppointmentTable.AutoGenerateColumns = false;
             UpdateTables();
-        }
-
-        private void UpdateTables()
-        {
-            CustomerTable.DataSource = _customerRepo.GetAll();
-            AppointmentTable.DataSource = _appointmentRepo.GetAll();
         }
 
         private void AddAptBtn_Click(object sender, EventArgs e)
@@ -239,6 +224,74 @@ namespace AppointmentScheduler.Forms
         private void GenRptBtn_Click(object sender, EventArgs e)
         {
             new Reports(_currentUser, _appointmentRepo).Show();
+        }
+
+        private void UpdateTables()
+        {
+            CustomerTable.Columns.Clear();
+            AppointmentTable.Columns.Clear();
+
+            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Customer ID",
+                DataPropertyName = "CustomerId"
+            });
+            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Name",
+                DataPropertyName = "Name"
+            });
+            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Address",
+                DataPropertyName = "Address"
+            });
+            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Phone",
+                DataPropertyName = "Phone"
+            });
+
+            AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Appointment ID",
+                DataPropertyName = "AppointmentId"
+            });
+            AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Customer ID",
+                DataPropertyName = "CustomerId"
+            });
+            AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "User ID",
+                DataPropertyName = "UserId"
+            });
+            AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Title",
+                DataPropertyName = "Title"
+            });
+            AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Type",
+                DataPropertyName = "Type"
+            });
+            AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Start",
+                DataPropertyName = "Start",
+                DefaultCellStyle = { Format = "g" }
+            });
+            AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "End",
+                DataPropertyName = "End",
+                DefaultCellStyle = { Format = "g" }
+            });
+
+            CustomerTable.DataSource = _customerRepo.GetAll();
+            AppointmentTable.DataSource = _appointmentRepo.GetAll();
         }
     }
 }
