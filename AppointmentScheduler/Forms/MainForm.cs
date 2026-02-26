@@ -31,12 +31,13 @@ namespace AppointmentScheduler.Forms
         {
             try
             {
+                // Validate input fields
                 var customerId = Convert.ToInt32(CustIdText.Text);
                 var userId = Convert.ToInt32(UserIdText.Text);
                 var title = TitleText.Text.Trim();
                 var type = TypeText.Text.Trim();
-                var start = DateTime.Parse(StartText.Text);
-                var end = DateTime.Parse(EndText.Text);
+                var start = AptDate.Text;
+                var end = AptStartTime;
 
                 if (!_validator.ValidateAppointment(start, end))
                 {
@@ -44,6 +45,7 @@ namespace AppointmentScheduler.Forms
                     return;
                 }
 
+                // Attempt to add appointment to repository
                 var appointmentId = _appointmentRepo.Add(customerId, userId, title, type, start, end);
                 MessageService.DisplayMessage(_currentUser.Language, "AddedAppointment", MessageBoxIcon.Information);
             }
@@ -57,6 +59,7 @@ namespace AppointmentScheduler.Forms
 
         private void AddCustBtn_Click(object sender, EventArgs e)
         {
+            // Validate input fields
             var name = NameText.Text.Trim();
             var address = AddressText.Text.Trim();
             var phone = PhoneText.Text.Trim();
@@ -67,6 +70,7 @@ namespace AppointmentScheduler.Forms
                 return;
             }
 
+            // Attempt to add customer to repository
             try
             {
                 var customerId = _customerRepo.Add(name, address, phone);
@@ -85,28 +89,12 @@ namespace AppointmentScheduler.Forms
             int appointmentId;
             Appointment appointment;
 
+            // Find Appointment using ID
             try
             {
                 appointmentId = Convert.ToInt32(AptIdText.Text);
                 appointment = _appointmentRepo.GetById(appointmentId) ?? throw new Exception("Appointment not found");
 
-                if (!string.IsNullOrWhiteSpace(CustIdText.Text))
-                    appointment.CustomerId = Convert.ToInt32(CustIdText.Text);
-
-                if (!string.IsNullOrWhiteSpace(UserIdText.Text))
-                    appointment.UserId = Convert.ToInt32(UserIdText.Text);
-
-                if (!string.IsNullOrWhiteSpace(TitleText.Text))
-                    appointment.Title = TitleText.Text.Trim();
-
-                if (!string.IsNullOrWhiteSpace(TypeText.Text))
-                    appointment.Type = TypeText.Text.Trim();
-
-                if (!string.IsNullOrWhiteSpace(StartText.Text))
-                    appointment.Start = DateTime.Parse(StartText.Text);
-
-                if (!string.IsNullOrWhiteSpace(EndText.Text))
-                    appointment.End = DateTime.Parse(EndText.Text);
             }
             catch (Exception ex)
             {
@@ -114,12 +102,26 @@ namespace AppointmentScheduler.Forms
                 return;
             }
 
+            // Update fields if new values provided
+            appointment.CustomerId = UpdateInt(CustIdText, appointment.CustomerId);
+            appointment.UserId = UpdateInt(UserIdText, appointment.UserId);
+            appointment.Title = UpdateString(TitleText, appointment.Title);
+            appointment.Type = UpdateString(TypeText, appointment.Type);
+            appointment.Start = UpdateDate(StartText, appointment.Start);
+            appointment.End = UpdateDate(EndText, appointment.End);
+
+            // Confirm update with user
+            if (!MessageService.DisplayYesOrNo(_currentUser.Language, "AreYouSure", MessageBoxIcon.Warning))
+                return;
+
+            // Validate updated appointment
             if (!_validator.ValidateAppointment(appointment.Start, appointment.End))
             {
                 MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
                 return;
             }
 
+            // Attempt to update appointment in repository
             try
             {
                 _appointmentRepo.Update(appointment);
@@ -136,6 +138,8 @@ namespace AppointmentScheduler.Forms
         private void UpdateCustBtn_Click(object sender, EventArgs e)
         {
             int customerId;
+
+            // Find Customer using ID
             try
             {
                 customerId = Convert.ToInt32(CustTableId.Text.Trim());
@@ -147,6 +151,11 @@ namespace AppointmentScheduler.Forms
                 return;
             }
 
+            // Confirm update with user
+            if (!MessageService.DisplayYesOrNo(_currentUser.Language, "AreYouSure", MessageBoxIcon.Warning))
+                return;
+
+            // Load Customer from repository
             var customer = _customerRepo.GetById(customerId);
             if (customer == null)
             {
@@ -155,21 +164,19 @@ namespace AppointmentScheduler.Forms
                 return;
             }
 
-            if (!string.IsNullOrWhiteSpace(NameText.Text))
-                customer.Name = NameText.Text.Trim();
+            // Update fields if new values provided
+            customer.Name = UpdateString(NameText, customer.Name);
+            customer.Address = UpdateString(AddressText, customer.Address);
+            customer.Phone = UpdateString(PhoneText, customer.Phone);
 
-            if (!string.IsNullOrWhiteSpace(AddressText.Text))
-                customer.Address = AddressText.Text.Trim();
-
-            if (!string.IsNullOrWhiteSpace(PhoneText.Text))
-                customer.Phone = PhoneText.Text.Trim();
-
+            // Validate updated customer
             if (!_validator.ValidateCustomer(customer.Name, customer.Address, customer.Phone))
             {
                 MessageService.DisplayMessage(_currentUser.Language, "InvalidInput", MessageBoxIcon.Warning);
                 return;
             }
 
+            // Attempt to update customer in repository
             try
             {
                 _customerRepo.Update(customer);
@@ -187,6 +194,7 @@ namespace AppointmentScheduler.Forms
         {
             Appointment appointment;
 
+            // Find Appointment using ID
             try
             {
                 var appointmentId = Convert.ToInt32(AptIdText.Text);
@@ -198,6 +206,11 @@ namespace AppointmentScheduler.Forms
                 return;
             }
 
+            // Confirm deletion with user
+            if (!MessageService.DisplayYesOrNo(_currentUser.Language, "AreYouSure", MessageBoxIcon.Warning))
+                return;
+
+            // Attempt to delete appointment
             try
             {
                 _appointmentRepo.Delete(appointment);
@@ -215,9 +228,10 @@ namespace AppointmentScheduler.Forms
         {
             Customer customer;
 
+            // Find Customer using ID
             try
             {
-                var customerId = Convert.ToInt32(CustIdText.Text);
+                var customerId = Convert.ToInt32(CustTableId.Text);
                 customer = _customerRepo.GetById(customerId) ?? throw new Exception("Customer not found");
             }
             catch (Exception ex)
@@ -226,6 +240,11 @@ namespace AppointmentScheduler.Forms
                 return;
             }
 
+            // Confirm deletion with user
+            if (!MessageService.DisplayYesOrNo(_currentUser.Language, "AreYouSure", MessageBoxIcon.Warning))
+                return;
+
+            // Attempt to delete customer
             try
             {
                 _customerRepo.Delete(customer);
@@ -313,5 +332,46 @@ namespace AppointmentScheduler.Forms
             CustomerTable.DataSource = _customerRepo.GetAll();
             AppointmentTable.DataSource = _appointmentRepo.GetAll();
         }
+
+        private string UpdateString(TextBox box, string defaultValue)
+        {
+            var userInput = box.Text.Trim();
+            return string.IsNullOrWhiteSpace(userInput) ? defaultValue : userInput;
+        }
+
+        private int UpdateInt(TextBox box, int defaultValue)
+        {
+            var userInput = box.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(userInput))
+                return defaultValue;
+
+            try
+            {
+                return Convert.ToInt32(userInput);
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
+        private DateTime UpdateDate(TextBox box, DateTime defaultValue)
+        {
+            var userInput = box.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(userInput))
+                return defaultValue;
+
+            try
+            {
+                return DateTime.Parse(userInput);
+            }
+            catch
+            {
+                return defaultValue;
+            }
+        }
+
     }
 }

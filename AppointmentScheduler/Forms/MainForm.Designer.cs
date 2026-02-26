@@ -38,8 +38,6 @@
             UserIdText = new TextBox();
             TitleText = new TextBox();
             TypeText = new TextBox();
-            StartText = new TextBox();
-            EndText = new TextBox();
             UpdateBtn = new Button();
             DeleteBtn = new Button();
             CustTableId = new TextBox();
@@ -50,6 +48,11 @@
             UpdateCustBtn = new Button();
             DeleteCustBtn = new Button();
             GenRptBtn = new Button();
+            AptStartTime = new DateTimePicker();
+            AptEndTime = new DateTimePicker();
+            label1 = new Label();
+            label2 = new Label();
+            AptDate = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)AppointmentTable).BeginInit();
             ((System.ComponentModel.ISupportInitialize)CustomerTable).BeginInit();
             SuspendLayout();
@@ -59,7 +62,7 @@
             AppointmentTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             AppointmentTable.Location = new Point(12, 12);
             AppointmentTable.Name = "AppointmentTable";
-            AppointmentTable.Size = new Size(776, 150);
+            AppointmentTable.Size = new Size(835, 150);
             AppointmentTable.TabIndex = 0;
             // 
             // CustomerTable
@@ -67,7 +70,7 @@
             CustomerTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CustomerTable.Location = new Point(12, 247);
             CustomerTable.Name = "CustomerTable";
-            CustomerTable.Size = new Size(444, 150);
+            CustomerTable.Size = new Size(546, 150);
             CustomerTable.TabIndex = 1;
             // 
             // AddAptBtn
@@ -119,22 +122,6 @@
             TypeText.PlaceholderText = "Type";
             TypeText.Size = new Size(111, 23);
             TypeText.TabIndex = 7;
-            // 
-            // StartText
-            // 
-            StartText.Location = new Point(564, 168);
-            StartText.Name = "StartText";
-            StartText.PlaceholderText = "Start";
-            StartText.Size = new Size(109, 23);
-            StartText.TabIndex = 8;
-            // 
-            // EndText
-            // 
-            EndText.Location = new Point(679, 168);
-            EndText.Name = "EndText";
-            EndText.PlaceholderText = "End";
-            EndText.Size = new Size(109, 23);
-            EndText.TabIndex = 9;
             // 
             // UpdateBtn
             // 
@@ -190,7 +177,7 @@
             // 
             // AddCustBtn
             // 
-            AddCustBtn.Location = new Point(460, 403);
+            AddCustBtn.Location = new Point(562, 247);
             AddCustBtn.Name = "AddCustBtn";
             AddCustBtn.Size = new Size(72, 23);
             AddCustBtn.TabIndex = 16;
@@ -200,7 +187,7 @@
             // 
             // UpdateCustBtn
             // 
-            UpdateCustBtn.Location = new Point(462, 374);
+            UpdateCustBtn.Location = new Point(564, 276);
             UpdateCustBtn.Name = "UpdateCustBtn";
             UpdateCustBtn.Size = new Size(70, 23);
             UpdateCustBtn.TabIndex = 17;
@@ -210,7 +197,7 @@
             // 
             // DeleteCustBtn
             // 
-            DeleteCustBtn.Location = new Point(462, 345);
+            DeleteCustBtn.Location = new Point(564, 305);
             DeleteCustBtn.Name = "DeleteCustBtn";
             DeleteCustBtn.Size = new Size(70, 23);
             DeleteCustBtn.TabIndex = 18;
@@ -220,7 +207,7 @@
             // 
             // GenRptBtn
             // 
-            GenRptBtn.Location = new Point(679, 403);
+            GenRptBtn.Location = new Point(740, 415);
             GenRptBtn.Name = "GenRptBtn";
             GenRptBtn.Size = new Size(109, 23);
             GenRptBtn.TabIndex = 19;
@@ -228,11 +215,58 @@
             GenRptBtn.UseVisualStyleBackColor = true;
             GenRptBtn.Click += GenRptBtn_Click;
             // 
+            // AptStartTime
+            // 
+            AptStartTime.Format = DateTimePickerFormat.Time;
+            AptStartTime.Location = new Point(738, 168);
+            AptStartTime.Name = "AptStartTime";
+            AptStartTime.Size = new Size(107, 23);
+            AptStartTime.TabIndex = 22;
+            // 
+            // AptEndTime
+            // 
+            AptEndTime.Format = DateTimePickerFormat.Time;
+            AptEndTime.Location = new Point(738, 197);
+            AptEndTime.Name = "AptEndTime";
+            AptEndTime.Size = new Size(107, 23);
+            AptEndTime.TabIndex = 23;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(671, 174);
+            label1.Name = "label1";
+            label1.Size = new Size(61, 15);
+            label1.TabIndex = 24;
+            label1.Text = "Start Time";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(675, 203);
+            label2.Name = "label2";
+            label2.Size = new Size(57, 15);
+            label2.TabIndex = 25;
+            label2.Text = "End Time";
+            // 
+            // AptDate
+            // 
+            AptDate.Format = DateTimePickerFormat.Short;
+            AptDate.Location = new Point(564, 168);
+            AptDate.Name = "AptDate";
+            AptDate.Size = new Size(101, 23);
+            AptDate.TabIndex = 26;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(861, 450);
+            Controls.Add(AptDate);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(AptEndTime);
+            Controls.Add(AptStartTime);
             Controls.Add(GenRptBtn);
             Controls.Add(DeleteCustBtn);
             Controls.Add(UpdateCustBtn);
@@ -243,8 +277,6 @@
             Controls.Add(CustTableId);
             Controls.Add(DeleteBtn);
             Controls.Add(UpdateBtn);
-            Controls.Add(EndText);
-            Controls.Add(StartText);
             Controls.Add(TypeText);
             Controls.Add(TitleText);
             Controls.Add(UserIdText);
@@ -283,5 +315,10 @@
         private Button UpdateCustBtn;
         private Button DeleteCustBtn;
         private Button GenRptBtn;
+        private DateTimePicker AptStartTime;
+        private DateTimePicker AptEndTime;
+        private Label label1;
+        private Label label2;
+        private DateTimePicker AptDate;
     }
 }

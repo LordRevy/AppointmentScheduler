@@ -11,6 +11,7 @@ namespace AppointmentScheduler.Logic
                 {
                     ["LoginSuccess"] = "Login successful.\nWelcome -username-!\nLanguage selection: -language-\nCountry: -country-\nTimezone: -timezone-.\nDoes this sound correct?",
                     ["LoginFailed"] = "Invalid username or password.",
+                    ["AreYouSure"] = "Warning, this action is permanent. Are you sure you want to proceed?",
                     ["InvalidId"] = "Invalid ID format. Please enter a valid integer.",
                     ["AddedAppointment"] = "Appointment added successfully!",
                     ["AppointmentOverlap"] = "The appointment times you entered overlap with an existing appointment. Please adjust the times and try again.",
@@ -71,6 +72,20 @@ namespace AppointmentScheduler.Logic
             var errorMessage = messages[language][message].Replace("-exception-", ex.Message);
 
             MessageBox.Show(errorMessage, message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        public static bool DisplayYesOrNo(string language, string message, MessageBoxIcon icon)
+        {
+            if (!messages.ContainsKey(language))
+                language = "en";
+
+            if (!messages[language].ContainsKey(message))
+            {
+                MessageBox.Show($"Message {message} not found in message list.", "Internal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            return (MessageBox.Show(messages[language][message], message, MessageBoxButtons.YesNo, icon)) == DialogResult.Yes;
         }
 
         public static void DisplayLoginSuccessMessage(User user)
