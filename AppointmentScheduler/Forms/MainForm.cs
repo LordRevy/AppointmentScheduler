@@ -135,10 +135,15 @@ namespace AppointmentScheduler.Forms
 
         private void UpdateCustBtn_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(CustIdText.Text.Trim(), out int customerId))
+            int customerId;
+            try
             {
-                MessageService.DisplayMessage(_currentUser.Language, "CustomerMissing", MessageBoxIcon.Error);
-                Console.WriteLine($"Customer ID could not be parsed from input: '{CustIdText.Text}'");
+                customerId = Convert.ToInt32(CustIdText.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                MessageService.DisplayErrorMessage(_currentUser.Language, "CustomerMissing", ex);
+                System.Diagnostics.Debug.Write($"Customer ID could not be parsed from input: '{CustIdText.Text}'");
                 return;
             }
 
@@ -146,7 +151,7 @@ namespace AppointmentScheduler.Forms
             if (customer == null)
             {
                 MessageService.DisplayMessage(_currentUser.Language, "CustomerMissing", MessageBoxIcon.Error);
-                Console.WriteLine($"Customer with ID {customerId} not found.");
+                System.Diagnostics.Debug.Write($"Customer with ID {customerId} not found.");
                 return;
             }
 
