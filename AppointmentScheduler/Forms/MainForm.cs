@@ -242,6 +242,7 @@ namespace AppointmentScheduler.Forms
             CustomerTable.Columns.Clear();
             AppointmentTable.Columns.Clear();
 
+            //Customer Table
             CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Customer ID",
@@ -263,6 +264,7 @@ namespace AppointmentScheduler.Forms
                 DataPropertyName = "Phone"
             });
 
+            // Appointment Table
             AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Appointment ID",
