@@ -138,7 +138,7 @@ namespace AppointmentScheduler.Forms
             int customerId;
             try
             {
-                customerId = Convert.ToInt32(CustIdText.Text.Trim());
+                customerId = Convert.ToInt32(CustTableId.Text.Trim());
             }
             catch (Exception ex)
             {
