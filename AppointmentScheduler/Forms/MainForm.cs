@@ -36,8 +36,8 @@ namespace AppointmentScheduler.Forms
                 var userId = Convert.ToInt32(UserIdText.Text);
                 var title = TitleText.Text.Trim();
                 var type = TypeText.Text.Trim();
-                var start = AptDate.Text;
-                var end = AptStartTime;
+                var start = GetDateTime(AptDate.Value, AptStartTime.Value);
+                var end = GetDateTime(AptDate.Value, AptEndTime.Value);
 
                 if (!_validator.ValidateAppointment(start, end))
                 {
@@ -107,12 +107,8 @@ namespace AppointmentScheduler.Forms
             appointment.UserId = UpdateInt(UserIdText, appointment.UserId);
             appointment.Title = UpdateString(TitleText, appointment.Title);
             appointment.Type = UpdateString(TypeText, appointment.Type);
-            appointment.Start = UpdateDate(StartText, appointment.Start);
-            appointment.End = UpdateDate(EndText, appointment.End);
-
-            // Confirm update with user
-            if (!MessageService.DisplayYesOrNo(_currentUser.Language, "AreYouSure", MessageBoxIcon.Warning))
-                return;
+            appointment.Start = GetDateTime(AptDate.Value, AptStartTime.Value);
+            appointment.End = GetDateTime(AptDate.Value, AptEndTime.Value);
 
             // Validate updated appointment
             if (!_validator.ValidateAppointment(appointment.Start, appointment.End))
@@ -120,6 +116,10 @@ namespace AppointmentScheduler.Forms
                 MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
                 return;
             }
+
+            // Confirm update with user
+            if (!MessageService.DisplayYesOrNo(_currentUser.Language, "AreYouSure", MessageBoxIcon.Warning))
+                return;
 
             // Attempt to update appointment in repository
             try
@@ -333,6 +333,22 @@ namespace AppointmentScheduler.Forms
             AppointmentTable.DataSource = _appointmentRepo.GetAll();
         }
 
+        // Helper method to combine date and time inputs into a single DateTime object
+        private DateTime GetDateTime(DateTime date, DateTime time)
+        {
+            DateTime appointmentTime = new DateTime(
+                date.Year,
+                date.Month,
+                date.Day,
+                time.Hour,
+                time.Minute,
+                0
+            );
+
+            return appointmentTime;
+        }
+
+        // Helper methods to update fields only if new values provided, otherwise keep existing values
         private string UpdateString(TextBox box, string defaultValue)
         {
             var userInput = box.Text.Trim();
@@ -355,23 +371,5 @@ namespace AppointmentScheduler.Forms
                 return defaultValue;
             }
         }
-
-        private DateTime UpdateDate(TextBox box, DateTime defaultValue)
-        {
-            var userInput = box.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(userInput))
-                return defaultValue;
-
-            try
-            {
-                return DateTime.Parse(userInput);
-            }
-            catch
-            {
-                return defaultValue;
-            }
-        }
-
     }
 }
