@@ -22,7 +22,7 @@ namespace AppointmentScheduler.Logic
                     ["UpdatedAppointment"] = "Appointment updated successfully!",
                     ["AppointmentIDMissing"] = "The Appointment ID is missing or does not exist within the database.\n\n-exception-",
                     ["UpdatedCustomer"] = "Customer updated successfully!",
-                    ["CustomerMissing"] = "The Customer ID is missing or does not exist within the database.\n\n-exception-",
+                    ["CustomerIDMissing"] = "The Customer ID is missing or does not exist within the database.\n\n-exception-",
                     ["FailedToUpdateAppointment"] = "Failed to update appointment. Please check your input and try again.\n\n-exception-",
                     ["FailedToUpdateCustomer"] = "Failed to update customer. Please check your input and try again.\n\n-exception-",
                     ["DeletedAppointment"] = "Appointment deleted successfully!",
@@ -58,7 +58,10 @@ namespace AppointmentScheduler.Logic
                 language = "en";
 
             if (!messages[language].ContainsKey(message))
+            {
                 MessageBox.Show($"Message {message} not found in message list.", "Internal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             MessageBox.Show(messages[language][message], message + "\n" + additionalInfo, MessageBoxButtons.OK, icon);
         }
@@ -69,7 +72,10 @@ namespace AppointmentScheduler.Logic
                 language = "en";
 
             if (!messages[language].ContainsKey(message))
+            {
                 MessageBox.Show($"Message {message} not found in message list.", "Internal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             var errorMessage = messages[language][message].Replace("-exception-", ex.Message);
 
