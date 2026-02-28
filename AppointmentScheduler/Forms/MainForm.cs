@@ -32,23 +32,26 @@ namespace AppointmentScheduler.Forms
             try
             {
                 // Validate input fields
-                var customerId = Convert.ToInt32(CustIdText.Text);
-                var userId = Convert.ToInt32(UserIdText.Text);
-                var title = TitleText.Text.Trim();
-                var type = TypeText.Text.Trim();
-                var start = GetDateTime(AptDate.Value, AptStartTime.Value);
-                var end = GetDateTime(AptDate.Value, AptEndTime.Value);
+                var apt = new Appointment
+                {
+                    CustomerId = Convert.ToInt32(CustIdText.Text),
+                    UserId = Convert.ToInt32(UserIdText.Text),
+                    Title = TitleText.Text.Trim(),
+                    Type = TypeText.Text.Trim(),
+                    Start = GetDateTime(AptDate.Value, AptStartTime.Value),
+                    End = GetDateTime(AptDate.Value, AptEndTime.Value)
+                };
 
                 // Validate appointment times are within business hours and do not overlap with existing appointments
-                if (!_validator.ValidateAppointment(start, end))
+                if (!_validator.ValidateAppointment(apt))
                 {
                     MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
                     return;
                 }
 
                 // Attempt to add appointment to repository
-                var appointmentId = _appointmentRepo.Add(customerId, userId, title, type, start, end);
-                MessageService.DisplayMessage(_currentUser.Language, "AddedAppointment", MessageBoxIcon.Information);
+                var appointmentId = _appointmentRepo.Add(apt).ToString();
+                MessageService.DisplayMessage(_currentUser.Language, "AddedAppointment", MessageBoxIcon.Information, appointmentId);
             }
             catch (Exception ex)
             {
@@ -74,8 +77,8 @@ namespace AppointmentScheduler.Forms
             // Attempt to add customer to repository
             try
             {
-                var customerId = _customerRepo.Add(name, address, phone);
-                MessageService.DisplayMessage(_currentUser.Language, "AddedCustomer", MessageBoxIcon.Information);
+                var customerId = _customerRepo.Add(name, address, phone).ToString();
+                MessageService.DisplayMessage(_currentUser.Language, "AddedCustomer", MessageBoxIcon.Information, customerId);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using AppointmentScheduler.Domain;
+using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 namespace AppointmentScheduler.Logic
 {
@@ -50,7 +51,7 @@ namespace AppointmentScheduler.Logic
                 }
             };
 
-        public static void DisplayMessage(string language, string message, MessageBoxIcon icon)
+        public static void DisplayMessage(string language, string message, MessageBoxIcon icon, string additionalInfo = "")
         {
             if (!messages.ContainsKey(language))
                 language = "en";
@@ -58,7 +59,7 @@ namespace AppointmentScheduler.Logic
             if (!messages[language].ContainsKey(message))
                 MessageBox.Show($"Message {message} not found in message list.", "Internal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            MessageBox.Show(messages[language][message], message, MessageBoxButtons.OK, icon);
+            MessageBox.Show(messages[language][message], message + "\n" + additionalInfo, MessageBoxButtons.OK, icon);
         }
 
         public static void DisplayErrorMessage(string language, string message, Exception ex)

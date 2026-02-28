@@ -45,7 +45,7 @@ namespace AppointmentScheduler.Data
         /// <summary>
         /// Creates a new Appointment and returns the appointmentId that is created from it.
         /// </summary>
-        public int Add(int customerId, int userId, string title, string type, DateTime start, DateTime end)
+        public int Add(Appointment apt)
         {
             using var conn = GetConnection();
             conn.Open();
@@ -60,12 +60,12 @@ namespace AppointmentScheduler.Data
             ExecuteNonQuery(
                 sql,
                 conn,
-                customerId,
-                userId,
-                title.Trim(),
-                type.Trim(),
-                start,
-                end
+                apt.CustomerId,
+                apt.UserId,
+                apt.Title.Trim(),
+                apt.Type.Trim(),
+                apt.Start,
+                apt.End
             );
 
             return GetCreatedId(conn);
