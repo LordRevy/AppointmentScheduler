@@ -178,23 +178,25 @@ namespace AppointmentScheduler.Data
         /// <summary>
         /// Similar to GetDateRange but simply returns a bool if the input appointment overlaps with database entries.
         /// </summary>
-        public bool CheckAppointmentOverlap(DateTime start, DateTime end)
+        public bool CheckAppointmentOverlap(Appointment apt)
         {
-            var appointmentsInRange = new List<Appointment>();
             using var conn = GetConnection();
             conn.Open();
 
-            const string sql = @"
-                SELECT appointmentId, customerId, userId, title, type, start, `end`
+            string overlapSql = @"
+                SELECT appointmentId
                 FROM appointment
-                WHERE start >= ? AND start < ?
-                ORDER BY start;";
+                WHERE start < ? AND end > ? AND appointmentId <> ?
+                LIMIT 1;";
 
-            using var cmd = new MySqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue(string.Empty, start);
-            cmd.Parameters.AddWithValue(string.Empty, end);
+            using var cmd = new MySqlCommand(overlapSql, conn);
+
+            cmd.Parameters.AddWithValue(string.Empty, apt.End);
+            cmd.Parameters.AddWithValue(string.Empty, apt.Start);
+            cmd.Parameters.AddWithValue(string.Empty, apt.AppointmentId);
 
             using var r = cmd.ExecuteReader();
+
             return r.Read();
         }
 

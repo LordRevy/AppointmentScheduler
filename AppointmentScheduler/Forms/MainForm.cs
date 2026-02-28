@@ -39,6 +39,7 @@ namespace AppointmentScheduler.Forms
                 var start = GetDateTime(AptDate.Value, AptStartTime.Value);
                 var end = GetDateTime(AptDate.Value, AptEndTime.Value);
 
+                // Validate appointment times are within business hours and do not overlap with existing appointments
                 if (!_validator.ValidateAppointment(start, end))
                 {
                     MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
@@ -107,14 +108,20 @@ namespace AppointmentScheduler.Forms
             appointment.UserId = UpdateInt(UserIdText, appointment.UserId);
             appointment.Title = UpdateString(TitleText, appointment.Title);
             appointment.Type = UpdateString(TypeText, appointment.Type);
-            appointment.Start = GetDateTime(AptDate.Value, AptStartTime.Value);
-            appointment.End = GetDateTime(AptDate.Value, AptEndTime.Value);
+            var newStartDate = GetDateTime(AptDate.Value, AptStartTime.Value);
+            var newEndDate = GetDateTime(AptDate.Value, AptEndTime.Value);
 
-            // Validate updated appointment
-            if (!_validator.ValidateAppointment(appointment.Start, appointment.End))
+            // Validate updated appointment times if they were changed
+            if (newStartDate != appointment.Start || newEndDate != appointment.End)
             {
-                MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
-                return;
+                appointment.Start = newStartDate;
+                appointment.End = newEndDate;
+
+                if (!_validator.ValidateAppointment(appointment))
+                {
+                    MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
+                    return;
+                }
             }
 
             // Confirm update with user

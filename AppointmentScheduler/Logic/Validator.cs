@@ -1,4 +1,5 @@
 ﻿using AppointmentScheduler.Data;
+using AppointmentScheduler.Domain;
 
 namespace AppointmentScheduler.Logic
 {
@@ -32,22 +33,24 @@ namespace AppointmentScheduler.Logic
         /// Checks to see if the appointment day is between mon-fri.
         /// Verifies that there are no overlapping appointments in the Database.
         /// </summary>
-        public bool ValidateAppointment(DateTime start, DateTime end)
+        public bool ValidateAppointment(Appointment apt)
         {
-            DayOfWeek day = start.DayOfWeek;
-            TimeSpan startTime = start.TimeOfDay;
-            TimeSpan endTime = end.TimeOfDay;
+            if (apt.Start > apt.End)
+                return false;
+            
+            DayOfWeek day = apt.Start.DayOfWeek;
+            TimeSpan startTime = apt.Start.TimeOfDay;
+            TimeSpan endTime = apt.End.TimeOfDay;
 
-            TimeSpan officeOpen = new TimeSpan(9, 0, 0);
-            TimeSpan officeClose = new TimeSpan(17, 0, 0);
+            TimeSpan officeOpen = new (9, 0, 0);
+            TimeSpan officeClose = new (17, 0, 0);
 
-            if (day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)
+            if (day == DayOfWeek.Saturday || day == DayOfWeek.Sunday 
+                || startTime < officeOpen || endTime > officeClose)
                 return false;
 
-            if (startTime < officeOpen || endTime > officeClose)
-                return false;
-
-            return !_appointmentRepo.CheckAppointmentOverlap(start, end);
+            var isOverlapping = _appointmentRepo.CheckAppointmentOverlap(apt);
+            return !isOverlapping;
         }
 
     }
