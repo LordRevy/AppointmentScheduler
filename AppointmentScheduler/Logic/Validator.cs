@@ -49,8 +49,7 @@ namespace AppointmentScheduler.Logic
                 || startTime < officeOpen || endTime > officeClose)
                 return false;
 
-            var isOverlapping = _appointmentRepo.CheckAppointmentOverlap(apt);
-            return !isOverlapping;
+            return true;
         }
 
     }

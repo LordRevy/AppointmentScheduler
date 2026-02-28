@@ -45,6 +45,12 @@ namespace AppointmentScheduler.Forms
                 // Validate appointment times are within business hours and do not overlap with existing appointments
                 if (!_validator.ValidateAppointment(apt))
                 {
+                    MessageService.DisplayMessage(_currentUser.Language, "InvalidTime", MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (_appointmentRepo.CheckAppointmentOverlap(apt))
+                {
                     MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
                     return;
                 }
@@ -120,7 +126,13 @@ namespace AppointmentScheduler.Forms
                 appointment.Start = newStartDate;
                 appointment.End = newEndDate;
 
-                if (_validator.ValidateAppointment(appointment))
+                if (!_validator.ValidateAppointment(appointment))
+                {
+                    MessageService.DisplayMessage(_currentUser.Language, "InvalidTime", MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (_appointmentRepo.CheckAppointmentOverlap(appointment))
                 {
                     MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
                     return;

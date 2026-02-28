@@ -29,6 +29,7 @@ namespace AppointmentScheduler.Logic
                     ["DeletedCustomer"] = "Customer deleted successfully!",
                     ["FailedToDeleteAppointment"] = "Failed to delete appointment. Please try again.\n\n-exception-",
                     ["FailedToDeleteCustomer"] = "Failed to delete customer. Please try again.\n\n-exception-",
+                    ["InvalidTime"] = "Time must be between 9:00 AM and 5:00 PM, Monday through Friday. Please adjust the appointment times and try again.",
                     ["InvalidInput"] = "Invalid input. Please check your entries and try again."
                 },
                 ["la"] = new Dictionary<string, string>
