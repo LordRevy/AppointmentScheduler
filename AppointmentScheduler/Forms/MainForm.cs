@@ -343,6 +343,8 @@ namespace AppointmentScheduler.Forms
             AppointmentTable.DataSource = _appointmentRepo.GetAll();
         }
 
+
+
         // Helper method to combine date and time inputs into a single DateTime object
         private DateTime GetDateTime(DateTime date, DateTime time)
         {
@@ -382,5 +384,36 @@ namespace AppointmentScheduler.Forms
             }
         }
 
+        // Populate appointment fields when an appointment is selected from the table
+        private void AppointmentTable_SelectionChanged(object sender, EventArgs e)
+        {
+            if (AppointmentTable.SelectedRows.Count == 0)
+                return;
+
+            Appointment selectedApt = (Appointment)AppointmentTable.SelectedRows[0].DataBoundItem;
+
+            AptIdText.Text = selectedApt.AppointmentId.ToString();
+            CustIdText.Text = selectedApt.CustomerId.ToString();
+            UserIdText.Text = selectedApt.UserId.ToString();
+            TitleText.Text = selectedApt.Title;
+            TypeText.Text = selectedApt.Type;
+            AptDate.Value = selectedApt.Start.Date;
+            AptStartTime.Value = selectedApt.Start;
+            AptEndTime.Value = selectedApt.End;
+        }
+
+        // Populate customer fields when a customer is selected from the table
+        private void CustomerTable_SelectionChanged(object sender, EventArgs e)
+        {
+            if (CustomerTable.SelectedRows.Count == 0)
+                return;
+
+            Customer selectedCust = (Customer)CustomerTable.SelectedRows[0].DataBoundItem;
+
+            CustTableId.Text = selectedCust.Id.ToString();
+            NameText.Text = selectedCust.Name;
+            AddressText.Text = selectedCust.Address;
+            PhoneText.Text = selectedCust.Phone;
+        }
     }
 }

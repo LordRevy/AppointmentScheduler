@@ -64,6 +64,7 @@
             AppointmentTable.Name = "AppointmentTable";
             AppointmentTable.Size = new Size(835, 150);
             AppointmentTable.TabIndex = 0;
+            AppointmentTable.SelectionChanged += AppointmentTable_SelectionChanged;
             // 
             // CustomerTable
             // 
@@ -72,6 +73,7 @@
             CustomerTable.Name = "CustomerTable";
             CustomerTable.Size = new Size(546, 150);
             CustomerTable.TabIndex = 1;
+            CustomerTable.SelectionChanged += CustomerTable_SelectionChanged;
             // 
             // AddAptBtn
             // 
