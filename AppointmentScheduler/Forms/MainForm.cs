@@ -120,7 +120,7 @@ namespace AppointmentScheduler.Forms
                 appointment.Start = newStartDate;
                 appointment.End = newEndDate;
 
-                if (!_validator.ValidateAppointment(appointment))
+                if (_validator.ValidateAppointment(appointment))
                 {
                     MessageService.DisplayMessage(_currentUser.Language, "AppointmentOverlap", MessageBoxIcon.Warning);
                     return;
@@ -381,5 +381,6 @@ namespace AppointmentScheduler.Forms
                 return defaultValue;
             }
         }
+
     }
 }

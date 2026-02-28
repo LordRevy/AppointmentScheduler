@@ -35,7 +35,7 @@ namespace AppointmentScheduler.Logic
         /// </summary>
         public bool ValidateAppointment(Appointment apt)
         {
-            if (apt.Start > apt.End)
+            if (apt.Start >= apt.End)
                 return false;
             
             DayOfWeek day = apt.Start.DayOfWeek;

@@ -117,7 +117,7 @@
             // 
             // TypeText
             // 
-            TypeText.Location = new Point(447, 168);
+            TypeText.Location = new Point(451, 168);
             TypeText.Name = "TypeText";
             TypeText.PlaceholderText = "Type";
             TypeText.Size = new Size(111, 23);
@@ -218,23 +218,23 @@
             // AptStartTime
             // 
             AptStartTime.Format = DateTimePickerFormat.Time;
-            AptStartTime.Location = new Point(738, 168);
+            AptStartTime.Location = new Point(764, 168);
             AptStartTime.Name = "AptStartTime";
-            AptStartTime.Size = new Size(107, 23);
+            AptStartTime.Size = new Size(83, 23);
             AptStartTime.TabIndex = 22;
             // 
             // AptEndTime
             // 
             AptEndTime.Format = DateTimePickerFormat.Time;
-            AptEndTime.Location = new Point(738, 197);
+            AptEndTime.Location = new Point(764, 197);
             AptEndTime.Name = "AptEndTime";
-            AptEndTime.Size = new Size(107, 23);
+            AptEndTime.Size = new Size(83, 23);
             AptEndTime.TabIndex = 23;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(671, 174);
+            label1.Location = new Point(697, 174);
             label1.Name = "label1";
             label1.Size = new Size(61, 15);
             label1.TabIndex = 24;
@@ -243,7 +243,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(675, 203);
+            label2.Location = new Point(701, 203);
             label2.Name = "label2";
             label2.Size = new Size(57, 15);
             label2.TabIndex = 25;
@@ -252,7 +252,7 @@
             // AptDate
             // 
             AptDate.Format = DateTimePickerFormat.Short;
-            AptDate.Location = new Point(564, 168);
+            AptDate.Location = new Point(590, 168);
             AptDate.Name = "AptDate";
             AptDate.Size = new Size(101, 23);
             AptDate.TabIndex = 26;
