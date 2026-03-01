@@ -34,21 +34,27 @@ namespace AppointmentScheduler.Logic
                 },
                 ["la"] = new Dictionary<string, string>
                 {
-                    ["LoginSuccess"] = "Ingressus felix.\nSalve, -username-! Lingua tua est -language-, patria tua est -country-, zona temporis tua est -timezone-.\nRectene hoc sonat?",
-                    ["LoginFailed"] = "Nomen usoris aut tessera non valida est.",
-                    ["InvalidId"] = "Forma ID non valida. Quaeso, numerum integrum validum inseras.",
+                    ["LoginSuccess"] = "Accessus prosper fuit.\nSalve, -username-!\nElectio linguae: -language-\nPatria: -country-\nZona temporis: -timezone-.\nRectene hoc sonat?",
+                    ["LoginFailed"] = "Nomen usoris aut tessera invalida est.",
+                    ["AreYouSure"] = "Monitio: haec actio perpetua est. Certusne es te pergere velle?",
+                    ["InvalidId"] = "Forma ID invalida est. Quaeso, integerum validum insere.",
                     ["AddedAppointment"] = "Conventus feliciter additus est!",
+                    ["AppointmentOverlap"] = "Tempora conventus a te inserta cum conventu iam exstante concurrunt. Quaeso tempora corrige et iterum tenta.",
                     ["AddedCustomer"] = "Cliens feliciter additus est!",
-                    ["FailedToAddAppointment"] = "Conventum addere non potui. Quaeso, data inspice et iterum tenta.\n\n-exception-",
-                    ["FailedToAddCustomer"] = "Clientem addere non potui. Quaeso, data inspice et iterum tenta.\n\n-exception-",
+                    ["FailedToAddAppointment"] = "Conventum addere non potuit. Quaeso, data tua verifica et iterum tenta.",
+                    ["FailedToAddCustomer"] = "Clientem addere non potuit. Quaeso, data tua verifica et iterum tenta.",
                     ["UpdatedAppointment"] = "Conventus feliciter renovatus est!",
+                    ["AppointmentIDMissing"] = "ID conventus deest aut in tabulario non exstat.",
                     ["UpdatedCustomer"] = "Cliens feliciter renovatus est!",
-                    ["FailedToUpdateAppointment"] = "Conventum renovare non potui. Quaeso, data inspice et iterum tenta.\n\n-exception-",
-                    ["FailedToUpdateCustomer"] = "Clientem renovare non potui. Quaeso, data inspice et iterum tenta.\n\n-exception-",
+                    ["CustomerIDMissing"] = "ID clientis deest aut in tabulario non exstat.",
+                    ["FailedToUpdateAppointment"] = "Conventum renovare non potuit. Quaeso, data tua verifica et iterum tenta.",
+                    ["FailedToUpdateCustomer"] = "Clientem renovare non potuit. Quaeso, data tua verifica et iterum tenta.",
                     ["DeletedAppointment"] = "Conventus feliciter deletus est!",
                     ["DeletedCustomer"] = "Cliens feliciter deletus est!",
-                    ["FailedToDeleteAppointment"] = "Conventum delere non potui. Quaeso, iterum tenta.\n\n-exception-",
-                    ["FailedToDeleteCustomer"] = "Clientem delere non potui. Quaeso, iterum tenta era invalida.\n\"
+                    ["FailedToDeleteAppointment"] = "Conventum delere non potuit. Quaeso iterum tenta.",
+                    ["FailedToDeleteCustomer"] = "Clientem delere non potuit. Quaeso iterum tenta.",
+                    ["InvalidTime"] = "Tempus inter horam IX ante meridiem et horam V post meridiem, a die Lunae ad diem Veneris, esse debet. Quaeso tempora conventus corrige et iterum tenta.",
+                    ["InvalidInput"] = "Inscriptio invalida est. Quaeso, quae inseruisti verifica et iterum tenta."
                 }
             };
 
