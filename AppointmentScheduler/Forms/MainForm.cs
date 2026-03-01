@@ -258,7 +258,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "CustomerIDMissing", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "CustomerIDMissing", MessageBoxIcon.Error, ex.ToString());
                 return;
             }
 
