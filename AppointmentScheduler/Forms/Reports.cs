@@ -13,17 +13,11 @@ namespace AppointmentScheduler.Forms
         public Reports(User user, AppointmentRepository appointmentRepo)
         {
             InitializeComponent();
-            AptByMonthTxt.Visible = false;
             CustIdTxt.Visible = false;
 
             _user = user;
             _appointmentRepo = appointmentRepo;
             _reportHandler = new ReportHandler(_appointmentRepo);
-        }
-
-        private void AptByMonth_CheckedChanged(object sender, EventArgs e)
-        {
-            AptByMonthTxt.Visible = AptByMonth.Checked;
         }
 
         private void CustSchedule_CheckedChanged(object sender, EventArgs e)
@@ -33,16 +27,20 @@ namespace AppointmentScheduler.Forms
 
         private void GetRpts_Click(object sender, EventArgs e)
         {
+            string columns;
+
             if (AptByMonth.Checked)
             {
                 var appointmentReport = _reportHandler.GenerateAppointmentsByMonthReport();
-                MessageService.WriteReport("AppointmentsByMonthReport", appointmentReport);
+                columns = "|--UserId--|---Type---|----Start----|----End----|";
+                MessageService.WriteReport("AppointmentsByMonthReport", appointmentReport, columns);
             }
 
             if (UsrSchedules.Checked)
             {
                 var userScheduleReport = _reportHandler.GenerateUserScheduleReport();
-                MessageService.WriteReport("UserScheduleReport", userScheduleReport);
+                columns = "|--Id--|---Type---|----Start----|----End----|";
+                MessageService.WriteReport("UserScheduleReport", userScheduleReport, columns);
             }
 
             if (CustSchedule.Checked)
@@ -54,7 +52,8 @@ namespace AppointmentScheduler.Forms
                 }
 
                 var customerScheduleReport = _reportHandler.GenerateCustomerScheduleReport(custId);
-                MessageService.WriteReport("CustomerScheduleReport", customerScheduleReport);
+                columns = "|--Id--|---Type---|----Start----|----End----|";
+                MessageService.WriteReport("CustomerScheduleReport", customerScheduleReport, columns);
             }
         }
     }

@@ -90,7 +90,6 @@
             LatinBtn.TabStop = true;
             LatinBtn.Text = "Latin";
             LatinBtn.UseVisualStyleBackColor = true;
-            LatinBtn.CheckedChanged += LatinBtn_CheckedChanged;
             // 
             // EnglishBtn
             // 
@@ -103,7 +102,6 @@
             EnglishBtn.TabStop = true;
             EnglishBtn.Text = "English";
             EnglishBtn.UseVisualStyleBackColor = true;
-            EnglishBtn.CheckedChanged += EnglishBtn_CheckedChanged;
             // 
             // Language
             // 

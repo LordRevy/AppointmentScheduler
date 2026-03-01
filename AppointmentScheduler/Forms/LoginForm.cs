@@ -25,15 +25,6 @@ namespace AppointmentScheduler
         {
             EnglishBtn.Checked = true;
         }
-        private void EnglishBtn_CheckedChanged(object sender, EventArgs e)
-        {
-            LatinBtn.Checked = false;
-        }
-
-        private void LatinBtn_CheckedChanged(object sender, EventArgs e)
-        {
-            EnglishBtn.Checked = false;
-        }
 
         private void LoginButton_Click(object sender, EventArgs e)
         {

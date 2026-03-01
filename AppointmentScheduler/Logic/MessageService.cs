@@ -17,18 +17,18 @@ namespace AppointmentScheduler.Logic
                     ["AddedAppointment"] = "Appointment added successfully!",
                     ["AppointmentOverlap"] = "The appointment times you entered overlap with an existing appointment. Please adjust the times and try again.",
                     ["AddedCustomer"] = "Customer added successfully!",
-                    ["FailedToAddAppointment"] = "Failed to add appointment. Please check your input and try again.\n\n-exception-",
-                    ["FailedToAddCustomer"] = "Failed to add customer. Please check your input and try again.\n\n-exception-",
+                    ["FailedToAddAppointment"] = "Failed to add appointment. Please check your input and try again.",
+                    ["FailedToAddCustomer"] = "Failed to add customer. Please check your input and try again.",
                     ["UpdatedAppointment"] = "Appointment updated successfully!",
-                    ["AppointmentIDMissing"] = "The Appointment ID is missing or does not exist within the database.\n\n-exception-",
+                    ["AppointmentIDMissing"] = "The Appointment ID is missing or does not exist within the database.",
                     ["UpdatedCustomer"] = "Customer updated successfully!",
-                    ["CustomerIDMissing"] = "The Customer ID is missing or does not exist within the database.\n\n-exception-",
-                    ["FailedToUpdateAppointment"] = "Failed to update appointment. Please check your input and try again.\n\n-exception-",
-                    ["FailedToUpdateCustomer"] = "Failed to update customer. Please check your input and try again.\n\n-exception-",
+                    ["CustomerIDMissing"] = "The Customer ID is missing or does not exist within the database.",
+                    ["FailedToUpdateAppointment"] = "Failed to update appointment. Please check your input and try again.",
+                    ["FailedToUpdateCustomer"] = "Failed to update customer. Please check your input and try again.",
                     ["DeletedAppointment"] = "Appointment deleted successfully!",
                     ["DeletedCustomer"] = "Customer deleted successfully!",
-                    ["FailedToDeleteAppointment"] = "Failed to delete appointment. Please try again.\n\n-exception-",
-                    ["FailedToDeleteCustomer"] = "Failed to delete customer. Please try again.\n\n-exception-",
+                    ["FailedToDeleteAppointment"] = "Failed to delete appointment. Please try again.",
+                    ["FailedToDeleteCustomer"] = "Failed to delete customer. Please try again.",
                     ["InvalidTime"] = "Time must be between 9:00 AM and 5:00 PM, Monday through Friday. Please adjust the appointment times and try again.",
                     ["InvalidInput"] = "Invalid input. Please check your entries and try again."
                 },
@@ -48,7 +48,7 @@ namespace AppointmentScheduler.Logic
                     ["DeletedAppointment"] = "Conventus feliciter deletus est!",
                     ["DeletedCustomer"] = "Cliens feliciter deletus est!",
                     ["FailedToDeleteAppointment"] = "Conventum delere non potui. Quaeso, iterum tenta.\n\n-exception-",
-                    ["FailedToDeleteCustomer"] = "Clientem delere non potui. Quaeso, iterum tenta era invalida.\n\n-exception-"
+                    ["FailedToDeleteCustomer"] = "Clientem delere non potui. Quaeso, iterum tenta era invalida.\n\"
                 }
             };
 
@@ -63,23 +63,7 @@ namespace AppointmentScheduler.Logic
                 return;
             }
 
-            MessageBox.Show(messages[language][message], message + "\n" + additionalInfo, MessageBoxButtons.OK, icon);
-        }
-
-        public static void DisplayErrorMessage(string language, string message, Exception ex)
-        {
-            if (!messages.ContainsKey(language))
-                language = "en";
-
-            if (!messages[language].ContainsKey(message))
-            {
-                MessageBox.Show($"Message {message} not found in message list.", "Internal Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            var errorMessage = messages[language][message].Replace("-exception-", ex.Message);
-
-            MessageBox.Show(errorMessage, message, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(messages[language][message], message + "\n\n" + additionalInfo, MessageBoxButtons.OK, icon);
         }
 
         public static bool DisplayYesOrNo(string language, string message, MessageBoxIcon icon)
@@ -114,7 +98,7 @@ namespace AppointmentScheduler.Logic
             }
         }
 
-        public static void WriteReport<T>(string reportName, List<T> reportData)
+        public static void WriteReport<T>(string reportName, List<T> reportData, string columns)
         {
             var reportPath = "C:\\Users\\LabUser\\source\\repos\\AppointmentScheduler\\AppointmentScheduler\\Reports\\Reports.txt";
             var timeStamp = DateTime.UtcNow;
@@ -123,14 +107,16 @@ namespace AppointmentScheduler.Logic
                 reportData.Select(r => r?.ToString() ?? "MISSING DATA"));
 
             var message = $@"
-====================================================
-Report: {reportName}
-Generated (UTC): {timeStamp:u}
-====================================================
-
-{formattedReport}
+===================================================================
+                Report: {reportName}
+                Generated (UTC): {timeStamp:u}
+___________________________________________________________________
+{ columns }
+{ formattedReport }
                 
+
                 *End of Report*
+
                 ";
 
             File.AppendAllText(reportPath, message);

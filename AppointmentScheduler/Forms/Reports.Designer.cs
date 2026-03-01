@@ -33,7 +33,6 @@
             AptByMonth = new CheckBox();
             UsrSchedules = new CheckBox();
             CustSchedule = new CheckBox();
-            AptByMonthTxt = new TextBox();
             CustIdTxt = new TextBox();
             SuspendLayout();
             // 
@@ -65,7 +64,6 @@
             AptByMonth.TabIndex = 5;
             AptByMonth.Text = "Appointments By Month";
             AptByMonth.UseVisualStyleBackColor = true;
-            AptByMonth.CheckedChanged += AptByMonth_CheckedChanged;
             // 
             // UsrSchedules
             // 
@@ -88,14 +86,6 @@
             CustSchedule.UseVisualStyleBackColor = true;
             CustSchedule.CheckedChanged += CustSchedule_CheckedChanged;
             // 
-            // AptByMonthTxt
-            // 
-            AptByMonthTxt.Location = new Point(213, 26);
-            AptByMonthTxt.Name = "AptByMonthTxt";
-            AptByMonthTxt.PlaceholderText = "Month";
-            AptByMonthTxt.Size = new Size(90, 23);
-            AptByMonthTxt.TabIndex = 8;
-            // 
             // CustIdTxt
             // 
             CustIdTxt.Location = new Point(213, 115);
@@ -110,7 +100,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(315, 243);
             Controls.Add(CustIdTxt);
-            Controls.Add(AptByMonthTxt);
             Controls.Add(CustSchedule);
             Controls.Add(UsrSchedules);
             Controls.Add(AptByMonth);
@@ -129,7 +118,6 @@
         private CheckBox AptByMonth;
         private CheckBox UsrSchedules;
         private CheckBox CustSchedule;
-        private TextBox AptByMonthTxt;
         private TextBox CustIdTxt;
     }
 }

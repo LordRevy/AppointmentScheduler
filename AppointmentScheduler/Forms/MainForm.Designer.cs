@@ -37,7 +37,6 @@
             CustIdText = new TextBox();
             UserIdText = new TextBox();
             TitleText = new TextBox();
-            TypeText = new TextBox();
             UpdateBtn = new Button();
             DeleteBtn = new Button();
             CustTableId = new TextBox();
@@ -53,6 +52,9 @@
             label1 = new Label();
             label2 = new Label();
             AptDate = new DateTimePicker();
+            TypeText = new ComboBox();
+            label3 = new Label();
+            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)AppointmentTable).BeginInit();
             ((System.ComponentModel.ISupportInitialize)CustomerTable).BeginInit();
             SuspendLayout();
@@ -77,7 +79,7 @@
             // 
             // AddAptBtn
             // 
-            AddAptBtn.Location = new Point(12, 197);
+            AddAptBtn.Location = new Point(12, 199);
             AddAptBtn.Name = "AddAptBtn";
             AddAptBtn.Size = new Size(70, 23);
             AddAptBtn.TabIndex = 2;
@@ -117,17 +119,9 @@
             TitleText.Size = new Size(109, 23);
             TitleText.TabIndex = 6;
             // 
-            // TypeText
-            // 
-            TypeText.Location = new Point(451, 168);
-            TypeText.Name = "TypeText";
-            TypeText.PlaceholderText = "Type";
-            TypeText.Size = new Size(111, 23);
-            TypeText.TabIndex = 7;
-            // 
             // UpdateBtn
             // 
-            UpdateBtn.Location = new Point(88, 197);
+            UpdateBtn.Location = new Point(88, 199);
             UpdateBtn.Name = "UpdateBtn";
             UpdateBtn.Size = new Size(70, 23);
             UpdateBtn.TabIndex = 10;
@@ -137,7 +131,7 @@
             // 
             // DeleteBtn
             // 
-            DeleteBtn.Location = new Point(164, 197);
+            DeleteBtn.Location = new Point(164, 199);
             DeleteBtn.Name = "DeleteBtn";
             DeleteBtn.Size = new Size(70, 23);
             DeleteBtn.TabIndex = 11;
@@ -254,16 +248,46 @@
             // AptDate
             // 
             AptDate.Format = DateTimePickerFormat.Short;
-            AptDate.Location = new Point(590, 168);
+            AptDate.Location = new Point(547, 197);
             AptDate.Name = "AptDate";
-            AptDate.Size = new Size(101, 23);
+            AptDate.Size = new Size(121, 23);
             AptDate.TabIndex = 26;
+            // 
+            // TypeText
+            // 
+            TypeText.FormattingEnabled = true;
+            TypeText.Items.AddRange(new object[] { "Scrum", "Project", "Monthly", "Cust Consult", "Executive", "Other" });
+            TypeText.Location = new Point(547, 168);
+            TypeText.Name = "TypeText";
+            TypeText.Size = new Size(121, 23);
+            TypeText.TabIndex = 27;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(509, 171);
+            label3.Name = "label3";
+            label3.Size = new Size(32, 15);
+            label3.TabIndex = 28;
+            label3.Text = "Type";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(509, 203);
+            label4.Name = "label4";
+            label4.Size = new Size(31, 15);
+            label4.TabIndex = 29;
+            label4.Text = "Date";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(861, 450);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(TypeText);
             Controls.Add(AptDate);
             Controls.Add(label2);
             Controls.Add(label1);
@@ -279,7 +303,6 @@
             Controls.Add(CustTableId);
             Controls.Add(DeleteBtn);
             Controls.Add(UpdateBtn);
-            Controls.Add(TypeText);
             Controls.Add(TitleText);
             Controls.Add(UserIdText);
             Controls.Add(CustIdText);
@@ -304,7 +327,6 @@
         private TextBox CustIdText;
         private TextBox UserIdText;
         private TextBox TitleText;
-        private TextBox TypeText;
         private TextBox StartText;
         private TextBox EndText;
         private Button UpdateBtn;
@@ -322,5 +344,8 @@
         private Label label1;
         private Label label2;
         private DateTimePicker AptDate;
+        private ComboBox TypeText;
+        private Label label3;
+        private Label label4;
     }
 }

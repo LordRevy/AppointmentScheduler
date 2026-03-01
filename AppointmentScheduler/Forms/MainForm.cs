@@ -37,7 +37,7 @@ namespace AppointmentScheduler.Forms
                     CustomerId = Convert.ToInt32(CustIdText.Text),
                     UserId = Convert.ToInt32(UserIdText.Text),
                     Title = TitleText.Text.Trim(),
-                    Type = TypeText.Text.Trim(),
+                    Type = TypeText.Text,
                     Start = GetDateTime(AptDate.Value, AptStartTime.Value),
                     End = GetDateTime(AptDate.Value, AptEndTime.Value)
                 };
@@ -61,7 +61,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToAddAppointment", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "FailedToAddAppointment", MessageBoxIcon.Error, ex.ToString());
             }
 
             UpdateTables();
@@ -88,7 +88,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToAddCustomer", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "FailedToAddCustomer", MessageBoxIcon.Error, ex.ToString());
             }
 
             UpdateTables();
@@ -108,7 +108,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "AppointmentIDMissing", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "AppointmentIDMissing", MessageBoxIcon.Error, ex.ToString());
                 return;
             }
 
@@ -116,7 +116,7 @@ namespace AppointmentScheduler.Forms
             appointment.CustomerId = UpdateInt(CustIdText, appointment.CustomerId);
             appointment.UserId = UpdateInt(UserIdText, appointment.UserId);
             appointment.Title = UpdateString(TitleText, appointment.Title);
-            appointment.Type = UpdateString(TypeText, appointment.Type);
+            appointment.Type = TypeText.Text;
             var newStartDate = GetDateTime(AptDate.Value, AptStartTime.Value);
             var newEndDate = GetDateTime(AptDate.Value, AptEndTime.Value);
 
@@ -151,7 +151,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToAddAppointment", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "FailedToAddAppointment", MessageBoxIcon.Error, ex.ToString());
             }
 
             UpdateTables();
@@ -168,7 +168,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "CustomerMissing", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "CustomerMissing", MessageBoxIcon.Error, ex.ToString());
                 System.Diagnostics.Debug.Write($"Customer ID could not be parsed from input: '{CustIdText.Text}'");
                 return;
             }
@@ -206,7 +206,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToUpdateCustomer", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "FailedToUpdateCustomer", MessageBoxIcon.Error, ex.ToString());
             }
 
             UpdateTables();
@@ -224,7 +224,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "AppointmentIDMissing", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "AppointmentIDMissing", MessageBoxIcon.Error, ex.ToString());
                 return;
             }
 
@@ -240,7 +240,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToDeleteAppointment", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "FailedToDeleteAppointment", MessageBoxIcon.Error, ex.ToString());
             }
 
             UpdateTables();
@@ -274,7 +274,7 @@ namespace AppointmentScheduler.Forms
             }
             catch (Exception ex)
             {
-                MessageService.DisplayErrorMessage(_currentUser.Language, "FailedToDeleteCustomer", ex);
+                MessageService.DisplayMessage(_currentUser.Language, "FailedToDeleteCustomer", MessageBoxIcon.Error, ex.ToString());
             }
 
             UpdateTables();
@@ -354,7 +354,6 @@ namespace AppointmentScheduler.Forms
             CustomerTable.DataSource = _customerRepo.GetAll();
             AppointmentTable.DataSource = _appointmentRepo.GetAll();
         }
-
 
 
         // Helper method to combine date and time inputs into a single DateTime object
