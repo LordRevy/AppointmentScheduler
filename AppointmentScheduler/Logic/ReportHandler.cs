@@ -16,6 +16,7 @@ namespace AppointmentScheduler.Logic
         {
             _repository = repository;
         }
+
         public List<AppointTypeByMonthReport> GenerateAppointmentsByMonthReport()
         {
             var appointments = _repository.GetAll();

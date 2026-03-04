@@ -9,7 +9,9 @@ namespace AppointmentScheduler
             var userRepo = new UserRepository();
             var appointmentRepo = new AppointmentRepository();
 
-            userRepo.Add("test", "test");
+            var userList = userRepo.GetAll();
+            if (!userList.Any(u => u.UserName == "test"))
+                userRepo.Add("test", "test");
 
             ApplicationConfiguration.Initialize();
             Application.Run(new LoginForm(userRepo, appointmentRepo));

@@ -291,8 +291,18 @@ namespace AppointmentScheduler.Forms
                 DefaultCellStyle = { Format = "g" }
             });
 
-            CustomerTable.DataSource = _customerRepo.GetAll();
-            AppointmentTable.DataSource = _appointmentRepo.GetAll();
+            // Get data from repositories and convert appointment times to local time for display
+            var customerList = _customerRepo.GetAll();
+            var appointmentList = _appointmentRepo.GetAll();
+
+            foreach (var apt in appointmentList)
+            {
+                apt.Start = apt.Start.ToLocalTime();
+                apt.End = apt.End.ToLocalTime();
+            }
+
+            CustomerTable.DataSource = customerList;
+            AppointmentTable.DataSource = appointmentList;
         }
 
         // Helper method to combine date and time inputs into a single DateTime object

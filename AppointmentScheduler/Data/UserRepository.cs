@@ -44,10 +44,6 @@ namespace AppointmentScheduler.Data
             var user = MapUser(r);
             user.Language = language;
 
-            var culture = CultureInfo.CurrentUICulture;
-            var region = new RegionInfo(culture.Name);
-            user.Country = region.EnglishName;
-
             var tz = TimeZoneInfo.Local;
             user.Timezone = tz.DisplayName;
 

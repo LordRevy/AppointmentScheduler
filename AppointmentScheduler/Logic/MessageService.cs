@@ -10,7 +10,7 @@ namespace AppointmentScheduler.Logic
             {
                 ["en"] = new Dictionary<string, string>
                 {
-                    ["LoginSuccess"] = "Login successful.\nWelcome -username-!\nLanguage selection: -language-\nCountry: -country-\nTimezone: -timezone-.\nDoes this sound correct?",
+                    ["LoginSuccess"] = "Login successful (ID: -Id-).\nWelcome -username-!\nLanguage selection: -language-\nTimezone: -timezone-.\nDoes this sound correct?",
                     ["LoginFailed"] = "Invalid username or password.",
                     ["AreYouSure"] = "Warning, this action is permanent. Are you sure you want to proceed?",
                     ["InvalidId"] = "Invalid ID format. Please enter a valid integer.",
@@ -34,7 +34,7 @@ namespace AppointmentScheduler.Logic
                 },
                 ["la"] = new Dictionary<string, string>
                 {
-                    ["LoginSuccess"] = "Accessus prosper fuit.\nSalve, -username-!\nElectio linguae: -language-\nPatria: -country-\nZona temporis: -timezone-.\nRectene hoc sonat?",
+                    ["LoginSuccess"] = "Accessus prosper fuit (ID: -Id-).\nSalve, -username-!\nElectio linguae: -language-\nZona temporis: -timezone-.\nRectene hoc sonat?",
                     ["LoginFailed"] = "Nomen usoris aut tessera invalida est.",
                     ["AreYouSure"] = "Monitio: haec actio perpetua est. Certusne es te pergere velle?",
                     ["InvalidId"] = "Forma ID invalida est. Quaeso, integerum validum insere.",
@@ -91,9 +91,9 @@ namespace AppointmentScheduler.Logic
             if (!messages.ContainsKey(user.Language))
                 user.Language = "en";
             var message = messages[user.Language]["LoginSuccess"]
+                .Replace("-Id-", user.Id.ToString())
                 .Replace("-username-", user.UserName)
                 .Replace("-language-", user.Language)
-                .Replace("-country-", user.Country ?? "N/A")
                 .Replace("-timezone-", user.Timezone ?? "N/A");
 
             var result = MessageBox.Show(message, "Login Success", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
