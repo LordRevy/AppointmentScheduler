@@ -72,15 +72,15 @@ namespace AppointmentScheduler.Data
         /// <summary>
         /// Adding a new Customer to the Database and attaching an address to it. Creates a new Address if it does not currently exist.
         /// </summary>
-        public int Add(string name, string phone, string address)
+        public int Add(Customer customer)
         {
             using var conn = GetConnection();
             conn.Open();
 
             const string checkIfAddressExistsSql = "SELECT addressId FROM address WHERE address = ? AND phone = ?;";
             using var cmd = new MySqlCommand(checkIfAddressExistsSql, conn);
-            cmd.Parameters.AddWithValue("", address);
-            cmd.Parameters.AddWithValue("", phone);
+            cmd.Parameters.AddWithValue("", customer.Address);
+            cmd.Parameters.AddWithValue("", customer.Phone);
 
             int addressId;
             using (var r = cmd.ExecuteReader())
@@ -93,14 +93,14 @@ namespace AppointmentScheduler.Data
                 INSERT INTO address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy)
                 VALUES (?, '', 1, '', ?, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
 
-                ExecuteNonQuery(insertIntoAddressSql, conn, address, phone);
+                ExecuteNonQuery(insertIntoAddressSql, conn, customer.Address, customer.Phone);
                 addressId = GetCreatedId(conn);
 
             const string insertIntoCustomerSql = @"
             INSERT INTO customer (customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy)
             VALUES (?, ?, 1, UTC_TIMESTAMP(), 'app', UTC_TIMESTAMP(), 'app');";
 
-            ExecuteNonQuery(insertIntoCustomerSql, conn, name, addressId);
+            ExecuteNonQuery(insertIntoCustomerSql, conn, customer.Name, addressId);
             return GetCreatedId(conn);
         }
 
