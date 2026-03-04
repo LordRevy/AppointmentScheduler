@@ -230,6 +230,8 @@ namespace AppointmentScheduler.Forms
             CustomerTable.Columns.Clear();
             AppointmentTable.Columns.Clear();
 
+            string localTimezone = TimeZoneInfo.Local.StandardName;
+
             //Customer Table
             CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
             {
@@ -280,13 +282,13 @@ namespace AppointmentScheduler.Forms
             });
             AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
             {
-                HeaderText = "Start",
+                HeaderText = $"Start {localTimezone}",
                 DataPropertyName = "Start",
                 DefaultCellStyle = { Format = "g" }
             });
             AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
             {
-                HeaderText = "End",
+                HeaderText = $"End {localTimezone}",
                 DataPropertyName = "End",
                 DefaultCellStyle = { Format = "g" }
             });
