@@ -24,7 +24,8 @@ namespace AppointmentScheduler.Forms
 
             CustomerTable.AutoGenerateColumns = false;
             AppointmentTable.AutoGenerateColumns = false;
-            UpdateTables();
+            UpdateAppointmentTable();
+            UpdateCustomerTable();
         }
 
         private void AddAptBtn_Click(object sender, EventArgs e)
@@ -56,7 +57,7 @@ namespace AppointmentScheduler.Forms
                 MessageService.DisplayMessage(_currentUser.Language, "FailedToAddAppointment", MessageBoxIcon.Error, ex.ToString());
             }
 
-            UpdateTables();
+            UpdateAppointmentTable();
         }
 
         private void AddCustBtn_Click(object sender, EventArgs e)
@@ -81,7 +82,7 @@ namespace AppointmentScheduler.Forms
                 MessageService.DisplayMessage(_currentUser.Language, "FailedToAddCustomer", MessageBoxIcon.Error, ex.ToString());
             }
 
-            UpdateTables();
+            UpdateCustomerTable();
         }
 
         private void UpdateBtn_Click(object sender, EventArgs e)
@@ -112,7 +113,7 @@ namespace AppointmentScheduler.Forms
                 _appointmentRepo.Update(updatedAppointment);
 
                 MessageService.DisplayMessage(_currentUser.Language, "UpdatedAppointment", MessageBoxIcon.Information);
-                UpdateTables();
+                UpdateAppointmentTable();
             }
             catch (Exception ex)
             {
@@ -143,7 +144,7 @@ namespace AppointmentScheduler.Forms
                 _customerRepo.Update(updatedCustomer);
 
                 MessageService.DisplayMessage(_currentUser.Language, "UpdatedCustomer", MessageBoxIcon.Information);
-                UpdateTables();
+                UpdateCustomerTable();
             }
             catch (Exception ex)
             {
@@ -182,7 +183,7 @@ namespace AppointmentScheduler.Forms
                 MessageService.DisplayMessage(_currentUser.Language, "FailedToDeleteAppointment", MessageBoxIcon.Error, ex.ToString());
             }
 
-            UpdateTables();
+            UpdateAppointmentTable();
         }
 
         private void DeleteCustBtn_Click(object sender, EventArgs e)
@@ -216,7 +217,7 @@ namespace AppointmentScheduler.Forms
                 MessageService.DisplayMessage(_currentUser.Language, "FailedToDeleteCustomer", MessageBoxIcon.Error, ex.ToString());
             }
 
-            UpdateTables();
+            UpdateCustomerTable();
         }
 
         private void GenRptBtn_Click(object sender, EventArgs e)
@@ -224,37 +225,13 @@ namespace AppointmentScheduler.Forms
             new Reports(_currentUser, _appointmentRepo).Show();
         }
 
-        // Helper method to set up the columns for the customer and appointment tables and populate them with data from the database
-        private void UpdateTables()
+        /// <summary>
+        /// Helper method to set up the columns for the appointment table and populate them with data from the database
+        /// </summary>
+        private void UpdateAppointmentTable()
         {
-            CustomerTable.Columns.Clear();
             AppointmentTable.Columns.Clear();
 
-            string localTimezone = TimeZoneInfo.Local.StandardName;
-
-            //Customer Table
-            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Customer ID",
-                DataPropertyName = "Id"
-            });
-            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Name",
-                DataPropertyName = "Name"
-            });
-            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Address",
-                DataPropertyName = "Address"
-            });
-            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Phone",
-                DataPropertyName = "Phone"
-            });
-
-            // Appointment Table
             AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Appointment ID",
@@ -282,20 +259,25 @@ namespace AppointmentScheduler.Forms
             });
             AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
             {
-                HeaderText = $"Start {localTimezone}",
+                HeaderText = $"Start {_currentUser.Timezone}",
                 DataPropertyName = "Start",
                 DefaultCellStyle = { Format = "g" }
             });
             AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
             {
-                HeaderText = $"End {localTimezone}",
+                HeaderText = $"End {_currentUser.Timezone}",
                 DataPropertyName = "End",
                 DefaultCellStyle = { Format = "g" }
             });
 
             // Get data from repositories and convert appointment times to local time for display
-            var customerList = _customerRepo.GetAll();
-            var appointmentList = _appointmentRepo.GetAll();
+            List<Appointment> appointmentList;
+
+            if (!SeeAllApts.Checked)
+                appointmentList = _appointmentRepo.GetDateRange(monthCalendar1.SelectionStart, monthCalendar1.SelectionEnd);
+
+            else
+                appointmentList = _appointmentRepo.GetAll();
 
             foreach (var apt in appointmentList)
             {
@@ -303,11 +285,45 @@ namespace AppointmentScheduler.Forms
                 apt.End = apt.End.ToLocalTime();
             }
 
-            CustomerTable.DataSource = customerList;
             AppointmentTable.DataSource = appointmentList;
         }
 
-        // Helper method to combine date and time inputs into a single DateTime object
+        /// <summary>
+        /// Helper method to set up the columns for the customer table and populate them with data from the database
+        /// </summary>
+        private void UpdateCustomerTable()
+        {
+            CustomerTable.Columns.Clear();
+
+            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Customer ID",
+                DataPropertyName = "Id"
+            });
+            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Name",
+                DataPropertyName = "Name"
+            });
+            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Address",
+                DataPropertyName = "Address"
+            });
+            CustomerTable.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Phone",
+                DataPropertyName = "Phone"
+            });
+
+            var customerList = _customerRepo.GetAll();
+
+            CustomerTable.DataSource = customerList;
+        }
+
+        /// <summary>
+        ///Helper method to combine date and time inputs into a single DateTime object
+        /// </summary>
         private DateTime GetDateTime(DateTime date, DateTime time)
         {
             DateTime appointmentTime = new DateTime(
@@ -322,7 +338,9 @@ namespace AppointmentScheduler.Forms
             return appointmentTime;
         }
 
-        // Populate appointment fields when an appointment is selected from the table
+        /// <summary>
+        /// Populate appointment fields when an appointment is selected from the table
+        /// </summary>
         private void AppointmentTable_SelectionChanged(object sender, EventArgs e)
         {
             if (AppointmentTable.SelectedRows.Count == 0)
@@ -340,7 +358,9 @@ namespace AppointmentScheduler.Forms
             AptEndTime.Value = selectedApt.End;
         }
 
-        // Populate customer fields when a customer is selected from the table
+        /// <summary>
+        /// Populate customer fields when a customer is selected from the table
+        /// </summary>
         private void CustomerTable_SelectionChanged(object sender, EventArgs e)
         {
             if (CustomerTable.SelectedRows.Count == 0)
@@ -354,7 +374,9 @@ namespace AppointmentScheduler.Forms
             PhoneText.Text = selectedCust.Phone;
         }
 
-        // Get appointment object from input fields
+        /// <summary>
+        /// Get appointment object from input fields
+        /// </summary>
         private Appointment GetAppointmentFromInput()
         {
             var startUtc = GetDateTime(AptDate.Value, AptStartTime.Value).ToUniversalTime();
@@ -375,7 +397,9 @@ namespace AppointmentScheduler.Forms
             };
         }
 
-        // Get customer object from input fields
+        /// <summary>
+        /// Get customer object from input fields
+        /// </summary>
         private Customer GetCustomerFromInput()
         {
             var name = NameText.Text.Trim();
@@ -387,6 +411,15 @@ namespace AppointmentScheduler.Forms
                 Address = address,
                 Phone = phone
             };
+        }
+
+        /// <summary>
+        /// Updates the appointment list with the selected date from the calendar.
+        /// </summary>
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            SeeAllApts.Checked = false;
+            UpdateAppointmentTable();
         }
     }
 }

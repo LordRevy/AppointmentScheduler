@@ -36,25 +36,27 @@
             LatinBtn = new RadioButton();
             EnglishBtn = new RadioButton();
             Language = new Label();
+            label1 = new Label();
+            comboBox1 = new ComboBox();
             SuspendLayout();
             // 
             // Username
             // 
-            Username.Location = new Point(171, 35);
+            Username.Location = new Point(117, 35);
             Username.Name = "Username";
             Username.Size = new Size(192, 23);
             Username.TabIndex = 0;
             // 
             // Password
             // 
-            Password.Location = new Point(171, 80);
+            Password.Location = new Point(117, 80);
             Password.Name = "Password";
             Password.Size = new Size(192, 23);
             Password.TabIndex = 1;
             // 
             // LoginButton
             // 
-            LoginButton.Location = new Point(198, 166);
+            LoginButton.Location = new Point(219, 166);
             LoginButton.Name = "LoginButton";
             LoginButton.Size = new Size(75, 23);
             LoginButton.TabIndex = 2;
@@ -65,7 +67,7 @@
             // labelUsername
             // 
             labelUsername.AutoSize = true;
-            labelUsername.Location = new Point(85, 38);
+            labelUsername.Location = new Point(31, 38);
             labelUsername.Name = "labelUsername";
             labelUsername.Size = new Size(60, 15);
             labelUsername.TabIndex = 3;
@@ -74,7 +76,7 @@
             // labelPassword
             // 
             labelPassword.AutoSize = true;
-            labelPassword.Location = new Point(88, 83);
+            labelPassword.Location = new Point(34, 83);
             labelPassword.Name = "labelPassword";
             labelPassword.Size = new Size(57, 15);
             labelPassword.TabIndex = 4;
@@ -83,7 +85,7 @@
             // LatinBtn
             // 
             LatinBtn.AutoSize = true;
-            LatinBtn.Location = new Point(186, 129);
+            LatinBtn.Location = new Point(132, 129);
             LatinBtn.Name = "LatinBtn";
             LatinBtn.Size = new Size(51, 19);
             LatinBtn.TabIndex = 5;
@@ -95,7 +97,7 @@
             // 
             EnglishBtn.AutoSize = true;
             EnglishBtn.Checked = true;
-            EnglishBtn.Location = new Point(278, 129);
+            EnglishBtn.Location = new Point(224, 129);
             EnglishBtn.Name = "EnglishBtn";
             EnglishBtn.Size = new Size(63, 19);
             EnglishBtn.TabIndex = 6;
@@ -106,17 +108,37 @@
             // Language
             // 
             Language.AutoSize = true;
-            Language.Location = new Point(88, 129);
+            Language.Location = new Point(34, 129);
             Language.Name = "Language";
             Language.Size = new Size(59, 15);
             Language.TabIndex = 7;
             Language.Text = "Language";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(361, 38);
+            label1.Name = "label1";
+            label1.Size = new Size(59, 15);
+            label1.TabIndex = 8;
+            label1.Text = "Timezone";
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "Mountain", "Eastern", "Pacific", "Central European" });
+            comboBox1.Location = new Point(332, 56);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(121, 23);
+            comboBox1.TabIndex = 9;
             // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(465, 201);
+            Controls.Add(comboBox1);
+            Controls.Add(label1);
             Controls.Add(Language);
             Controls.Add(EnglishBtn);
             Controls.Add(LatinBtn);
@@ -142,5 +164,7 @@
         private RadioButton LatinBtn;
         private RadioButton EnglishBtn;
         private Label Language;
+        private Label label1;
+        private ComboBox comboBox1;
     }
 }

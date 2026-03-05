@@ -148,7 +148,7 @@ namespace AppointmentScheduler.Data
         }
 
         /// <summary>
-        /// Returns appointments with start and end times that overlap in the database.
+        /// Returns appointments within a DateTime range.
         /// </summary>
         public List<Appointment> GetDateRange(DateTime start, DateTime end)
         {

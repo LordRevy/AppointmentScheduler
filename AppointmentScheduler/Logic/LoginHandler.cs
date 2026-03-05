@@ -15,27 +15,6 @@ namespace AppointmentScheduler.Logic
         }
 
         /// <summary>
-        /// Querys Database for a row that matches username and password.
-        /// Returns a User object if successful, null if not. 
-        /// </summary>    
-        public User? AttemptLogin(string username, string password, string language)
-        {
-            username = username.Trim();
-            password = password.Trim();
-
-            var user = _userRepo.GetUser(username, password, language);
-
-            if (user is null)
-            {
-                LogAttempt(username, false);
-                return null;
-            }
-
-            LogAttempt(username, true);
-            return user;
-        }
-
-        /// <summary>
         /// Checks if the logged in user has an appointment within 15 minutes.
         /// </summary>
         public Appointment? CheckUpcomingAppointments(User user)

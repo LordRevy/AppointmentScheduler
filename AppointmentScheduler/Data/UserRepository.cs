@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using System.Globalization;
 
 namespace AppointmentScheduler.Data
 {
@@ -10,15 +9,10 @@ namespace AppointmentScheduler.Data
         /// </summary>
         private static Domain.User MapUser(MySqlDataReader r)
         {
-            var _username = Convert.ToString(r["userName"]);
-
-            if (_username == null)
-                throw new InvalidOperationException("Username cannot be null.");
-
             return new Domain.User
             {
                 Id = Convert.ToInt32(r["userId"]),
-                UserName = _username,
+                UserName = Convert.ToString(r["userName"])!,
                 Language = "en"
             };
         }
@@ -27,25 +21,24 @@ namespace AppointmentScheduler.Data
         /// Returns the user with the given username so long as the password matches.
         /// Returns null if  username not found or if password is incorrect.
         /// </summary>
-        public Domain.User? GetUser(string username, string password, string language)
+        public Domain.User? GetUser(Domain.User user, string password)
         {
             using var conn = GetConnection();
             conn.Open();
             const string getUserSql = "SELECT userId, userName FROM `user` WHERE userName = ? AND password = ?;";
 
             using var cmd = new MySqlCommand(getUserSql, conn);
-            cmd.Parameters.AddWithValue("", username);
+            cmd.Parameters.AddWithValue("", user.UserName);
             cmd.Parameters.AddWithValue("", password);
             using var r = cmd.ExecuteReader();
 
             if (!r.Read())
                 return null;
 
-            var user = MapUser(r);
-            user.Language = language;
+            user.Id = r.GetInt32("userId");
 
-            var tz = TimeZoneInfo.Local;
-            user.Timezone = tz.DisplayName;
+            if (user.Id <= 0)
+                throw new Exception($"Invalid userId {user.Id} for user {user.UserName}.");
 
             return user;
         }

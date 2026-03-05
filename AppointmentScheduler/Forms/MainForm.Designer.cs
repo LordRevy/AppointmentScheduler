@@ -55,6 +55,8 @@
             TypeText = new ComboBox();
             label3 = new Label();
             label4 = new Label();
+            monthCalendar1 = new MonthCalendar();
+            SeeAllApts = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)AppointmentTable).BeginInit();
             ((System.ComponentModel.ISupportInitialize)CustomerTable).BeginInit();
             SuspendLayout();
@@ -64,7 +66,7 @@
             AppointmentTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             AppointmentTable.Location = new Point(12, 12);
             AppointmentTable.Name = "AppointmentTable";
-            AppointmentTable.Size = new Size(835, 150);
+            AppointmentTable.Size = new Size(757, 150);
             AppointmentTable.TabIndex = 0;
             AppointmentTable.SelectionChanged += AppointmentTable_SelectionChanged;
             // 
@@ -73,7 +75,7 @@
             CustomerTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CustomerTable.Location = new Point(12, 247);
             CustomerTable.Name = "CustomerTable";
-            CustomerTable.Size = new Size(546, 150);
+            CustomerTable.Size = new Size(476, 150);
             CustomerTable.TabIndex = 1;
             CustomerTable.SelectionChanged += CustomerTable_SelectionChanged;
             // 
@@ -173,7 +175,7 @@
             // 
             // AddCustBtn
             // 
-            AddCustBtn.Location = new Point(562, 247);
+            AddCustBtn.Location = new Point(12, 432);
             AddCustBtn.Name = "AddCustBtn";
             AddCustBtn.Size = new Size(72, 23);
             AddCustBtn.TabIndex = 16;
@@ -183,7 +185,7 @@
             // 
             // UpdateCustBtn
             // 
-            UpdateCustBtn.Location = new Point(564, 276);
+            UpdateCustBtn.Location = new Point(90, 432);
             UpdateCustBtn.Name = "UpdateCustBtn";
             UpdateCustBtn.Size = new Size(70, 23);
             UpdateCustBtn.TabIndex = 17;
@@ -193,7 +195,7 @@
             // 
             // DeleteCustBtn
             // 
-            DeleteCustBtn.Location = new Point(564, 305);
+            DeleteCustBtn.Location = new Point(166, 432);
             DeleteCustBtn.Name = "DeleteCustBtn";
             DeleteCustBtn.Size = new Size(70, 23);
             DeleteCustBtn.TabIndex = 18;
@@ -203,7 +205,7 @@
             // 
             // GenRptBtn
             // 
-            GenRptBtn.Location = new Point(740, 415);
+            GenRptBtn.Location = new Point(677, 497);
             GenRptBtn.Name = "GenRptBtn";
             GenRptBtn.Size = new Size(109, 23);
             GenRptBtn.TabIndex = 19;
@@ -214,7 +216,7 @@
             // AptStartTime
             // 
             AptStartTime.Format = DateTimePickerFormat.Time;
-            AptStartTime.Location = new Point(764, 168);
+            AptStartTime.Location = new Point(686, 168);
             AptStartTime.Name = "AptStartTime";
             AptStartTime.Size = new Size(83, 23);
             AptStartTime.TabIndex = 22;
@@ -222,7 +224,7 @@
             // AptEndTime
             // 
             AptEndTime.Format = DateTimePickerFormat.Time;
-            AptEndTime.Location = new Point(764, 197);
+            AptEndTime.Location = new Point(686, 197);
             AptEndTime.Name = "AptEndTime";
             AptEndTime.Size = new Size(83, 23);
             AptEndTime.TabIndex = 23;
@@ -230,7 +232,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(697, 174);
+            label1.Location = new Point(619, 174);
             label1.Name = "label1";
             label1.Size = new Size(61, 15);
             label1.TabIndex = 24;
@@ -239,7 +241,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(701, 203);
+            label2.Location = new Point(623, 203);
             label2.Name = "label2";
             label2.Size = new Size(57, 15);
             label2.TabIndex = 25;
@@ -248,24 +250,24 @@
             // AptDate
             // 
             AptDate.Format = DateTimePickerFormat.Short;
-            AptDate.Location = new Point(547, 197);
+            AptDate.Location = new Point(495, 197);
             AptDate.Name = "AptDate";
-            AptDate.Size = new Size(121, 23);
+            AptDate.Size = new Size(94, 23);
             AptDate.TabIndex = 26;
             // 
             // TypeText
             // 
             TypeText.FormattingEnabled = true;
             TypeText.Items.AddRange(new object[] { "Scrum", "Project", "Monthly", "Cust Consult", "Executive", "Other" });
-            TypeText.Location = new Point(547, 168);
+            TypeText.Location = new Point(495, 168);
             TypeText.Name = "TypeText";
-            TypeText.Size = new Size(121, 23);
+            TypeText.Size = new Size(94, 23);
             TypeText.TabIndex = 27;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(509, 171);
+            label3.Location = new Point(457, 171);
             label3.Name = "label3";
             label3.Size = new Size(32, 15);
             label3.TabIndex = 28;
@@ -274,17 +276,38 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(509, 203);
+            label4.Location = new Point(457, 203);
             label4.Name = "label4";
             label4.Size = new Size(31, 15);
             label4.TabIndex = 29;
             label4.Text = "Date";
             // 
+            // monthCalendar1
+            // 
+            monthCalendar1.Location = new Point(532, 247);
+            monthCalendar1.Name = "monthCalendar1";
+            monthCalendar1.TabIndex = 30;
+            monthCalendar1.DateChanged += monthCalendar1_DateChanged;
+            // 
+            // SeeAllApts
+            // 
+            SeeAllApts.AutoSize = true;
+            SeeAllApts.Checked = true;
+            SeeAllApts.CheckState = CheckState.Checked;
+            SeeAllApts.Location = new Point(583, 421);
+            SeeAllApts.Name = "SeeAllApts";
+            SeeAllApts.Size = new Size(140, 19);
+            SeeAllApts.TabIndex = 31;
+            SeeAllApts.Text = "See All Appointments";
+            SeeAllApts.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(861, 450);
+            ClientSize = new Size(798, 532);
+            Controls.Add(SeeAllApts);
+            Controls.Add(monthCalendar1);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(TypeText);
@@ -347,5 +370,7 @@
         private ComboBox TypeText;
         private Label label3;
         private Label label4;
+        private MonthCalendar monthCalendar1;
+        private CheckBox SeeAllApts;
     }
 }

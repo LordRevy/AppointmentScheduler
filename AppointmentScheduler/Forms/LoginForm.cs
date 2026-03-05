@@ -2,7 +2,6 @@ using AppointmentScheduler.Data;
 using AppointmentScheduler.Domain;
 using AppointmentScheduler.Forms;
 using AppointmentScheduler.Logic;
-using System.Globalization;
 
 namespace AppointmentScheduler
 {
@@ -28,36 +27,65 @@ namespace AppointmentScheduler
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
-            var user = null as User;
+            var username = Username.Text.Trim();
+            var password = Password.Text.Trim();
             var language = "en";
 
             if (LatinBtn.Checked)
                 language = "la";
 
-            try
-                {
-                    user = _loginHandler.AttemptLogin(Username.Text, Password.Text, language);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Login Error");
-                }
-
-            if (user == null)
+            if (username == "" || password == "")
             {
-                Logic.MessageService.DisplayMessage(language, "LoginFailed", MessageBoxIcon.Error);
+                Logic.MessageService.DisplayMessage(language, "LoginFailed", MessageBoxIcon.Warning);
                 return;
             }
 
-            var upcoming = _loginHandler.CheckUpcomingAppointments(user);
+            var user = new User
+            {
+                Id = 0,
+                UserName = username,
+                Language = language,
+                Timezone = MapSelectionToTimeZone(comboBox1.Text)
+            };
 
-            if (upcoming != null)
-                Logic.MessageService.DisplayMessage(user.Language, "UpcomingAppointment", MessageBoxIcon.Information);
+            try
+            {
+                user = _userRepo.GetUser(user, password);
 
-            Logic.MessageService.DisplayLoginSuccessMessage(user);
-            Hide();
+                if (user == null)
+                {
+                    LoginHandler.LogAttempt(username, false);
+                    Logic.MessageService.DisplayMessage(language, "LoginFailed", MessageBoxIcon.Error);
+                    return;
+                }
 
-            new MainForm(user, _userRepo, _appointmentRepo).Show();
+                LoginHandler.LogAttempt(username, true);
+                var upcoming = _loginHandler.CheckUpcomingAppointments(user);
+
+                if (upcoming != null)
+                    Logic.MessageService.DisplayMessage(user.Language, "UpcomingAppointment", MessageBoxIcon.Information);
+
+                Logic.MessageService.DisplayLoginSuccessMessage(user);
+                Hide();
+
+                new MainForm(user, _userRepo, _appointmentRepo).Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Login Error");
+            }
+        }
+
+        private TimeZoneInfo MapSelectionToTimeZone(string selection)
+        {
+            return selection switch
+            {
+                "Mountain" => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
+                "Eastern" => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
+                "Pacific" => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
+                "Central European" => TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time"),
+                _ => TimeZoneInfo.Utc
+            };
         }
     }
 }
