@@ -28,17 +28,18 @@ namespace AppointmentScheduler.Forms
         private void GetRpts_Click(object sender, EventArgs e)
         {
             var columns = "|-Id-|----Type----|------Start------|------End------|";
+            var reportPath = "C:\\Users\\LabUser\\source\\repos\\AppointmentScheduler\\AppointmentScheduler\\Reports\\Reports.txt";
 
             if (AptByMonth.Checked)
             {
                 var appointmentReport = _reportHandler.GenerateAppointmentsByMonthReport();
-                MessageService.WriteReport("AppointmentsByMonthReport", appointmentReport, columns);
+                MessageService.WriteReport("AppointmentsByMonthReport", appointmentReport, columns, reportPath);
             }
 
             if (UsrSchedules.Checked)
             {
                 var userScheduleReport = _reportHandler.GenerateUserScheduleReport();
-                MessageService.WriteReport("UserScheduleReport", userScheduleReport, columns);
+                MessageService.WriteReport("UserScheduleReport", userScheduleReport, columns, reportPath);
             }
 
             if (CustSchedule.Checked)
@@ -50,8 +51,11 @@ namespace AppointmentScheduler.Forms
                 }
 
                 var customerScheduleReport = _reportHandler.GenerateCustomerScheduleReport(custId);
-                MessageService.WriteReport("CustomerScheduleReport", customerScheduleReport, columns);
+                MessageService.WriteReport("CustomerScheduleReport", customerScheduleReport, columns, reportPath);
             }
+
+            MessageService.DisplayMessage(_user.Language, "ReportGenerated", MessageBoxIcon.Information, reportPath);
+            Hide();
         }
     }
 }

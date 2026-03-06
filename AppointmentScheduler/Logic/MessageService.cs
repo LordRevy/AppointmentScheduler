@@ -30,7 +30,8 @@ namespace AppointmentScheduler.Logic
                     ["FailedToDeleteAppointment"] = "Failed to delete appointment. Please try again.",
                     ["FailedToDeleteCustomer"] = "Failed to delete customer. Please try again.",
                     ["InvalidTime"] = "Time must be between 9:00 AM and 5:00 PM, Monday through Friday. Please adjust the appointment times and try again.",
-                    ["InvalidInput"] = "Invalid input. Please check your entries and try again."
+                    ["InvalidInput"] = "Invalid input. Please check your entries and try again.",
+                    ["ReportGenerated"] = "Report Generated successfully!"
                 },
                 ["la"] = new Dictionary<string, string>
                 {
@@ -54,7 +55,8 @@ namespace AppointmentScheduler.Logic
                     ["FailedToDeleteAppointment"] = "Conventum delere non potuit. Quaeso iterum tenta.",
                     ["FailedToDeleteCustomer"] = "Clientem delere non potuit. Quaeso iterum tenta.",
                     ["InvalidTime"] = "Tempus inter horam IX ante meridiem et horam V post meridiem, a die Lunae ad diem Veneris, esse debet. Quaeso tempora conventus corrige et iterum tenta.",
-                    ["InvalidInput"] = "Inscriptio invalida est. Quaeso, quae inseruisti verifica et iterum tenta."
+                    ["InvalidInput"] = "Inscriptio invalida est. Quaeso, quae inseruisti verifica et iterum tenta.",
+                    ["ReportGenerated"] = "Relatio feliciter generata!"
                 }
             };
 
@@ -104,9 +106,8 @@ namespace AppointmentScheduler.Logic
             }
         }
 
-        public static void WriteReport<T>(string reportName, List<T> reportData, string columns)
+        public static void WriteReport<T>(string reportName, List<T> reportData, string columns, string reportPath)
         {
-            var reportPath = "C:\\Users\\LabUser\\source\\repos\\AppointmentScheduler\\AppointmentScheduler\\Reports\\Reports.txt";
             var timeStamp = DateTime.UtcNow;
             var formattedReport = string.Join(
                 Environment.NewLine, 
