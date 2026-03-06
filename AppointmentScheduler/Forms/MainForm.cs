@@ -281,8 +281,8 @@ namespace AppointmentScheduler.Forms
 
             foreach (var apt in appointmentList)
             {
-                apt.Start = apt.Start.ToLocalTime();
-                apt.End = apt.End.ToLocalTime();
+                apt.Start = TimeZoneInfo.ConvertTimeFromUtc(apt.Start, _currentUser.Timezone);
+                apt.End = TimeZoneInfo.ConvertTimeFromUtc(apt.End, _currentUser.Timezone);
             }
 
             AppointmentTable.DataSource = appointmentList;
@@ -379,8 +379,12 @@ namespace AppointmentScheduler.Forms
         /// </summary>
         private Appointment GetAppointmentFromInput()
         {
-            var startUtc = GetDateTime(AptDate.Value, AptStartTime.Value).ToUniversalTime();
-            var endUtc = GetDateTime(AptDate.Value, AptEndTime.Value).ToUniversalTime();
+            // Convert local date and time inputs to UTC for storage in database
+            var startLocal = GetDateTime(AptDate.Value, AptStartTime.Value);
+            var endLocal = GetDateTime(AptDate.Value, AptEndTime.Value);
+            var startUtc = TimeZoneInfo.ConvertTimeToUtc(startLocal, _currentUser.Timezone);
+            var endUtc = TimeZoneInfo.ConvertTimeToUtc(endLocal, _currentUser.Timezone);
+
             var customerId = Convert.ToInt32(CustIdText.Text);
             var userId = Convert.ToInt32(UserIdText.Text);
             var title = TitleText.Text.Trim();
