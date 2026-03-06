@@ -259,13 +259,13 @@ namespace AppointmentScheduler.Forms
             });
             AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
             {
-                HeaderText = $"Start {_currentUser.Timezone}",
+                HeaderText = $"Start {_currentUser.Timezone.Id}",
                 DataPropertyName = "Start",
                 DefaultCellStyle = { Format = "g" }
             });
             AppointmentTable.Columns.Add(new DataGridViewTextBoxColumn
             {
-                HeaderText = $"End {_currentUser.Timezone}",
+                HeaderText = $"End {_currentUser.Timezone.Id}",
                 DataPropertyName = "End",
                 DefaultCellStyle = { Format = "g" }
             });
