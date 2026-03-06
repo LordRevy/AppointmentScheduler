@@ -27,19 +27,17 @@ namespace AppointmentScheduler.Forms
 
         private void GetRpts_Click(object sender, EventArgs e)
         {
-            string columns;
+            var columns = "|-Id-|----Type----|------Start------|------End------|";
 
             if (AptByMonth.Checked)
             {
                 var appointmentReport = _reportHandler.GenerateAppointmentsByMonthReport();
-                columns = "|--UserId--|---Type---|----Start----|----End----|";
                 MessageService.WriteReport("AppointmentsByMonthReport", appointmentReport, columns);
             }
 
             if (UsrSchedules.Checked)
             {
                 var userScheduleReport = _reportHandler.GenerateUserScheduleReport();
-                columns = "|--Id--|---Type---|----Start----|----End----|";
                 MessageService.WriteReport("UserScheduleReport", userScheduleReport, columns);
             }
 
@@ -52,7 +50,6 @@ namespace AppointmentScheduler.Forms
                 }
 
                 var customerScheduleReport = _reportHandler.GenerateCustomerScheduleReport(custId);
-                columns = "|--Id--|---Type---|----Start----|----End----|";
                 MessageService.WriteReport("CustomerScheduleReport", customerScheduleReport, columns);
             }
         }

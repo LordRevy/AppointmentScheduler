@@ -94,7 +94,7 @@ namespace AppointmentScheduler.Logic
                 .Replace("-Id-", user.Id.ToString())
                 .Replace("-username-", user.UserName)
                 .Replace("-language-", user.Language)
-                .Replace("-timezone-", user.Timezone ?? "N/A");
+                .Replace("-timezone-", user.Timezone.Id);
 
             var result = MessageBox.Show(message, "Login Success", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
