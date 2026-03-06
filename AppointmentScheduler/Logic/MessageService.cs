@@ -1,5 +1,4 @@
 ﻿using AppointmentScheduler.Domain;
-using Org.BouncyCastle.Asn1.IsisMtt.X509;
 
 namespace AppointmentScheduler.Logic
 {

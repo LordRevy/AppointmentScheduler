@@ -27,7 +27,7 @@ namespace AppointmentScheduler.Forms
 
         private void GetRpts_Click(object sender, EventArgs e)
         {
-            var columns = "|-Id-|----Type----|------Start------|------End------|";
+            var columns = "|Id|----Type----|------Start------|------End------|";
             var reportPath = "C:\\Users\\LabUser\\source\\repos\\AppointmentScheduler\\AppointmentScheduler\\Reports\\Reports.txt";
 
             if (AptByMonth.Checked)
