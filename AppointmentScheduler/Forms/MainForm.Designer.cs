@@ -300,6 +300,7 @@
             SeeAllApts.TabIndex = 31;
             SeeAllApts.Text = "See All Appointments";
             SeeAllApts.UseVisualStyleBackColor = true;
+            SeeAllApts.CheckedChanged += SeeAllApts_CheckedChanged;
             // 
             // MainForm
             // 

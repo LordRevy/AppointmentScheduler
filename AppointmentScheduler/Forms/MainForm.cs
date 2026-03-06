@@ -421,5 +421,10 @@ namespace AppointmentScheduler.Forms
             SeeAllApts.Checked = false;
             UpdateAppointmentTable();
         }
+
+        private void SeeAllApts_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAppointmentTable();
+        }
     }
 }
