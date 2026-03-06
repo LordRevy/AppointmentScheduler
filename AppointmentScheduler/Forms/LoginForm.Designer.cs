@@ -126,7 +126,7 @@
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Mountain", "Eastern", "Pacific", "Central European" });
+            comboBox1.Items.AddRange(new object[] { "User Location", "Mountain", "Eastern", "Pacific", "Central European" });
             comboBox1.Location = new Point(332, 56);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(121, 23);

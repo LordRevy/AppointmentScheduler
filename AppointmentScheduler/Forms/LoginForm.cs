@@ -80,6 +80,7 @@ namespace AppointmentScheduler
         {
             return selection switch
             {
+                "User Location" => TimeZoneInfo.Local,
                 "Mountain" => TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time"),
                 "Eastern" => TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"),
                 "Pacific" => TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time"),
