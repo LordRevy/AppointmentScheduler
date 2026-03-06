@@ -27,12 +27,13 @@ namespace AppointmentScheduler.Forms
 
         private void GetRpts_Click(object sender, EventArgs e)
         {
-            var columns = "|Id|----Type----|------Start------|------End------|";
+            var columns = "|-Id-|----Type----|------StartUTC---|------EndUTC---|";
             var reportPath = "C:\\Users\\LabUser\\source\\repos\\AppointmentScheduler\\AppointmentScheduler\\Reports\\Reports.txt";
 
             if (AptByMonth.Checked)
             {
                 var appointmentReport = _reportHandler.GenerateAppointmentsByMonthReport();
+                columns = "|Year|---Month---|----Type----|---Count---|";
                 MessageService.WriteReport("AppointmentsByMonthReport", appointmentReport, columns, reportPath);
             }
 

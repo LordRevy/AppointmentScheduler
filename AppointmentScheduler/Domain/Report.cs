@@ -9,7 +9,7 @@
 
         public override string ToString()
         {
-            return $"{Year} | {Month} | {Type} | Count: {Count}";
+            return $"  {Year}  |  {Month}  |  {Type}  |  {Count}";
         }
     }
 
@@ -22,7 +22,7 @@
 
         public override string ToString()
         {
-            return $"{Id} | {Type} | {Start:g} - {End:g}";
+            return $"  {Id}  |  {Type}  |  {Start:g} - {End:g}";
         }
     }
 }
